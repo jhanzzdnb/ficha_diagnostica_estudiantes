@@ -1,819 +1,1544 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha Diagnóstica – IESTP Cabana</title>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --navy:#1a2744;--navy-mid:#243660;--navy-light:#2e4480;
-  --gold:#c8922a;--gold-light:#e8b84b;
-  --cream:#faf8f3;--white:#fff;
-  --g100:#f5f4f0;--g200:#e8e6e0;--g400:#a0998a;--g600:#6b6358;--g800:#3a342c;
-  --red:#c0392b;--green:#1e6e42;--blue:#1565c0;
-  --radius:8px;--shadow:0 2px 14px rgba(26,39,68,.09);
-  --transition:.18s ease;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g800);font-size:15px;line-height:1.6}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficha Diagnóstica – IESTP Cabana</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2744;
+      --navy-mid: #243660;
+      --navy-light: #2e4480;
+      --gold: #c8922a;
+      --gold-light: #e8b84b;
+      --cream: #faf8f3;
+      --white: #fff;
+      --g100: #f5f4f0;
+      --g200: #e8e6e0;
+      --g400: #a0998a;
+      --g600: #6b6358;
+      --g800: #3a342c;
+      --red: #c0392b;
+      --green: #1e6e42;
+      --blue: #1565c0;
+      --radius: 8px;
+      --shadow: 0 2px 14px rgba(26, 39, 68, .09);
+      --transition: .18s ease;
+    }
 
-/* ── HEADER ── */
-.page-header{background:var(--navy);color:#fff;position:relative;overflow:hidden}
-.page-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.018) 40px,rgba(255,255,255,.018) 80px)}
-.header-inner{position:relative;display:flex;align-items:center;gap:1.4rem;padding:1.6rem 2rem;max-width:860px;margin:0 auto}
-.logo-circle {
-  width: 66px;
-  height: 66px;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-  background: transparent !important; /* 🔥 clave */
-}
-.header-text .inst{font-size:.68rem;text-transform:uppercase;letter-spacing:2.5px;color:var(--gold-light);margin-bottom:.15rem}
-.header-text h1{font-family:'Merriweather',serif;font-size:1.2rem;font-weight:700;line-height:1.2;margin-bottom:.2rem}
-.header-text .sub{font-size:.78rem;color:rgba(255,255,255,.55);font-style:italic}
-.header-bar{height:3px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-light) 55%,transparent 100%)}
+    html {
+      scroll-behavior: smooth
+    }
 
-/* ── COUNTER BADGE ── */
-.stats-bar{background:var(--navy-mid);padding:.5rem 2rem;display:flex;gap:1.5rem;max-width:860px;margin:0 auto;align-items:center;font-size:.78rem;color:rgba(255,255,255,.7)}
-.stat-item{display:flex;align-items:center;gap:.4rem}
-.stat-item strong{color:var(--gold-light);font-size:.95rem}
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--g100);
+      color: var(--g800);
+      font-size: 15px;
+      line-height: 1.6
+    }
 
-/* ── NOTICE ── */
-.notice{background:rgba(26,39,68,.055);border-left:3px solid var(--gold);padding:.65rem 1.1rem;font-size:.8rem;color:var(--g600);max-width:860px;margin:1.1rem auto 0;border-radius:0 var(--radius) var(--radius) 0}
-.notice strong{color:var(--navy)}
+    /* ── HEADER ── */
+    .page-header {
+      background: var(--navy);
+      color: #fff;
+      position: relative;
+      overflow: hidden
+    }
 
-/* ── WRAPPER ── */
-.form-wrapper{max-width:860px;margin:1.4rem auto 3rem;padding:0 1rem}
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255, 255, 255, .018) 40px, rgba(255, 255, 255, .018) 80px)
+    }
 
-/* ── SECTION ── */
-.form-section{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:2rem;overflow:hidden;transition:box-shadow var(--transition)}
-.form-section:hover{box-shadow:0 4px 22px rgba(26,39,68,.13)}
-.section-header{background:var(--navy-mid);color:#fff;padding:.8rem 1.4rem;display:flex;align-items:center;gap:.7rem}
-.section-badge{background:var(--gold);color:var(--navy);font-family:'Merriweather',serif;font-size:.68rem;font-weight:700;padding:.12rem .55rem;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
-.section-header h2{font-family:'Merriweather',serif;font-size:.9rem;font-weight:700}
-.section-icon{font-size:1.1rem;margin-left:auto;opacity:.6}
-.section-body{padding:1.4rem;display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.6rem}
-.section-body.s1{grid-template-columns:1fr}
-.section-body.s3{grid-template-columns:1fr 1fr 1fr}
-.full{grid-column:1/-1}
+    .header-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      padding: 1.6rem 2rem;
+      max-width: 860px;
+      margin: 0 auto
+    }
 
-/* ── FIELD ── */
-.field{display:flex;flex-direction:column;gap:.28rem}
-.field label.lbl{font-size:.78rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:.35rem}
-.field label.lbl .ico{font-size:.95rem;opacity:.75}
-.req{color:var(--red);margin-left:1px}
-.field input[type=text],.field input[type=tel],.field input[type=date],.field select,.field textarea{padding:.52rem .82rem;border:1.5px solid var(--g200);border-radius:var(--radius);font-family:'Source Sans 3',sans-serif;font-size:.9rem;color:var(--g800);background:var(--cream);transition:border-color var(--transition),box-shadow var(--transition);outline:none;width:100%}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,146,42,.13);background:#fff}
-.field textarea{resize:vertical;min-height:78px}
-.field select{cursor:pointer}
-.hint{font-size:.73rem;color:var(--g400);font-style:italic}
+    .logo-circle {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
 
-/* ── RADIO / CHECKBOX ── */
-.opts{display:flex;flex-wrap:wrap;gap:.38rem .9rem;margin-top:.25rem}
-.opts.col{flex-direction:column;gap:.4rem}
-.opt{display:flex;align-items:flex-start;gap:.45rem;cursor:pointer;font-size:.88rem;color:var(--g800);line-height:1.4}
-.opt input[type=radio],.opt input[type=checkbox]{margin-top:3px;accent-color:var(--navy);flex-shrink:0;width:14px;height:14px;cursor:pointer}
-.opt .ico-opt{font-size:.95rem}
-.opt span{user-select:none}
+      background: transparent !important;
+      /* 🔥 clave */
+    }
 
-/* ── PILL RADIO GROUP ── */
-.pill-group{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.28rem}
-.pill-group label{position:relative;cursor:pointer}
-.pill-group input{position:absolute;opacity:0;pointer-events:none}
-.pill-group .pill{display:flex;align-items:center;gap:.35rem;padding:.38rem .85rem;border:1.5px solid var(--g200);border-radius:30px;font-size:.84rem;background:var(--cream);transition:all var(--transition);white-space:nowrap}
-.pill-group input:checked + .pill{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 2px 8px rgba(26,39,68,.2)}
-.pill-group .pill .p-ico{font-size:.9rem}
+    .header-text .inst {
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--gold-light);
+      margin-bottom: .15rem
+    }
 
-/* ── SCALE ── */
-.scale-wrap{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.28rem}
-.scale-lbl{font-size:.75rem;color:var(--g600);font-style:italic}
-.scale-dots{display:flex;gap:.5rem}
-.sdot{display:flex;flex-direction:column;align-items:center;gap:.15rem}
-.sdot input{accent-color:var(--navy);cursor:pointer;width:16px;height:16px}
-.sdot span{font-size:.72rem;color:var(--g600);font-weight:600}
+    .header-text h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: .2rem
+    }
 
-/* ── CONDITIONAL ── */
-.conditional{margin-top:.55rem;padding:.7rem;background:var(--g100);border-radius:var(--radius);border:1px dashed var(--g200);display:none}
-.conditional.on{display:block}
+    .header-text .sub {
+      font-size: .78rem;
+      color: rgba(255, 255, 255, .55);
+      font-style: italic
+    }
 
-/* ── OTHER INPUT ── */
-.other-wrap{display:none;margin-top:.3rem}
-.other-wrap input{max-width:260px;padding:.38rem .7rem;border:1.5px solid var(--g200);border-radius:var(--radius);font-size:.85rem;background:#fff;width:100%;outline:none}
-.other-wrap input:focus{border-color:var(--gold)}
+    .header-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 55%, transparent 100%)
+    }
 
-/* ── DECLARATION ── */
-.decl-box{background:var(--navy);color:#fff;border-radius:var(--radius);padding:1.1rem 1.3rem;display:flex;align-items:flex-start;gap:.9rem}
-.decl-box input[type=checkbox]{accent-color:var(--gold);width:18px;height:18px;flex-shrink:0;margin-top:3px;cursor:pointer}
-.decl-box p{font-size:.85rem;line-height:1.55}
-.decl-box p strong{color:var(--gold-light)}
+    /* ── COUNTER BADGE ── */
+    .stats-bar {
+      background: var(--navy-mid);
+      padding: .5rem 2rem;
+      display: flex;
+      gap: 1.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+      align-items: center;
+      font-size: .78rem;
+      color: rgba(255, 255, 255, .7)
+    }
 
-/* ── ACTIONS ── */
-.actions{max-width:860px;margin:0 auto 4rem;padding:0 1rem;display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center}
-.btn{padding:.72rem 1.7rem;border-radius:30px;font-family:'Source Sans 3',sans-serif;font-size:.87rem;font-weight:600;letter-spacing:.4px;cursor:pointer;border:none;transition:transform var(--transition),box-shadow var(--transition),opacity var(--transition);display:flex;align-items:center;gap:.45rem}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.18)}
-.btn:active{transform:translateY(0)}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.btn-primary{background:var(--navy);color:#fff}
-.btn-excel{background:var(--green);color:#fff}
-.btn-pdf{background:var(--red);color:#fff}
-.btn-admin{background:var(--blue);color:#fff}
-.btn-clear{background:var(--g200);color:var(--g800)}
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: .4rem
+    }
 
-/* ── TOAST ── */
-.toast{position:fixed;top:1.2rem;right:1.2rem;background:var(--navy);color:#fff;padding:.8rem 1.4rem;border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.22);font-size:.86rem;font-weight:600;z-index:999;transform:translateX(130%);transition:transform .3s ease;border-left:4px solid var(--gold);max-width:320px}
-.toast.on{transform:translateX(0)}
-.toast.ok{border-color:var(--green)}
-.toast.err{border-color:var(--red)}
+    .stat-item strong {
+      color: var(--gold-light);
+      font-size: .95rem
+    }
 
-/* ── SPINNER ── */
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+    /* ── NOTICE ── */
+    .notice {
+      background: rgba(26, 39, 68, .055);
+      border-left: 3px solid var(--gold);
+      padding: .65rem 1.1rem;
+      font-size: .8rem;
+      color: var(--g600);
+      max-width: 860px;
+      margin: 1.1rem auto 0;
+      border-radius: 0 var(--radius) var(--radius) 0
+    }
 
-/* ── FOOTER ── */
-.page-footer{text-align:center;font-size:.73rem;color:var(--g400);padding:1.2rem;border-top:1px solid var(--g200)}
+    .notice strong {
+      color: var(--navy)
+    }
 
-/* ── RESPONSIVE ── */
-@media(max-width:640px){
-  .header-inner{padding:1rem;gap:.9rem}
-  .header-text h1{font-size:1rem}
-  .section-body{grid-template-columns:1fr}
-  .section-body.s3{grid-template-columns:1fr 1fr}
-  .actions{flex-direction:column;align-items:stretch}
-  .btn{justify-content:center}
-}
+    /* ── WRAPPER ── */
+    .form-wrapper {
+      max-width: 860px;
+      margin: 1.4rem auto 3rem;
+      padding: 0 1rem
+    }
 
-.logo-circle {
-  width: 70px;
-  height: 70px;
-  min-width: 70px; /* evita que se encoja */
-  border-radius: 50%;
-  overflow: hidden;
-  background: #fff; /* opcional si tu logo tiene transparencia */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    /* ── SECTION ── */
+    .form-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      transition: box-shadow var(--transition)
+    }
 
-/* Imagen adaptable */
-.logo-circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* 🔥 llena el círculo */
-}
-</style>
+    .form-section:hover {
+      box-shadow: 0 4px 22px rgba(26, 39, 68, .13)
+    }
+
+    .section-header {
+      background: var(--navy-mid);
+      color: #fff;
+      padding: .8rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: .7rem
+    }
+
+    .section-badge {
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Merriweather', serif;
+      font-size: .68rem;
+      font-weight: 700;
+      padding: .12rem .55rem;
+      border-radius: 20px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      white-space: nowrap
+    }
+
+    .section-header h2 {
+      font-family: 'Merriweather', serif;
+      font-size: .9rem;
+      font-weight: 700
+    }
+
+    .section-icon {
+      font-size: 1.1rem;
+      margin-left: auto;
+      opacity: .6
+    }
+
+    .section-body {
+      padding: 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem 1.6rem
+    }
+
+    .section-body.s1 {
+      grid-template-columns: 1fr
+    }
+
+    .section-body.s3 {
+      grid-template-columns: 1fr 1fr 1fr
+    }
+
+    .full {
+      grid-column: 1/-1
+    }
+
+    /* ── FIELD ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .28rem
+    }
+
+    .field label.lbl {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      display: flex;
+      align-items: center;
+      gap: .35rem
+    }
+
+    .field label.lbl .ico {
+      font-size: .95rem;
+      opacity: .75
+    }
+
+    .req {
+      color: var(--red);
+      margin-left: 1px
+    }
+
+    .field input[type=text],
+    .field input[type=tel],
+    .field input[type=date],
+    .field select,
+    .field textarea {
+      padding: .52rem .82rem;
+      border: 1.5px solid var(--g200);
+      border-radius: var(--radius);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .9rem;
+      color: var(--g800);
+      background: var(--cream);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+      width: 100%
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200, 146, 42, .13);
+      background: #fff
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 78px
+    }
+
+    .field select {
+      cursor: pointer
+    }
+
+    .hint {
+      font-size: .73rem;
+      color: var(--g400);
+      font-style: italic
+    }
+
+    /* ── RADIO / CHECKBOX ── */
+    .opts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .38rem .9rem;
+      margin-top: .25rem
+    }
+
+    .opts.col {
+      flex-direction: column;
+      gap: .4rem
+    }
+
+    .opt {
+      display: flex;
+      align-items: flex-start;
+      gap: .45rem;
+      cursor: pointer;
+      font-size: .88rem;
+      color: var(--g800);
+      line-height: 1.4
+    }
+
+    .opt input[type=radio],
+    .opt input[type=checkbox] {
+      margin-top: 3px;
+      accent-color: var(--navy);
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      cursor: pointer
+    }
+
+    .opt .ico-opt {
+      font-size: .95rem
+    }
+
+    .opt span {
+      user-select: none
+    }
+
+    /* ── PILL RADIO GROUP ── */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-top: .28rem
+    }
+
+    .pill-group label {
+      position: relative;
+      cursor: pointer
+    }
+
+    .pill-group input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .pill-group .pill {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .38rem .85rem;
+      border: 1.5px solid var(--g200);
+      border-radius: 30px;
+      font-size: .84rem;
+      background: var(--cream);
+      transition: all var(--transition);
+      white-space: nowrap
+    }
+
+    .pill-group input:checked+.pill {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(26, 39, 68, .2)
+    }
+
+    .pill-group .pill .p-ico {
+      font-size: .9rem
+    }
+
+    /* ── SCALE ── */
+    .scale-wrap {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-top: .28rem
+    }
+
+    .scale-lbl {
+      font-size: .75rem;
+      color: var(--g600);
+      font-style: italic
+    }
+
+    .scale-dots {
+      display: flex;
+      gap: .5rem
+    }
+
+    .sdot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .15rem
+    }
+
+    .sdot input {
+      accent-color: var(--navy);
+      cursor: pointer;
+      width: 16px;
+      height: 16px
+    }
+
+    .sdot span {
+      font-size: .72rem;
+      color: var(--g600);
+      font-weight: 600
+    }
+
+    /* ── CONDITIONAL ── */
+    .conditional {
+      margin-top: .55rem;
+      padding: .7rem;
+      background: var(--g100);
+      border-radius: var(--radius);
+      border: 1px dashed var(--g200);
+      display: none
+    }
+
+    .conditional.on {
+      display: block
+    }
+
+    /* ── OTHER INPUT ── */
+    .other-wrap {
+      display: none;
+      margin-top: .3rem
+    }
+
+    .other-wrap input {
+      max-width: 260px;
+      padding: .38rem .7rem;
+      border: 1.5px solid var(--g200);
+      border-radius: var(--radius);
+      font-size: .85rem;
+      background: #fff;
+      width: 100%;
+      outline: none
+    }
+
+    .other-wrap input:focus {
+      border-color: var(--gold)
+    }
+
+    /* ── DECLARATION ── */
+    .decl-box {
+      background: var(--navy);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 1.1rem 1.3rem;
+      display: flex;
+      align-items: flex-start;
+      gap: .9rem
+    }
+
+    .decl-box input[type=checkbox] {
+      accent-color: var(--gold);
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      cursor: pointer
+    }
+
+    .decl-box p {
+      font-size: .85rem;
+      line-height: 1.55
+    }
+
+    .decl-box p strong {
+      color: var(--gold-light)
+    }
+
+    /* ── ACTIONS ── */
+    .actions {
+      max-width: 860px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+      display: flex;
+      gap: .85rem;
+      flex-wrap: wrap;
+      justify-content: center
+    }
+
+    .btn {
+      padding: .72rem 1.7rem;
+      border-radius: 30px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .87rem;
+      font-weight: 600;
+      letter-spacing: .4px;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+      display: flex;
+      align-items: center;
+      gap: .45rem
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .18)
+    }
+
+    .btn:active {
+      transform: translateY(0)
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: #fff
+    }
+
+    .btn-excel {
+      background: var(--green);
+      color: #fff
+    }
+
+    .btn-pdf {
+      background: var(--red);
+      color: #fff
+    }
+
+    .btn-admin {
+      background: var(--blue);
+      color: #fff
+    }
+
+    .btn-clear {
+      background: var(--g200);
+      color: var(--g800)
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: var(--navy);
+      color: #fff;
+      padding: .8rem 1.4rem;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
+      font-size: .86rem;
+      font-weight: 600;
+      z-index: 999;
+      transform: translateX(130%);
+      transition: transform .3s ease;
+      border-left: 4px solid var(--gold);
+      max-width: 320px
+    }
+
+    .toast.on {
+      transform: translateX(0)
+    }
+
+    .toast.ok {
+      border-color: var(--green)
+    }
+
+    .toast.err {
+      border-color: var(--red)
+    }
+
+    /* ── SPINNER ── */
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, .35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      text-align: center;
+      font-size: .73rem;
+      color: var(--g400);
+      padding: 1.2rem;
+      border-top: 1px solid var(--g200)
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:640px) {
+      .header-inner {
+        padding: 1rem;
+        gap: .9rem
+      }
+
+      .header-text h1 {
+        font-size: 1rem
+      }
+
+      .section-body {
+        grid-template-columns: 1fr
+      }
+
+      .section-body.s3 {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch
+      }
+
+      .btn {
+        justify-content: center
+      }
+    }
+
+    .logo-circle {
+      width: 70px;
+      height: 70px;
+      min-width: 70px;
+      /* evita que se encoja */
+      border-radius: 50%;
+      overflow: hidden;
+      background: #fff;
+      /* opcional si tu logo tiene transparencia */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Imagen adaptable */
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* 🔥 llena el círculo */
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header class="page-header">
-  <div class="header-inner">
-    <div class="logo-circle">
-  <img src="img/IESTP_CABANA.png" alt="Logo IESTP">
-  </div>
-    <div class="header-text">
-      <div class="inst">Instituto de Educación Superior Tecnológico Público - Cabana</div>
-      <h1>Ficha Diagnóstica del Estudiante</h1>
-      <div class="sub">Documento académico confidencial · Área de Bienestar Estudiantil</div>
+  <!-- HEADER -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="logo-circle">
+        <img src="img/IESTP_CABANA.png" alt="Logo IESTP">
+      </div>
+      <div class="header-text">
+        <div class="inst">Instituto de Educación Superior Tecnológico Público - Cabana</div>
+        <h1>Ficha Diagnóstica del Estudiante</h1>
+        <div class="sub">Documento académico confidencial · Área de Bienestar Estudiantil</div>
+      </div>
     </div>
-  </div>
-  <div class="stats-bar">
-    <div class="stat-item">📋 Fichas registradas hoy: <strong id="statHoy">…</strong></div>
-    <div class="stat-item">📊 Total en base de datos: <strong id="statTotal">…</strong></div>
-  </div>
-  <div class="header-bar"></div>
-</header>
-
-<div class="notice">
-  <strong>🔒 Confidencialidad:</strong> Tu información es usada únicamente para fines de bienestar estudiantil y es tratada con estricta confidencialidad por el IESTP Cabana.
-</div>
-
-<form id="fichaForm" class="form-wrapper" novalidate>
-
-  <!-- ══ S1 ══ -->
-  <div class="form-section">
-    <div class="section-header">
-      <span class="section-badge">Sección 1</span>
-      <h2>Datos Generales y Académicos</h2>
-      <span class="section-icon">🎓</span>
+    <div class="stats-bar">
+      <div class="stat-item">📋 Fichas registradas hoy: <strong id="statHoy">…</strong></div>
+      <div class="stat-item">📊 Total en base de datos: <strong id="statTotal">…</strong></div>
     </div>
-    <div class="section-body">
+    <div class="header-bar"></div>
+  </header>
 
-      <div class="field full">
-        <label class="lbl"><span class="ico">👤</span> Apellidos y Nombres Completos <span class="req">*</span></label>
-        <input type="text" name="nombres" placeholder="Ej.: Quispe Mamani, Juan Carlos" required>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">🪪</span> DNI <span class="req">*</span></label>
-        <input type="text" name="dni" placeholder="12345678" maxlength="8" required>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">📱</span> Celular / Teléfono <span class="req">*</span></label>
-        <input type="tel" name="celular" placeholder="987 654 321" maxlength="12" required>
-        <span class="hint">Solo números, sin espacios ni guiones</span>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">🎂</span> Fecha de Nacimiento <span class="req">*</span></label>
-        <input type="date" name="fechaNacimiento" required>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">⚧</span> Sexo <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="sexo" value="Masculino" required><span class="pill"><span class="p-ico">👨</span> Masculino</span></label>
-          <label><input type="radio" name="sexo" value="Femenino"><span class="pill"><span class="p-ico">👩</span> Femenino</span></label>
-          <label><input type="radio" name="sexo" value="Otro"><span class="pill"><span class="p-ico">🧑</span> Otro</span></label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">💍</span> Estado Civil <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="estadoCivil" value="Soltero/a" required><span class="pill">🧍 Soltero/a</span></label>
-          <label><input type="radio" name="estadoCivil" value="Casado/a"><span class="pill">💑 Casado/a</span></label>
-          <label><input type="radio" name="estadoCivil" value="Conviviente"><span class="pill">🏠 Conviviente</span></label>
-          <label><input type="radio" name="estadoCivil" value="Divorciado/a"><span class="pill">📄 Divorciado/a</span></label>
-          <label><input type="radio" name="estadoCivil" value="Viudo/a"><span class="pill">🕊️ Viudo/a</span></label>
-        </div>
-      </div>
-
-      <div class="field full">
-        <label class="lbl"><span class="ico">🏫</span> Programa de Estudios <span class="req">*</span></label>
-        <select name="programa" required>
-          <option value="">— Seleccione su programa —</option>
-          <option value="Arquitectura de Plataformas y Servicios de TI">🖥️ Arquitectura de Plataformas y Servicios de Tecnologías de Información</option>
-          <option value="Industrias de Alimentos y Bebidas">🍽️ Industrias de Alimentos y Bebidas</option>
-          <option value="Computación e Informática">💻 Computación e Informática</option>
-          <option value="Industrias Alimentarias">🌾 Industrias Alimentarias</option>
-        </select>
-      </div>
-
-     <div class="field">
-        <label class="lbl"><span class="ico">📋</span> Condición (Estudiante) <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="condicion" value="Regular" required><span class="pill">✅ Regular</span></label>
-          <label><input type="radio" name="condicion" value="Irregular"><span class="pill">⚠️ Irregular</span></label>
-          <label><input type="radio" name="condicion" value="Traslado"><span class="pill">🔄 Traslado</span></label>
-          <label><input type="radio" name="condicion" value="Reingresante"><span class="pill">↩️ Reingresante</span></label>
-          <label><input type="radio" name="condicion" value="Egresado"><span class="pill">🎓 Egresado</span></label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">📚</span> Ciclo Académico <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="ciclo" value="I" required><span class="pill">I</span></label>
-          <label><input type="radio" name="ciclo" value="II"><span class="pill">II</span></label>
-          <label><input type="radio" name="ciclo" value="III"><span class="pill">III</span></label>
-          <label><input type="radio" name="ciclo" value="IV"><span class="pill">IV</span></label>
-          <label><input type="radio" name="ciclo" value="V"><span class="pill">V</span></label>
-          <label><input type="radio" name="ciclo" value="VI"><span class="pill">VI</span></label>
-          <label><input type="radio" name="ciclo" value="Finalizado"><span class="pill">✅ Finalizado</span></label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">🕐</span> Turno <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="turno" value="Mañana" required><span class="pill">🌅 Mañana</span></label>
-          <label><input type="radio" name="turno" value="Tarde"><span class="pill">☀️ Tarde</span></label>
-          <label><input type="radio" name="turno" value="Noche"><span class="pill">🌙 Noche</span></label>
-        </div>
-      </div>
-
-    </div>
+  <div class="notice">
+    <strong>🔒 Confidencialidad:</strong> Tu información es usada únicamente para fines de bienestar estudiantil y es
+    tratada con estricta confidencialidad por el IESTP Cabana.
   </div>
 
-  <!-- ══ S2 ══ -->
-  <div class="form-section">
-    <div class="section-header">
-      <span class="section-badge">Sección 2</span>
-      <h2>Ubicación y Situación Económica</h2>
-      <span class="section-icon">📍</span>
+  <form id="fichaForm" class="form-wrapper" novalidate>
+
+    <!-- ══ S1 ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <span class="section-badge">Sección 1</span>
+        <h2>Datos Generales y Académicos</h2>
+        <span class="section-icon">🎓</span>
+      </div>
+      <div class="section-body">
+
+        <div class="field full">
+          <label class="lbl"><span class="ico">👤</span> Apellidos y Nombres Completos <span
+              class="req">*</span></label>
+          <input type="text" name="nombres" placeholder="Ej.: Quispe Mamani, Juan Carlos" required>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">🪪</span> DNI <span class="req">*</span></label>
+          <input type="text" name="dni" placeholder="12345678" maxlength="8" required>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">📱</span> Celular / Teléfono <span class="req">*</span></label>
+          <input type="tel" name="celular" placeholder="987 654 321" maxlength="12" required>
+          <span class="hint">Solo números, sin espacios ni guiones</span>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">🎂</span> Fecha de Nacimiento <span class="req">*</span></label>
+          <input type="date" name="fechaNacimiento" required>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">⚧</span> Sexo <span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="sexo" value="Masculino" required><span class="pill"><span
+                  class="p-ico">👨</span> Masculino</span></label>
+            <label><input type="radio" name="sexo" value="Femenino"><span class="pill"><span class="p-ico">👩</span>
+                Femenino</span></label>
+            <label><input type="radio" name="sexo" value="Otro"><span class="pill"><span class="p-ico">🧑</span>
+                Otro</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">💍</span> Estado Civil <span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="estadoCivil" value="Soltero/a" required><span class="pill">🧍
+                Soltero/a</span></label>
+            <label><input type="radio" name="estadoCivil" value="Casado/a"><span class="pill">💑 Casado/a</span></label>
+            <label><input type="radio" name="estadoCivil" value="Conviviente"><span class="pill">🏠
+                Conviviente</span></label>
+            <label><input type="radio" name="estadoCivil" value="Divorciado/a"><span class="pill">📄
+                Divorciado/a</span></label>
+            <label><input type="radio" name="estadoCivil" value="Viudo/a"><span class="pill">🕊️ Viudo/a</span></label>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label class="lbl"><span class="ico">🏫</span> Programa de Estudios <span class="req">*</span></label>
+          <select name="programa" required>
+            <option value="">— Seleccione su programa —</option>
+            <option value="Arquitectura de Plataformas y Servicios de TI">🖥️ Arquitectura de Plataformas y Servicios de
+              Tecnologías de Información</option>
+            <option value="Industrias de Alimentos y Bebidas">🍽️ Industrias de Alimentos y Bebidas</option>
+            <option value="Computación e Informática">💻 Computación e Informática</option>
+            <option value="Industrias Alimentarias">🌾 Industrias Alimentarias</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">📋</span> Condición (Estudiante) <span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="condicion" value="Regular" required><span class="pill">✅
+                Regular</span></label>
+            <label><input type="radio" name="condicion" value="Irregular"><span class="pill">⚠️ Irregular</span></label>
+            <label><input type="radio" name="condicion" value="Traslado"><span class="pill">🔄 Traslado</span></label>
+            <label><input type="radio" name="condicion" value="Reingresante"><span class="pill">↩️
+                Reingresante</span></label>
+            <label><input type="radio" name="condicion" value="Egresado"><span class="pill">🎓 Egresado</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">📚</span> Ciclo Académico <span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="ciclo" value="I" required><span class="pill">I</span></label>
+            <label><input type="radio" name="ciclo" value="II"><span class="pill">II</span></label>
+            <label><input type="radio" name="ciclo" value="III"><span class="pill">III</span></label>
+            <label><input type="radio" name="ciclo" value="IV"><span class="pill">IV</span></label>
+            <label><input type="radio" name="ciclo" value="V"><span class="pill">V</span></label>
+            <label><input type="radio" name="ciclo" value="VI"><span class="pill">VI</span></label>
+            <label><input type="radio" name="ciclo" value="Finalizado"><span class="pill">✅ Finalizado</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">🕐</span> Turno <span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="turno" value="Mañana" required><span class="pill">🌅 Mañana</span></label>
+            <label><input type="radio" name="turno" value="Tarde"><span class="pill">☀️ Tarde</span></label>
+            <label><input type="radio" name="turno" value="Noche"><span class="pill">🌙 Noche</span></label>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="section-body">
 
-      <div class="field full">
-        <label class="lbl"><span class="ico">🏠</span> Dirección Actual <span class="req">*</span></label>
-        <textarea name="direccion" placeholder="Calle, número, urbanización, referencia…" required></textarea>
+    <!-- ══ S2 ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <span class="section-badge">Sección 2</span>
+        <h2>Ubicación y Situación Económica</h2>
+        <span class="section-icon">📍</span>
       </div>
+      <div class="section-body">
 
-      <div class="field">
-        <label class="lbl"><span class="ico">🗺️</span> Distrito <span class="req">*</span></label>
-        <input type="text" name="distrito" placeholder="Ej.: Cabana, San Marcos, Huari…" required>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">💰</span> Ingreso Familiar Mensual <span class="req">*</span></label>
-        <div class="opts col" style="margin-top:.3rem">
-          <label class="opt"><input type="radio" name="ingresoFamiliar" value="Menos de S/ 500" required><span class="ico-opt">📉</span><span>Menos de S/ 500</span></label>
-          <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 500 - S/ 1,025"><span class="ico-opt">💵</span><span>S/ 500 – S/ 1,025</span></label>
-          <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 1,026 - S/ 1,500"><span class="ico-opt">💵</span><span>S/ 1,026 – S/ 1,500</span></label>
-          <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 1,501 - S/ 2,000"><span class="ico-opt">💰</span><span>S/ 1,501 – S/ 2,000</span></label>
-          <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 2,001 - S/ 3,000"><span class="ico-opt">💰</span><span>S/ 2,001 – S/ 3,000</span></label>
-          <label class="opt"><input type="radio" name="ingresoFamiliar" value="Más de S/ 3,000"><span class="ico-opt">📈</span><span>Más de S/ 3,000</span></label>
+        <div class="field full">
+          <label class="lbl"><span class="ico">🏠</span> Dirección Actual <span class="req">*</span></label>
+          <textarea name="direccion" placeholder="Calle, número, urbanización, referencia…" required></textarea>
         </div>
-      </div>
 
-      <div class="field">
-        <label class="lbl"><span class="ico">💼</span> ¿Trabaja actualmente? <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="trabaja" value="Sí" required onchange="show('trabajoDetalle',true)"><span class="pill">✅ Sí</span></label>
-          <label><input type="radio" name="trabaja" value="No" onchange="show('trabajoDetalle',false)"><span class="pill">❌ No</span></label>
+        <div class="field">
+          <label class="lbl"><span class="ico">🗺️</span> Distrito <span class="req">*</span></label>
+          <input type="text" name="distrito" placeholder="Ej.: Cabana, San Marcos, Huari…" required>
         </div>
-        <div class="conditional" id="trabajoDetalle">
-          <label class="lbl" style="margin-bottom:.3rem">🔧 Indique su ocupación:</label>
-          <input type="text" name="ocupacion" placeholder="Ej.: Vendedor, Agricultor, Técnico…">
+        <div class="field">
+          <label class="lbl"><span class="ico">🏞️</span> Provincia <span class="req">*</span></label>
+          <input type="text" name="provincia" placeholder="Ej.: Huari, Huaraz…" required>
         </div>
-      </div>
 
+        <div class="field">
+          <label class="lbl"><span class="ico">🌎</span> Departamento <span class="req">*</span></label>
+          <input type="text" name="departamento" placeholder="Ej.: Áncash…" required>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">💰</span> Ingreso Familiar Mensual <span class="req">*</span></label>
+          <div class="opts col" style="margin-top:.3rem">
+            <label class="opt"><input type="radio" name="ingresoFamiliar" value="Menos de S/ 500" required><span
+                class="ico-opt">📉</span><span>Menos de S/ 500</span></label>
+            <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 500 - S/ 1,025"><span
+                class="ico-opt">💵</span><span>S/ 500 – S/ 1,025</span></label>
+            <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 1,026 - S/ 1,500"><span
+                class="ico-opt">💵</span><span>S/ 1,026 – S/ 1,500</span></label>
+            <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 1,501 - S/ 2,000"><span
+                class="ico-opt">💰</span><span>S/ 1,501 – S/ 2,000</span></label>
+            <label class="opt"><input type="radio" name="ingresoFamiliar" value="S/ 2,001 - S/ 3,000"><span
+                class="ico-opt">💰</span><span>S/ 2,001 – S/ 3,000</span></label>
+            <label class="opt"><input type="radio" name="ingresoFamiliar" value="Más de S/ 3,000"><span
+                class="ico-opt">📈</span><span>Más de S/ 3,000</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">💼</span> ¿Trabaja actualmente? <span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="trabaja" value="Sí" required onchange="show('trabajoDetalle',true)"><span
+                class="pill">✅ Sí</span></label>
+            <label><input type="radio" name="trabaja" value="No" onchange="show('trabajoDetalle',false)"><span
+                class="pill">❌ No</span></label>
+          </div>
+          <div class="conditional" id="trabajoDetalle">
+            <label class="lbl" style="margin-bottom:.3rem">🔧 Indique su ocupación:</label>
+            <input type="text" name="ocupacion" placeholder="Ej.: Vendedor, Agricultor, Técnico…">
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
 
-  <!-- ══ S3 ══ -->
-  <div class="form-section">
-    <div class="section-header">
-      <span class="section-badge">Sección 3</span>
-      <h2>Apoyo y Necesidades</h2>
-      <span class="section-icon">🤝</span>
-    </div>
-    <div class="section-body">
+    <!-- ══ S3 ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <span class="section-badge">Sección 3</span>
+        <h2>Apoyo y Necesidades</h2>
+        <span class="section-icon">🤝</span>
+      </div>
+      <div class="section-body">
 
-      <div class="field">
-        <label class="lbl"><span class="ico">🆘</span> ¿Recibes algún tipo de apoyo? <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="recibeApoyo" value="Sí" required onchange="show('tipoApoyoBlock',true)"><span class="pill">✅ Sí</span></label>
-          <label><input type="radio" name="recibeApoyo" value="No" onchange="show('tipoApoyoBlock',false)"><span class="pill">❌ No</span></label>
+        <div class="field">
+          <label class="lbl"><span class="ico">🆘</span> ¿Recibes algún tipo de apoyo? <span
+              class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="recibeApoyo" value="Sí" required
+                onchange="show('tipoApoyoBlock',true)"><span class="pill">✅ Sí</span></label>
+            <label><input type="radio" name="recibeApoyo" value="No" onchange="show('tipoApoyoBlock',false)"><span
+                class="pill">❌ No</span></label>
+          </div>
+          <div class="conditional" id="tipoApoyoBlock">
+            <label class="lbl" style="margin-bottom:.3rem">Tipo de apoyo (puede marcar varios):</label>
+            <div class="opts col">
+              <label class="opt"><input type="checkbox" name="tipoApoyo" value="Apoyo económico familiar"><span
+                  class="ico-opt">👨‍👩‍👧</span><span>Apoyo económico familiar</span></label>
+              <label class="opt"><input type="checkbox" name="tipoApoyo" value="Beca de estudios (Pronabec)"><span
+                  class="ico-opt">🎓</span><span>Beca de estudios (Pronabec, etc.)</span></label>
+              <label class="opt"><input type="checkbox" name="tipoApoyo"
+                  value="Programa social (Juntos, Pensión 65)"><span class="ico-opt">🏛️</span><span>Programa social
+                  (Juntos, Pensión 65…)</span></label>
+              <label class="opt"><input type="checkbox" name="tipoApoyo" value="Almuerzo/Comedor estudiantil"><span
+                  class="ico-opt">🍱</span><span>Almuerzo / Comedor estudiantil</span></label>
+              <label class="opt">
+                <input type="checkbox" name="tipoApoyo" value="Otro" onchange="toggleOther('apoyoOtroInput',this)">
+                <span class="ico-opt">➕</span><span>Otro:</span>
+                <div class="other-wrap" id="apoyoOtroInput"><input type="text" name="tipoApoyoOtro"
+                    placeholder="Especifique…"></div>
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="conditional" id="tipoApoyoBlock">
-          <label class="lbl" style="margin-bottom:.3rem">Tipo de apoyo (puede marcar varios):</label>
-          <div class="opts col">
-            <label class="opt"><input type="checkbox" name="tipoApoyo" value="Apoyo económico familiar"><span class="ico-opt">👨‍👩‍👧</span><span>Apoyo económico familiar</span></label>
-            <label class="opt"><input type="checkbox" name="tipoApoyo" value="Beca de estudios (Pronabec)"><span class="ico-opt">🎓</span><span>Beca de estudios (Pronabec, etc.)</span></label>
-            <label class="opt"><input type="checkbox" name="tipoApoyo" value="Programa social (Juntos, Pensión 65)"><span class="ico-opt">🏛️</span><span>Programa social (Juntos, Pensión 65…)</span></label>
-            <label class="opt"><input type="checkbox" name="tipoApoyo" value="Almuerzo/Comedor estudiantil"><span class="ico-opt">🍱</span><span>Almuerzo / Comedor estudiantil</span></label>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">📌</span> Principales necesidades actuales (puede marcar varias):</label>
+          <div class="opts col" style="margin-top:.3rem">
+            <label class="opt"><input type="checkbox" name="necesidades" value="Económicas"><span
+                class="ico-opt">💸</span><span>Económicas</span></label>
+            <label class="opt"><input type="checkbox" name="necesidades" value="De salud física"><span
+                class="ico-opt">🏥</span><span>De salud física</span></label>
+            <label class="opt"><input type="checkbox" name="necesidades" value="De salud emocional/psicológica"><span
+                class="ico-opt">🧠</span><span>De salud emocional / psicológica</span></label>
+            <label class="opt"><input type="checkbox" name="necesidades" value="De alimentación"><span
+                class="ico-opt">🍽️</span><span>De alimentación</span></label>
+            <label class="opt"><input type="checkbox" name="necesidades" value="De materiales de estudio"><span
+                class="ico-opt">📚</span><span>De materiales de estudio</span></label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ S4 ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <span class="section-badge">Sección 4</span>
+        <h2>Salud y Bienestar Psicológico</h2>
+        <span class="section-icon">❤️‍🩹</span>
+      </div>
+      <div class="section-body">
+
+        <div class="field">
+          <label class="lbl"><span class="ico">🏥</span> Seguro de Salud <span class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="seguroSalud" value="SIS" required><span class="pill">🟦 SIS</span></label>
+            <label><input type="radio" name="seguroSalud" value="EsSalud"><span class="pill">🟩 EsSalud</span></label>
+            <label><input type="radio" name="seguroSalud" value="Particular"><span class="pill">💳
+                Particular</span></label>
+            <label><input type="radio" name="seguroSalud" value="Ninguno"><span class="pill">❌ Ninguno</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">😊</span> Situación Emocional Actual <span class="req">*</span></label>
+          <div class="scale-wrap">
+            <span class="scale-lbl">😢 Muy mal</span>
+            <div class="scale-dots">
+              <div class="sdot"><input type="radio" name="estadoEmocional" value="1" required><span>1</span></div>
+              <div class="sdot"><input type="radio" name="estadoEmocional" value="2"><span>2</span></div>
+              <div class="sdot"><input type="radio" name="estadoEmocional" value="3"><span>3</span></div>
+              <div class="sdot"><input type="radio" name="estadoEmocional" value="4"><span>4</span></div>
+              <div class="sdot"><input type="radio" name="estadoEmocional" value="5"><span>5</span></div>
+            </div>
+            <span class="scale-lbl">😄 Muy bien</span>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label class="lbl"><span class="ico">🧘</span> ¿Requiere consejería psicológica? <span
+              class="req">*</span></label>
+          <div class="pill-group">
+            <label><input type="radio" name="consejeria" value="Sí" required><span class="pill">✅ Sí, la
+                necesito</span></label>
+            <label><input type="radio" name="consejeria" value="No"><span class="pill">❌ No por ahora</span></label>
+          </div>
+        </div>
+
+        <!-- DISCAPACIDAD -->
+        <div class="field full">
+          <label class="lbl">
+            <span class="ico">♿</span> ¿Presenta alguna discapacidad?
+          </label>
+
+          <div class="pill-group">
+            <label>
+              <input type="radio" name="discapacidad" value="Sí" onchange="toggleBlock('discDetalle', true)">
+              <span class="pill">✅ Sí</span>
+            </label>
+            <label>
+              <input type="radio" name="discapacidad" value="No" onchange="toggleBlock('discDetalle', false)">
+              <span class="pill">❌ No</span>
+            </label>
+          </div>
+
+          <div class="conditional" id="discDetalle">
+            <label class="lbl" style="margin-bottom:.3rem">Tipo de discapacidad:</label>
+
+            <div class="opts col">
+              <label class="opt"><input type="checkbox" name="tipoDiscapacidad" value="Visual"><span
+                  class="ico-opt">👁️</span><span>Visual</span></label>
+              <label class="opt"><input type="checkbox" name="tipoDiscapacidad" value="Auditiva"><span
+                  class="ico-opt">👂</span><span>Auditiva</span></label>
+              <label class="opt"><input type="checkbox" name="tipoDiscapacidad" value="Física"><span
+                  class="ico-opt">🦽</span><span>Física</span></label>
+              <label class="opt"><input type="checkbox" name="tipoDiscapacidad" value="Intelectual"><span
+                  class="ico-opt">🧠</span><span>Intelectual</span></label>
+
+              <label class="opt">
+                <input type="checkbox" name="tipoDiscapacidad" value="Otro"
+                  onchange="toggleOther('discOtroInput',this)">
+                <span class="ico-opt">➕</span><span>Otro:</span>
+                <div class="other-wrap" id="discOtroInput">
+                  <input type="text" name="tipoDiscapacidadOtro" placeholder="Especifique…">
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENFERMEDAD -->
+        <div class="field full">
+          <label class="lbl">
+            <span class="ico">🩺</span> ¿Padece alguna enfermedad?
+          </label>
+
+          <div class="pill-group">
+            <label>
+              <input type="radio" name="enfermedad" value="Sí" onchange="toggleBlock('enfDetalle', true)">
+              <span class="pill">✅ Sí</span>
+            </label>
+            <label>
+              <input type="radio" name="enfermedad" value="No" onchange="toggleBlock('enfDetalle', false)">
+              <span class="pill">❌ No</span>
+            </label>
+          </div>
+
+          <div class="conditional" id="enfDetalle">
+
+            <div class="field" style="margin-bottom:.5rem">
+              <label class="lbl">🧾 ¿Qué enfermedad padece?</label>
+              <input type="text" name="detalleEnfermedad" placeholder="Ej.: Asma, Diabetes, Gastritis, etc.">
+            </div>
+
+            <div class="field">
+              <label class="lbl">💊 ¿Se encuentra en tratamiento?</label>
+              <div class="pill-group">
+                <label><input type="radio" name="tratamiento" value="Sí"><span class="pill">💊 Sí</span></label>
+                <label><input type="radio" name="tratamiento" value="No"><span class="pill">❌ No</span></label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ S5 ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <span class="section-badge">Sección 5</span>
+        <h2>Expectativas y Metas</h2>
+        <span class="section-icon">🚀</span>
+      </div>
+      <div class="section-body s1">
+
+        <div class="field">
+          <label class="lbl"><span class="ico">💬</span> ¿Por qué elegiste esta carrera? <span
+              class="req">*</span></label>
+          <textarea name="motivacion" placeholder="Describe brevemente tus motivaciones…" required></textarea>
+        </div>
+
+        <div class="field">
+          <label class="lbl"><span class="ico">🎯</span> Principal meta académica actualmente: <span
+              class="req">*</span></label>
+          <div class="opts col" style="margin-top:.3rem">
+            <label class="opt"><input type="radio" name="metaAcademica" value="Aprobar todos mis cursos" required><span
+                class="ico-opt">✅</span><span>Aprobar todos mis cursos</span></label>
+            <label class="opt"><input type="radio" name="metaAcademica" value="Obtener buenas calificaciones"><span
+                class="ico-opt">⭐</span><span>Obtener buenas calificaciones</span></label>
+            <label class="opt"><input type="radio" name="metaAcademica" value="Ser uno de los mejores estudiantes"><span
+                class="ico-opt">🏆</span><span>Ser uno de los mejores estudiantes</span></label>
+            <label class="opt"><input type="radio" name="metaAcademica"
+                value="Terminar mi carrera técnica/profesional"><span class="ico-opt">🎓</span><span>Terminar mi carrera
+                técnica / profesional</span></label>
+            <label class="opt"><input type="radio" name="metaAcademica" value="Continuar estudios superiores"><span
+                class="ico-opt">🏛️</span><span>Continuar estudios superiores (universidad,
+                especialización)</span></label>
+            <label class="opt"><input type="radio" name="metaAcademica"
+                value="Aprender habilidades prácticas para el trabajo"><span class="ico-opt">🔧</span><span>Aprender
+                habilidades prácticas para el trabajo</span></label>
             <label class="opt">
-              <input type="checkbox" name="tipoApoyo" value="Otro" onchange="toggleOther('apoyoOtroInput',this)">
+              <input type="radio" name="metaAcademica" value="Otro" onchange="toggleOther('metaAcadOtroInput',this)">
               <span class="ico-opt">➕</span><span>Otro:</span>
-              <div class="other-wrap" id="apoyoOtroInput"><input type="text" name="tipoApoyoOtro" placeholder="Especifique…"></div>
+              <div class="other-wrap" id="metaAcadOtroInput"><input type="text" name="metaAcademicaOtro"
+                  placeholder="Especifique…"></div>
             </label>
           </div>
         </div>
-      </div>
 
-      <div class="field">
-        <label class="lbl"><span class="ico">📌</span> Principales necesidades actuales (puede marcar varias):</label>
-        <div class="opts col" style="margin-top:.3rem">
-          <label class="opt"><input type="checkbox" name="necesidades" value="Económicas"><span class="ico-opt">💸</span><span>Económicas</span></label>
-          <label class="opt"><input type="checkbox" name="necesidades" value="De salud física"><span class="ico-opt">🏥</span><span>De salud física</span></label>
-          <label class="opt"><input type="checkbox" name="necesidades" value="De salud emocional/psicológica"><span class="ico-opt">🧠</span><span>De salud emocional / psicológica</span></label>
-          <label class="opt"><input type="checkbox" name="necesidades" value="De alimentación"><span class="ico-opt">🍽️</span><span>De alimentación</span></label>
-          <label class="opt"><input type="checkbox" name="necesidades" value="De materiales de estudio"><span class="ico-opt">📚</span><span>De materiales de estudio</span></label>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ══ S4 ══ -->
-  <div class="form-section">
-    <div class="section-header">
-      <span class="section-badge">Sección 4</span>
-      <h2>Salud y Bienestar Psicológico</h2>
-      <span class="section-icon">❤️‍🩹</span>
-    </div>
-    <div class="section-body">
-
-      <div class="field">
-        <label class="lbl"><span class="ico">🏥</span> Seguro de Salud <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="seguroSalud" value="SIS" required><span class="pill">🟦 SIS</span></label>
-          <label><input type="radio" name="seguroSalud" value="EsSalud"><span class="pill">🟩 EsSalud</span></label>
-          <label><input type="radio" name="seguroSalud" value="Particular"><span class="pill">💳 Particular</span></label>
-          <label><input type="radio" name="seguroSalud" value="Ninguno"><span class="pill">❌ Ninguno</span></label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="lbl"><span class="ico">😊</span> Situación Emocional Actual <span class="req">*</span></label>
-        <div class="scale-wrap">
-          <span class="scale-lbl">😢 Muy mal</span>
-          <div class="scale-dots">
-            <div class="sdot"><input type="radio" name="estadoEmocional" value="1" required><span>1</span></div>
-            <div class="sdot"><input type="radio" name="estadoEmocional" value="2"><span>2</span></div>
-            <div class="sdot"><input type="radio" name="estadoEmocional" value="3"><span>3</span></div>
-            <div class="sdot"><input type="radio" name="estadoEmocional" value="4"><span>4</span></div>
-            <div class="sdot"><input type="radio" name="estadoEmocional" value="5"><span>5</span></div>
+        <div class="field">
+          <label class="lbl"><span class="ico">💼</span> Principal meta laboral: <span class="req">*</span></label>
+          <div class="opts col" style="margin-top:.3rem">
+            <label class="opt"><input type="radio" name="metaLaboral" value="Conseguir mi primer empleo" required><span
+                class="ico-opt">🚀</span><span>Conseguir mi primer empleo</span></label>
+            <label class="opt"><input type="radio" name="metaLaboral"
+                value="Obtener trabajo relacionado a mi carrera"><span class="ico-opt">🎯</span><span>Obtener trabajo
+                relacionado a mi carrera</span></label>
+            <label class="opt"><input type="radio" name="metaLaboral" value="Mejorar mi situación laboral actual"><span
+                class="ico-opt">📈</span><span>Mejorar mi situación laboral actual</span></label>
+            <label class="opt"><input type="radio" name="metaLaboral" value="Ascender en mi trabajo"><span
+                class="ico-opt">⬆️</span><span>Ascender en mi trabajo</span></label>
+            <label class="opt"><input type="radio" name="metaLaboral" value="Emprender un negocio propio"><span
+                class="ico-opt">🏢</span><span>Emprender un negocio propio</span></label>
+            <label class="opt"><input type="radio" name="metaLaboral"
+                value="Trabajar de manera independiente (freelance)"><span class="ico-opt">💻</span><span>Trabajar de
+                manera independiente (freelance)</span></label>
+            <label class="opt"><input type="radio" name="metaLaboral" value="Trabajar en el extranjero"><span
+                class="ico-opt">✈️</span><span>Trabajar en el extranjero</span></label>
+            <label class="opt">
+              <input type="radio" name="metaLaboral" value="Otro" onchange="toggleOther('metaLabOtroInput',this)">
+              <span class="ico-opt">➕</span><span>Otro:</span>
+              <div class="other-wrap" id="metaLabOtroInput"><input type="text" name="metaLaboralOtro"
+                  placeholder="Especifique…"></div>
+            </label>
           </div>
-          <span class="scale-lbl">😄 Muy bien</span>
         </div>
-      </div>
 
-      <div class="field full">
-        <label class="lbl"><span class="ico">🧘</span> ¿Requiere consejería psicológica? <span class="req">*</span></label>
-        <div class="pill-group">
-          <label><input type="radio" name="consejeria" value="Sí" required><span class="pill">✅ Sí, la necesito</span></label>
-          <label><input type="radio" name="consejeria" value="No"><span class="pill">❌ No por ahora</span></label>
-        </div>
       </div>
-
     </div>
-  </div>
 
-  <!-- ══ S5 ══ -->
-  <div class="form-section">
-    <div class="section-header">
-      <span class="section-badge">Sección 5</span>
-      <h2>Expectativas y Metas</h2>
-      <span class="section-icon">🚀</span>
-    </div>
-    <div class="section-body s1">
-
-      <div class="field">
-        <label class="lbl"><span class="ico">💬</span> ¿Por qué elegiste esta carrera? <span class="req">*</span></label>
-        <textarea name="motivacion" placeholder="Describe brevemente tus motivaciones…" required></textarea>
+    <!-- ══ S6 ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <span class="section-badge">Sección 6</span>
+        <h2>Capacitación y Desarrollo Profesional</h2>
+        <span class="section-icon">🎓</span>
       </div>
 
-      <div class="field">
-        <label class="lbl"><span class="ico">🎯</span> Principal meta académica actualmente: <span class="req">*</span></label>
-        <div class="opts col" style="margin-top:.3rem">
-          <label class="opt"><input type="radio" name="metaAcademica" value="Aprobar todos mis cursos" required><span class="ico-opt">✅</span><span>Aprobar todos mis cursos</span></label>
-          <label class="opt"><input type="radio" name="metaAcademica" value="Obtener buenas calificaciones"><span class="ico-opt">⭐</span><span>Obtener buenas calificaciones</span></label>
-          <label class="opt"><input type="radio" name="metaAcademica" value="Ser uno de los mejores estudiantes"><span class="ico-opt">🏆</span><span>Ser uno de los mejores estudiantes</span></label>
-          <label class="opt"><input type="radio" name="metaAcademica" value="Terminar mi carrera técnica/profesional"><span class="ico-opt">🎓</span><span>Terminar mi carrera técnica / profesional</span></label>
-          <label class="opt"><input type="radio" name="metaAcademica" value="Continuar estudios superiores"><span class="ico-opt">🏛️</span><span>Continuar estudios superiores (universidad, especialización)</span></label>
-          <label class="opt"><input type="radio" name="metaAcademica" value="Aprender habilidades prácticas para el trabajo"><span class="ico-opt">🔧</span><span>Aprender habilidades prácticas para el trabajo</span></label>
-          <label class="opt">
-            <input type="radio" name="metaAcademica" value="Otro" onchange="toggleOther('metaAcadOtroInput',this)">
-            <span class="ico-opt">➕</span><span>Otro:</span>
-            <div class="other-wrap" id="metaAcadOtroInput"><input type="text" name="metaAcademicaOtro" placeholder="Especifique…"></div>
+      <div class="section-body">
+
+        <!-- Tema -->
+        <div class="field full">
+          <label class="lbl">
+            <span class="ico">📚</span> Tema de capacitación de interés
           </label>
+          <textarea name="tema_capacitacion"
+            placeholder="Ej.: Programación web, Inteligencia Artificial, Marketing Digital, Excel avanzado, Redes, Diseño gráfico, etc."></textarea>
+          <span class="hint">
+            Puedes indicar uno o varios temas que te gustaría aprender.
+          </span>
         </div>
-      </div>
 
-      <div class="field">
-        <label class="lbl"><span class="ico">💼</span> Principal meta laboral: <span class="req">*</span></label>
-        <div class="opts col" style="margin-top:.3rem">
-          <label class="opt"><input type="radio" name="metaLaboral" value="Conseguir mi primer empleo" required><span class="ico-opt">🚀</span><span>Conseguir mi primer empleo</span></label>
-          <label class="opt"><input type="radio" name="metaLaboral" value="Obtener trabajo relacionado a mi carrera"><span class="ico-opt">🎯</span><span>Obtener trabajo relacionado a mi carrera</span></label>
-          <label class="opt"><input type="radio" name="metaLaboral" value="Mejorar mi situación laboral actual"><span class="ico-opt">📈</span><span>Mejorar mi situación laboral actual</span></label>
-          <label class="opt"><input type="radio" name="metaLaboral" value="Ascender en mi trabajo"><span class="ico-opt">⬆️</span><span>Ascender en mi trabajo</span></label>
-          <label class="opt"><input type="radio" name="metaLaboral" value="Emprender un negocio propio"><span class="ico-opt">🏢</span><span>Emprender un negocio propio</span></label>
-          <label class="opt"><input type="radio" name="metaLaboral" value="Trabajar de manera independiente (freelance)"><span class="ico-opt">💻</span><span>Trabajar de manera independiente (freelance)</span></label>
-          <label class="opt"><input type="radio" name="metaLaboral" value="Trabajar en el extranjero"><span class="ico-opt">✈️</span><span>Trabajar en el extranjero</span></label>
-          <label class="opt">
-            <input type="radio" name="metaLaboral" value="Otro" onchange="toggleOther('metaLabOtroInput',this)">
-            <span class="ico-opt">➕</span><span>Otro:</span>
-            <div class="other-wrap" id="metaLabOtroInput"><input type="text" name="metaLaboralOtro" placeholder="Especifique…"></div>
+        <div class="field full">
+          <label class="lbl">
+            <span class="ico">➕</span> Otro tema específico (opcional)
           </label>
+          <input type="text" name="tema_capacitacion_otro"
+            placeholder="Ej.: Desarrollo de apps móviles, ciberseguridad, etc.">
+        </div>
+
+        <!-- Participaría -->
+        <div class="field">
+          <label class="lbl"><span class="ico">🏆</span> ¿Participarías en una capacitación certificada?</label>
+          <div class="pill-group">
+            <label><input type="radio" name="participariaCapacitacion" value="SI"><span class="pill">✅ Sí</span></label>
+            <label><input type="radio" name="participariaCapacitacion" value="NO"><span class="pill">❌ No</span></label>
+            <label><input type="radio" name="participariaCapacitacion" value="TAL VEZ"><span class="pill">🤔 Tal
+                vez</span></label>
+          </div>
+        </div>
+
+        <!-- Pagaría -->
+        <div class="field">
+          <label class="lbl"><span class="ico">💳</span> ¿Pagarías por la certificación?</label>
+          <div class="pill-group">
+            <label><input type="radio" name="pagariaCertificacion" value="SI"><span class="pill">✅ Sí</span></label>
+            <label><input type="radio" name="pagariaCertificacion" value="NO"><span class="pill">❌ No</span></label>
+            <label><input type="radio" name="pagariaCertificacion" value="DEPENDE"><span class="pill">💲 Depende del
+                costo</span></label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ S7 ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <span class="section-badge">Sección 7</span>
+        <h2>Declaración y Cierre</h2>
+        <span class="section-icon">✍️</span>
+      </div>
+      <div class="section-body s1">
+        <div class="decl-box">
+          <input type="checkbox" name="declaracion" id="declaracion" required>
+          <p>
+            <strong>✅ Declaración de Veracidad</strong><br>
+            Declaro bajo mi responsabilidad que la información consignada en este formulario es verídica y completa.
+            Autorizo al IESTP Cabana a utilizar estos datos exclusivamente para fines de bienestar estudiantil,
+            garantizando la confidencialidad conforme a la normativa vigente.
+          </p>
         </div>
       </div>
-
     </div>
+
+  </form>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button type="button" class="btn btn-primary" id="btnEnviar" onclick="submitForm()">
+      📤 Enviar Ficha
+    </button>
+    <button type="button" class="btn btn-excel" onclick="exportExcelLocal()">
+      📊 Exportar Excel
+    </button>
+    <button type="button" class="btn btn-pdf" onclick="exportPDFLocal()">
+      📄 Exportar PDF
+    </button>
+    <button type="button" class="btn btn-admin" onclick="window.open('/admin','_blank')">
+      🔐 Panel Admin
+    </button>
+    <button type="button" class="btn btn-clear" onclick="clearForm()">
+      🗑️ Limpiar
+    </button>
   </div>
 
-  <!-- ══ S6 ══ -->
-  <div class="form-section">
-    <div class="section-header">
-      <span class="section-badge">Sección 6</span>
-      <h2>Declaración y Cierre</h2>
-      <span class="section-icon">✍️</span>
-    </div>
-    <div class="section-body s1">
-      <div class="decl-box">
-        <input type="checkbox" name="declaracion" id="declaracion" required>
-        <p>
-          <strong>✅ Declaración de Veracidad</strong><br>
-          Declaro bajo mi responsabilidad que la información consignada en este formulario es verídica y completa. Autorizo al IESTP Cabana a utilizar estos datos exclusivamente para fines de bienestar estudiantil, garantizando la confidencialidad conforme a la normativa vigente.
-        </p>
-      </div>
-    </div>
-  </div>
+  <footer class="page-footer">
+    🏫 IESTP Cabana · Área de Bienestar Estudiantil · Sistema de Seguimiento Estudiantil
+  </footer>
 
-</form>
+  <div class="toast" id="toast"></div>
 
-<!-- ACTIONS -->
-<div class="actions">
-  <button type="button" class="btn btn-primary" id="btnEnviar" onclick="submitForm()">
-    📤 Enviar Ficha
-  </button>
-  <button type="button" class="btn btn-excel" onclick="exportExcelLocal()">
-    📊 Exportar Excel
-  </button>
-  <button type="button" class="btn btn-pdf" onclick="exportPDFLocal()">
-    📄 Exportar PDF
-  </button>
-  <button type="button" class="btn btn-admin" onclick="window.open('/admin','_blank')">
-    🔐 Panel Admin
-  </button>
-  <button type="button" class="btn btn-clear" onclick="clearForm()">
-    🗑️ Limpiar
-  </button>
-</div>
+  <!-- LIBS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-<footer class="page-footer">
-  🏫 IESTP Cabana · Área de Bienestar Estudiantil · Sistema de Seguimiento Estudiantil
-</footer>
+  <script>
+    // ── HELPERS ──────────────────────────────────────────────────
+    function show(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('on', val);
 
-<div class="toast" id="toast"></div>
-
-<!-- LIBS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-<script>
-// ── HELPERS ──────────────────────────────────────────────────
-function show(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('on', val);
-}
-function toggleOther(id, cb) {
-  const wrap = document.getElementById(id);
-  if (wrap) wrap.style.display = cb.checked ? 'block' : 'none';
-}
-document.querySelectorAll('input[type=radio]').forEach(r => {
-  r.addEventListener('change', () => {
-    if (r.name === 'metaAcademica' && r.value !== 'Otro')
-      document.getElementById('metaAcadOtroInput').style.display = 'none';
-    if (r.name === 'metaLaboral' && r.value !== 'Otro')
-      document.getElementById('metaLabOtroInput').style.display = 'none';
-  });
-});
-
-function toast(msg, type='ok') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast on ' + type;
-  setTimeout(() => t.className = 'toast', 4000);
-}
-
-// ── COLLECT ───────────────────────────────────────────────────
-function collect() {
-  const form = document.getElementById('fichaForm');
-  const fd = {};
-  form.querySelectorAll('input[type=text],input[type=tel],input[type=date],select,textarea').forEach(el => {
-    if (el.name) fd[el.name] = el.value.trim();
-  });
-  form.querySelectorAll('input[type=radio]:checked').forEach(el => {
-    if (el.name) fd[el.name] = el.value;
-  });
-  // Checkboxes grouped
-  const cg = {};
-  form.querySelectorAll('input[type=checkbox]').forEach(el => {
-    if (!el.name || el.name === 'declaracion') return;
-    if (!cg[el.name]) cg[el.name] = [];
-    if (el.checked) cg[el.name].push(el.value);
-  });
-  Object.entries(cg).forEach(([k,v]) => fd[k] = v.join('; '));
-  fd.declaracion = form.querySelector('#declaracion').checked ? 'Sí' : 'No';
-  if (fd.fechaNacimiento) {
-    const d = new Date(fd.fechaNacimiento), now = new Date();
-    let age = now.getFullYear() - d.getFullYear();
-    const m = now.getMonth() - d.getMonth();
-    if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
-    fd.edad = age + ' años';
-  }
-  return fd;
-}
-
-// ── VALIDATE ──────────────────────────────────────────────────
-function validate() {
-  const form = document.getElementById('fichaForm');
-  // Required text/date/select
-  for (const el of form.querySelectorAll('input[type=text][required],input[type=tel][required],input[type=date][required],select[required],textarea[required]')) {
-    if (!el.value.trim()) {
-      el.focus(); el.scrollIntoView({behavior:'smooth',block:'center'});
-      el.style.borderColor='var(--red)';
-      el.addEventListener('input',()=>el.style.borderColor='',{once:true});
-      toast('⚠️ Completa todos los campos obligatorios (*)','err'); return false;
     }
-  }
-  // Required radio groups
-  const groups = [...new Set([...form.querySelectorAll('input[type=radio][required]')].map(r=>r.name))];
-  for (const name of groups) {
-    if (![...form.querySelectorAll(`input[name="${name}"]`)].some(r=>r.checked)) {
-      form.querySelector(`input[name="${name}"]`).closest('.field').scrollIntoView({behavior:'smooth',block:'center'});
-      toast('⚠️ Selecciona una opción en todos los campos obligatorios (*)','err'); return false;
+
+    function toggleBlock(id, show) {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      el.classList.toggle('on', show);
+
+      // Limpia valores al ocultar
+      if (!show) {
+        el.querySelectorAll('input').forEach(i => {
+          if (i.type === 'checkbox' || i.type === 'radio') i.checked = false;
+          else i.value = '';
+        });
+      }
     }
-  }
-  // DNI
-  const dni = form.querySelector('[name=dni]');
-  if (!/^\d{8}$/.test(dni.value)) { dni.focus(); toast('⚠️ El DNI debe tener exactamente 8 dígitos','err'); return false; }
-  // Celular
-  const cel = form.querySelector('[name=celular]');
-  if (!/^\d{7,12}$/.test(cel.value.replace(/\s/g,''))) { cel.focus(); toast('⚠️ Ingresa un número de celular válido (7-12 dígitos)','err'); return false; }
-  // Declaration
-  if (!form.querySelector('#declaracion').checked) {
-    form.querySelector('#declaracion').scrollIntoView({behavior:'smooth',block:'center'});
-    toast('⚠️ Debes marcar la declaración de veracidad','err'); return false;
-  }
-  return true;
-}
-
-// ── SUBMIT → API ──────────────────────────────────────────────
-async function submitForm() {
-  if (!validate()) return;
-  const data = collect();
-  const btn = document.getElementById('btnEnviar');
-
-  // Verificar DNI duplicado
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Verificando…';
-  try {
-    const chk = await fetch('/api/check-dni/' + data.dni);
-    const chkJson = await chk.json();
-    if (chkJson.existe) {
-      toast('⚠️ Ya existe una ficha registrada con este DNI. Solo se permite un registro por persona.','err');
-      btn.disabled = false;
-      btn.innerHTML = '📤 Enviar Ficha';
-      return;
+    function toggleOther(id, cb) {
+      const wrap = document.getElementById(id);
+      if (wrap) wrap.style.display = cb.checked ? 'block' : 'none';
     }
-  } catch(e) {}
-
-  btn.innerHTML = '<span class="spinner"></span> Enviando…';
-  try {
-    const res = await fetch('/api/ficha', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(data)
+    document.querySelectorAll('input[type=radio]').forEach(r => {
+      r.addEventListener('change', () => {
+        if (r.name === 'metaAcademica' && r.value !== 'Otro')
+          document.getElementById('metaAcadOtroInput').style.display = 'none';
+        if (r.name === 'metaLaboral' && r.value !== 'Otro')
+          document.getElementById('metaLabOtroInput').style.display = 'none';
+      });
     });
-    const json = await res.json();
-    if (json.ok) {
-      // Guardar datos en sessionStorage para la página de gracias
-      sessionStorage.setItem('fichaEnviada', JSON.stringify(data));
-      window.location.href = '/gracias';
-    } else {
-      toast('❌ Error al guardar: ' + json.error,'err');
-      btn.disabled = false;
-      btn.innerHTML = '📤 Enviar Ficha';
+
+    function toast(msg, type = 'ok') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast on ' + type;
+      setTimeout(() => t.className = 'toast', 4000);
     }
-  } catch (e) {
-    toast('❌ No se pudo conectar al servidor. Revisa tu conexión.','err');
-    btn.disabled = false;
-    btn.innerHTML = '📤 Enviar Ficha';
-  }
-}
 
-function clearForm() {
-  document.getElementById('fichaForm').reset();
-  document.querySelectorAll('.conditional').forEach(el=>el.classList.remove('on'));
-  document.querySelectorAll('.other-wrap').forEach(el=>el.style.display='');
-}
-
-// ── STATS ─────────────────────────────────────────────────────
-async function loadStats() {
-  try {
-    const res = await fetch('/api/stats');
-    const d = await res.json();
-    if (d.ok) {
-      document.getElementById('statHoy').textContent   = d.hoy;
-      document.getElementById('statTotal').textContent = d.total;
+    // ── COLLECT ───────────────────────────────────────────────────
+    function collect() {
+      const form = document.getElementById('fichaForm');
+      const fd = {};
+      form.querySelectorAll('input[type=text],input[type=tel],input[type=date],select,textarea').forEach(el => {
+        if (el.name) fd[el.name] = el.value.trim();
+      });
+      form.querySelectorAll('input[type=radio]:checked').forEach(el => {
+        if (el.name) fd[el.name] = el.value;
+      });
+      // Checkboxes grouped
+      const cg = {};
+      form.querySelectorAll('input[type=checkbox]').forEach(el => {
+        if (!el.name || el.name === 'declaracion') return;
+        if (!cg[el.name]) cg[el.name] = [];
+        if (el.checked) cg[el.name].push(el.value);
+      });
+      Object.entries(cg).forEach(([k, v]) => fd[k] = v.join('; '));
+      fd.declaracion = form.querySelector('#declaracion').checked ? 'Sí' : 'No';
+      if (fd.fechaNacimiento) {
+        const d = new Date(fd.fechaNacimiento), now = new Date();
+        let age = now.getFullYear() - d.getFullYear();
+        const m = now.getMonth() - d.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
+        fd.edad = age + ' años';
+      }
+      return fd;
     }
-  } catch {}
-}
-loadStats();
 
-// ── EXPORT EXCEL (local) ──────────────────────────────────────
-const LABELS = {
-  nombres:'Apellidos y Nombres',dni:'DNI',fechaNacimiento:'Fecha Nacimiento',edad:'Edad',
-  sexo:'Sexo',estadoCivil:'Estado Civil',programa:'Programa',condicion:'Condición',
-  ciclo:'Ciclo',turno:'Turno',celular:'Celular/Teléfono',
-  direccion:'Dirección',distrito:'Distrito',ingresoFamiliar:'Ingreso Familiar',
-  trabaja:'¿Trabaja?',ocupacion:'Ocupación',recibeApoyo:'¿Recibe Apoyo?',
-  tipoApoyo:'Tipo Apoyo',tipoApoyoOtro:'Tipo Apoyo (otro)',necesidades:'Necesidades',
-  seguroSalud:'Seguro Salud',estadoEmocional:'Estado Emocional (1-5)',
-  consejeria:'Consejería Psicológica',motivacion:'Motivación',
-  metaAcademica:'Meta Académica',metaAcademicaOtro:'Meta Académica (otro)',
-  metaLaboral:'Meta Laboral',metaLaboralOtro:'Meta Laboral (otro)',declaracion:'Declaración'
-};
-function exportExcelLocal() {
-  if (!validate()) return;
-  const data = collect();
-  const keys = Object.keys(LABELS);
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet([keys.map(k=>LABELS[k]), keys.map(k=>data[k]||'')]);
-  ws['!cols'] = keys.map(()=>({wch:24}));
-  XLSX.utils.book_append_sheet(wb, ws, 'Ficha');
-  const fname = `Ficha_${(data.nombres||'Estudiante').replace(/[^a-zA-Z0-9]/g,'_')}_${new Date().toISOString().slice(0,10)}.xlsx`;
-  XLSX.writeFile(wb, fname);
-  toast('📊 Excel descargado correctamente','ok');
-}
-
-// ── EXPORT PDF (local) ────────────────────────────────────────
-function exportPDFLocal() {
-  if (!validate()) return;
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({unit:'mm',format:'a4'});
-  const data = collect();
-  const pageW=210, M=15, cW=pageW-M*2;
-  let y=0;
-  const NAVY=[26,39,68],GOLD=[200,146,42],WHITE=[255,255,255],LIGHT=[245,244,240],DARK=[58,52,44];
-  function chk(n){if(y+n>278){doc.addPage();y=15;}}
-  function hdr(){
-    doc.setFillColor(...NAVY);doc.rect(0,0,pageW,28,'F');
-    doc.setFillColor(...GOLD);doc.rect(0,28,pageW,1.5,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...WHITE);
-    doc.text('IESTP CABANA',M,11);
-    doc.setFont('helvetica','normal');doc.setFontSize(8.5);
-    doc.text('Instituto de Educación Superior Tecnológico Público',M,17);
-    doc.setFont('helvetica','bold');doc.setFontSize(11);
-    doc.text('FICHA DIAGNÓSTICA DEL ESTUDIANTE',M,24);
-    doc.setFontSize(7.5);doc.setFont('helvetica','normal');
-    doc.text('Fecha: '+new Date().toLocaleDateString('es-PE'),pageW-M,24,{align:'right'});
-    y=35;
-  }
-  const SECS=[
-    {t:'SECCIÓN 1: Datos Generales y Académicos',f:['nombres','dni','celular','fechaNacimiento','edad','sexo','estadoCivil','programa','condicion','ciclo','turno']},
-    {t:'SECCIÓN 2: Ubicación y Situación Económica',f:['direccion','distrito','ingresoFamiliar','trabaja','ocupacion']},
-    {t:'SECCIÓN 3: Apoyo y Necesidades',f:['recibeApoyo','tipoApoyo','tipoApoyoOtro','necesidades']},
-    {t:'SECCIÓN 4: Salud y Bienestar Psicológico',f:['seguroSalud','estadoEmocional','consejeria']},
-    {t:'SECCIÓN 5: Expectativas y Metas',f:['motivacion','metaAcademica','metaAcademicaOtro','metaLaboral','metaLaboralOtro']},
-    {t:'SECCIÓN 6: Declaración',f:['declaracion']},
-  ];
-  hdr();
-  SECS.forEach(sec=>{
-    chk(16);
-    doc.setFillColor(...NAVY);doc.roundedRect(M,y,cW,8.5,1,1,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(...WHITE);
-    doc.text(sec.t,M+3,y+5.8);y+=12;
-    sec.f.forEach(key=>{
-      const val=data[key];if(!val)return;
-      const lbl=LABELS[key]||key;
-      const lines=doc.splitTextToSize(val,cW-52);
-      const rh=Math.max(8,lines.length*4.8+3);
-      chk(rh+2);
-      doc.setFillColor(...LIGHT);doc.rect(M,y,cW,rh,'F');
-      doc.setDrawColor(220,218,212);doc.rect(M,y,cW,rh,'S');
-      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(...NAVY);
-      doc.text(lbl+':',M+3,y+5.5);
-      doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...DARK);
-      doc.text(lines,M+52,y+5.5);
-      y+=rh+1;
-    });
-    y+=4;
-  });
-  // footers
-  const tp=doc.internal.getNumberOfPages();
-  for(let i=1;i<=tp;i++){
-    doc.setPage(i);doc.setFillColor(...NAVY);doc.rect(0,287,pageW,10,'F');
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(...WHITE);
-    doc.text('IESTP Cabana · Bienestar Estudiantil · Documento confidencial',M,293);
-    doc.text(`Pág. ${i}/${tp}`,pageW-M,293,{align:'right'});
-  }
-  const fname=`FichaDiagnostica_${(data.nombres||'Estudiante').replace(/[^a-zA-Z0-9]/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
-  doc.save(fname);
-  toast('📄 PDF descargado correctamente','ok');
-}
-
-// DNI solo números
-document.querySelector('[name=dni]').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,8)});
-// Celular solo números
-document.querySelector('[name=celular]').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,12)});
-</script>
-
-<script>
-// Override submitForm to add DNI check and redirect to gracias
-async function submitForm() {
-  if (!validate()) return;
-  const data = collect();
-  const btn = document.getElementById('btnEnviar');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Verificando…';
-  try {
-    const chk = await fetch('/api/check-dni/' + data.dni);
-    const chkJson = await chk.json();
-    if (chkJson.existe) {
-      toast('⚠️ Tu DNI ya tiene una ficha registrada. Solo se permite un registro por persona.','err');
-      btn.disabled = false; btn.innerHTML = '📤 Enviar Ficha'; return;
+    // ── VALIDATE ──────────────────────────────────────────────────
+    function validate() {
+      const form = document.getElementById('fichaForm');
+      // Required text/date/select
+      for (const el of form.querySelectorAll('input[type=text][required],input[type=tel][required],input[type=date][required],select[required],textarea[required]')) {
+        if (!el.value.trim()) {
+          el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.style.borderColor = 'var(--red)';
+          el.addEventListener('input', () => el.style.borderColor = '', { once: true });
+          toast('⚠️ Completa todos los campos obligatorios (*)', 'err'); return false;
+        }
+      }
+      // Required radio groups
+      const groups = [...new Set([...form.querySelectorAll('input[type=radio][required]')].map(r => r.name))];
+      for (const name of groups) {
+        if (![...form.querySelectorAll(`input[name="${name}"]`)].some(r => r.checked)) {
+          form.querySelector(`input[name="${name}"]`).closest('.field').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          toast('⚠️ Selecciona una opción en todos los campos obligatorios (*)', 'err'); return false;
+        }
+      }
+      // DNI
+      const dni = form.querySelector('[name=dni]');
+      if (!/^\d{8}$/.test(dni.value)) { dni.focus(); toast('⚠️ El DNI debe tener exactamente 8 dígitos', 'err'); return false; }
+      // Celular
+      const cel = form.querySelector('[name=celular]');
+      if (!/^\d{7,12}$/.test(cel.value.replace(/\s/g, ''))) { cel.focus(); toast('⚠️ Ingresa un número de celular válido (7-12 dígitos)', 'err'); return false; }
+      // Declaration
+      if (!form.querySelector('#declaracion').checked) {
+        form.querySelector('#declaracion').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        toast('⚠️ Debes marcar la declaración de veracidad', 'err'); return false;
+      }
+      return true;
     }
-  } catch(e) {}
-  btn.innerHTML = '<span class="spinner"></span> Enviando…';
-  try {
-    const res = await fetch('/api/ficha', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
-    });
-    const json = await res.json();
-    if (json.ok) {
-      sessionStorage.setItem('fichaEnviada', JSON.stringify(data));
-      window.location.href = '/gracias';
-    } else {
-      toast('❌ Error: ' + json.error,'err');
-      btn.disabled=false; btn.innerHTML='📤 Enviar Ficha';
+
+    // ── SUBMIT → API ──────────────────────────────────────────────
+    async function submitForm() {
+      if (!validate()) return;
+      const data = collect();
+      const btn = document.getElementById('btnEnviar');
+
+      // Verificar DNI duplicado
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Verificando…';
+      try {
+
+        const chk = await fetch('/api/check-dni/' + data.dni);
+        const chkJson = await chk.json();
+        if (chkJson.existe) {
+          toast('⚠️ Ya existe una ficha registrada con este DNI. Solo se permite un registro por persona.', 'err');
+          btn.disabled = false;
+          btn.innerHTML = '📤 Enviar Ficha';
+          return;
+        }
+      } catch (e) { }
+
+      btn.innerHTML = '<span class="spinner"></span> Enviando…';
+      try {
+        const res = await fetch('/api/ficha', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (json.ok) {
+          // Guardar datos en sessionStorage para la página de gracias
+          sessionStorage.setItem('fichaEnviada', JSON.stringify(data));
+          window.location.href = '/gracias';
+        } else {
+          toast('❌ Error al guardar: ' + json.error, 'err');
+          btn.disabled = false;
+          btn.innerHTML = '📤 Enviar Ficha';
+        }
+      } catch (e) {
+        toast('❌ No se pudo conectar al servidor. Revisa tu conexión.', 'err');
+        btn.disabled = false;
+        btn.innerHTML = '📤 Enviar Ficha';
+      }
     }
-  } catch(e) {
-    toast('❌ Sin conexión al servidor.','err');
-    btn.disabled=false; btn.innerHTML='📤 Enviar Ficha';
-  }
-}
-</script>
+
+    function clearForm() {
+      document.getElementById('fichaForm').reset();
+      document.querySelectorAll('.conditional').forEach(el => el.classList.remove('on'));
+      document.querySelectorAll('.other-wrap').forEach(el => el.style.display = '');
+    }
+
+    // ── STATS ─────────────────────────────────────────────────────
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const d = await res.json();
+        if (d.ok) {
+          document.getElementById('statHoy').textContent = d.hoy;
+          document.getElementById('statTotal').textContent = d.total;
+        }
+      } catch { }
+    }
+    loadStats();
+
+    // ── EXPORT EXCEL (local) ──────────────────────────────────────
+    const LABELS = {
+      nombres: 'Apellidos y Nombres', dni: 'DNI', fechaNacimiento: 'Fecha Nacimiento', edad: 'Edad',
+      sexo: 'Sexo', estadoCivil: 'Estado Civil', programa: 'Programa', condicion: 'Condición',
+      ciclo: 'Ciclo', turno: 'Turno', celular: 'Celular/Teléfono',
+      direccion: 'Dirección', distrito: 'Distrito', ingresoFamiliar: 'Ingreso Familiar',
+      trabaja: '¿Trabaja?', ocupacion: 'Ocupación', recibeApoyo: '¿Recibe Apoyo?',
+      tipoApoyo: 'Tipo Apoyo', tipoApoyoOtro: 'Tipo Apoyo (otro)', necesidades: 'Necesidades',
+      seguroSalud: 'Seguro Salud', estadoEmocional: 'Estado Emocional (1-5)',
+      consejeria: 'Consejería Psicológica', motivacion: 'Motivación',
+      metaAcademica: 'Meta Académica', metaAcademicaOtro: 'Meta Académica (otro)',
+      metaLaboral: 'Meta Laboral', metaLaboralOtro: 'Meta Laboral (otro)', declaracion: 'Declaración'
+    };
+    function exportExcelLocal() {
+      if (!validate()) return;
+      const data = collect();
+      const keys = Object.keys(LABELS);
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet([keys.map(k => LABELS[k]), keys.map(k => data[k] || '')]);
+      ws['!cols'] = keys.map(() => ({ wch: 24 }));
+      XLSX.utils.book_append_sheet(wb, ws, 'Ficha');
+      const fname = `Ficha_${(data.nombres || 'Estudiante').replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+      XLSX.writeFile(wb, fname);
+      toast('📊 Excel descargado correctamente', 'ok');
+    }
+
+    // ── EXPORT PDF (local) ────────────────────────────────────────
+    function exportPDFLocal() {
+      if (!validate()) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const data = collect();
+      const pageW = 210, M = 15, cW = pageW - M * 2;
+      let y = 0;
+      const NAVY = [26, 39, 68], GOLD = [200, 146, 42], WHITE = [255, 255, 255], LIGHT = [245, 244, 240], DARK = [58, 52, 44];
+      function chk(n) { if (y + n > 278) { doc.addPage(); y = 15; } }
+      function hdr() {
+        doc.setFillColor(...NAVY); doc.rect(0, 0, pageW, 28, 'F');
+        doc.setFillColor(...GOLD); doc.rect(0, 28, pageW, 1.5, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(...WHITE);
+        doc.text('IESTP CABANA', M, 11);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+        doc.text('Instituto de Educación Superior Tecnológico Público', M, 17);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+        doc.text('FICHA DIAGNÓSTICA DEL ESTUDIANTE', M, 24);
+        doc.setFontSize(7.5); doc.setFont('helvetica', 'normal');
+        doc.text('Fecha: ' + new Date().toLocaleDateString('es-PE'), pageW - M, 24, { align: 'right' });
+        y = 35;
+      }
+      const SECS = [
+        { t: 'SECCIÓN 1: Datos Generales y Académicos', f: ['nombres', 'dni', 'celular', 'fechaNacimiento', 'edad', 'sexo', 'estadoCivil', 'programa', 'condicion', 'ciclo', 'turno'] },
+        { t: 'SECCIÓN 2: Ubicación y Situación Económica', f: ['direccion', 'distrito', 'ingresoFamiliar', 'trabaja', 'ocupacion'] },
+        { t: 'SECCIÓN 3: Apoyo y Necesidades', f: ['recibeApoyo', 'tipoApoyo', 'tipoApoyoOtro', 'necesidades'] },
+        {
+          t: 'SECCIÓN 4: Salud y Bienestar Psicológico', f: ['seguroSalud', 'estadoEmocional', 'consejeria',
+
+            // NUEVOS CAMPOS
+            'discapacidad',
+            'tipoDiscapacidad',
+            'tipoDiscapacidadOtro',
+
+            'enfermedad',
+            'detalleEnfermedad',
+            'tratamiento'
+          ]
+        },
+        { t: 'SECCIÓN 5: Expectativas y Metas', f: ['motivacion', 'metaAcademica', 'metaAcademicaOtro', 'metaLaboral', 'metaLaboralOtro'] },
+        { t: 'SECCIÓN 6: Capacitación', f: ['tema_capacitacion', 'tema_capacitacion_otro', 'participariaCapacitacion', 'pagariaCertificacion'] },
+        { t: 'SECCIÓN 7: Declaración', f: ['declaracion'] },
+      ];
+      hdr();
+      SECS.forEach(sec => {
+        chk(16);
+        doc.setFillColor(...NAVY); doc.roundedRect(M, y, cW, 8.5, 1, 1, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...WHITE);
+        doc.text(sec.t, M + 3, y + 5.8); y += 12;
+        sec.f.forEach(key => {
+          const val = data[key]; if (!val) return;
+          const lbl = LABELS[key] || key;
+          const lines = doc.splitTextToSize(val, cW - 52);
+          const rh = Math.max(8, lines.length * 4.8 + 3);
+          chk(rh + 2);
+          doc.setFillColor(...LIGHT); doc.rect(M, y, cW, rh, 'F');
+          doc.setDrawColor(220, 218, 212); doc.rect(M, y, cW, rh, 'S');
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...NAVY);
+          doc.text(lbl + ':', M + 3, y + 5.5);
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...DARK);
+          doc.text(lines, M + 52, y + 5.5);
+          y += rh + 1;
+        });
+        y += 4;
+      });
+      // footers
+      const tp = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= tp; i++) {
+        doc.setPage(i); doc.setFillColor(...NAVY); doc.rect(0, 287, pageW, 10, 'F');
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...WHITE);
+        doc.text('IESTP Cabana · Bienestar Estudiantil · Documento confidencial', M, 293);
+        doc.text(`Pág. ${i}/${tp}`, pageW - M, 293, { align: 'right' });
+      }
+      const fname = `FichaDiagnostica_${(data.nombres || 'Estudiante').replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`;
+      doc.save(fname);
+      toast('📄 PDF descargado correctamente', 'ok');
+    }
+
+    // DNI solo números
+    document.querySelector('[name=dni]').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 8) });
+    // Celular solo números
+    document.querySelector('[name=celular]').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 12) });
+  </script>
+
+  <script>
+    // Override submitForm to add DNI check and redirect to gracias
+    async function submitForm() {
+      if (!validate()) return;
+      const data = collect();
+      const btn = document.getElementById('btnEnviar');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Verificando…';
+      try {
+        const chk = await fetch('/api/check-dni/' + data.dni);
+        const chkJson = await chk.json();
+        if (chkJson.existe) {
+          toast('⚠️ Tu DNI ya tiene una ficha registrada. Solo se permite un registro por persona.', 'err');
+          btn.disabled = false; btn.innerHTML = '📤 Enviar Ficha'; return;
+        }
+      } catch (e) { }
+      btn.innerHTML = '<span class="spinner"></span> Enviando…';
+      try {
+        const res = await fetch('/api/ficha', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (json.ok) {
+          sessionStorage.setItem('fichaEnviada', JSON.stringify(data));
+          window.location.href = '/gracias';
+        } else {
+          toast('❌ Error: ' + json.error, 'err');
+          btn.disabled = false; btn.innerHTML = '📤 Enviar Ficha';
+        }
+      } catch (e) {
+        toast('❌ Sin conexión al servidor.', 'err');
+        btn.disabled = false; btn.innerHTML = '📤 Enviar Ficha';
+      }
+    }
+  </script>
 </body>
+
 </html>

@@ -1,10 +1,10 @@
 const express = require('express');
-const cors    = require('cors');
+const cors = require('cors');
 const { Pool } = require('pg');
-const XLSX    = require('xlsx');
-const path    = require('path');
+const XLSX = require('xlsx');
+const path = require('path');
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ── DATABASE ──────────────────────────────────────────────────
@@ -22,50 +22,66 @@ async function initDB() {
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS fichas (
-        id               SERIAL PRIMARY KEY,
-        creado_en        TIMESTAMPTZ DEFAULT NOW(),
+  id               SERIAL PRIMARY KEY,
+  creado_en        TIMESTAMPTZ DEFAULT NOW(),
 
-        -- Sección 1
-        nombres          TEXT,
-        dni              VARCHAR(8),
-        fecha_nacimiento DATE,
-        edad             VARCHAR(10),
-        sexo             VARCHAR(20),
-        estado_civil     VARCHAR(20),
-        programa         TEXT,
-        condicion        VARCHAR(30),
-        ciclo            VARCHAR(5),
-        turno            VARCHAR(10),
+  -- Sección 1
+  nombres          TEXT,
+  dni              VARCHAR(8) UNIQUE, -- 🔥 evita duplicados
+  fecha_nacimiento DATE,
+  edad             VARCHAR(10),
+  sexo             VARCHAR(20),
+  estado_civil     VARCHAR(20),
+  programa         TEXT,
+  condicion        VARCHAR(30),
+  ciclo            VARCHAR(5),
+  turno            VARCHAR(10),
 
-        -- Sección 2
-        celular          VARCHAR(15),
-        direccion        TEXT,
-        distrito         VARCHAR(80),
-        ingreso_familiar VARCHAR(40),
-        trabaja          VARCHAR(5),
-        ocupacion        TEXT,
+  -- Sección 2
+  celular          VARCHAR(15),
+  direccion        TEXT,
+  distrito         VARCHAR(80),
+  provincia        VARCHAR(80),       -- 🆕
+  departamento     VARCHAR(80),       -- 🆕
+  ingreso_familiar VARCHAR(40),
+  trabaja          VARCHAR(5),
+  ocupacion        TEXT,
 
-        -- Sección 3
-        recibe_apoyo     VARCHAR(5),
-        tipo_apoyo       TEXT,
-        tipo_apoyo_otro  TEXT,
-        necesidades      TEXT,
+  -- Sección 3
+  recibe_apoyo     VARCHAR(5),
+  tipo_apoyo       TEXT,
+  tipo_apoyo_otro  TEXT,
+  necesidades      TEXT,
 
-        -- Sección 4
-        seguro_salud     VARCHAR(20),
-        estado_emocional SMALLINT,
-        consejeria       VARCHAR(5),
+  -- Sección 4
+  seguro_salud        VARCHAR(20),
+  estado_emocional    SMALLINT,
+  consejeria          VARCHAR(5),
 
-        -- Sección 5
-        motivacion          TEXT,
-        meta_academica      TEXT,
-        meta_academica_otro TEXT,
-        meta_laboral        TEXT,
-        meta_laboral_otro   TEXT,
+  discapacidad        VARCHAR(5),     -- 🆕
+  tipo_discapacidad   TEXT,           -- 🆕
+  tipo_discapacidad_otro TEXT,        -- 🆕
 
-        -- Sección 6
-        declaracion      VARCHAR(5)
-      );
+  enfermedad          VARCHAR(5),     -- 🆕
+  detalle_enfermedad  TEXT,           -- 🆕
+  tratamiento         VARCHAR(5),     -- 🆕
+
+  -- Sección 5
+  motivacion          TEXT,
+  meta_academica      TEXT,
+  meta_academica_otro TEXT,
+  meta_laboral        TEXT,
+  meta_laboral_otro   TEXT,
+
+  -- Sección 6 (Capacitación)
+  tema_capacitacion       TEXT,       -- 🆕
+  tema_capacitacion_otro  TEXT,       -- 🆕
+  participaria_capacitacion VARCHAR(10), -- 🆕
+  pagaria_certificacion     VARCHAR(10), -- 🆕
+
+  -- Sección 7
+  declaracion      VARCHAR(5)
+);
     `);
     console.log('✅ Tabla fichas lista.');
   } catch (err) {
@@ -84,35 +100,58 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/api/ficha', async (req, res) => {
   const d = req.body;
   const row = {
-    nombres:           d.nombres          || null,
-    dni:               d.dni              || null,
-    fecha_nacimiento:  d.fechaNacimiento  || null,
-    edad:              d.edad             || null,
-    sexo:              d.sexo             || null,
-    estado_civil:      d.estadoCivil      || null,
-    programa:          d.programa         || null,
-    condicion:         d.condicion        || null,
-    ciclo:             d.ciclo            || null,
-    turno:             d.turno            || null,
-    celular:           d.celular          || null,
-    direccion:         d.direccion        || null,
-    distrito:          d.distrito         || null,
-    ingreso_familiar:  d.ingresoFamiliar  || null,
-    trabaja:           d.trabaja          || null,
-    ocupacion:         d.ocupacion        || null,
-    recibe_apoyo:      d.recibeApoyo      || null,
-    tipo_apoyo:        d.tipoApoyo        || null,
-    tipo_apoyo_otro:   d.tipoApoyoOtro    || null,
-    necesidades:       d.necesidades      || null,
-    seguro_salud:      d.seguroSalud      || null,
-    estado_emocional:  d.estadoEmocional  ? parseInt(d.estadoEmocional) : null,
-    consejeria:        d.consejeria       || null,
-    motivacion:        d.motivacion       || null,
-    meta_academica:    d.metaAcademica    || null,
+    // EXISTENTES
+    nombres: d.nombres || null,
+    dni: d.dni || null,
+    fecha_nacimiento: d.fechaNacimiento || null,
+    edad: d.edad || null,
+    sexo: d.sexo || null,
+    estado_civil: d.estadoCivil || null,
+    programa: d.programa || null,
+    condicion: d.condicion || null,
+    ciclo: d.ciclo || null,
+    turno: d.turno || null,
+    celular: d.celular || null,
+    direccion: d.direccion || null,
+    distrito: d.distrito || null,
+    ingreso_familiar: d.ingresoFamiliar || null,
+    trabaja: d.trabaja || null,
+    ocupacion: d.ocupacion || null,
+    recibe_apoyo: d.recibeApoyo || null,
+    tipo_apoyo: d.tipoApoyo || null,
+    tipo_apoyo_otro: d.tipoApoyoOtro || null,
+    necesidades: d.necesidades || null,
+    seguro_salud: d.seguroSalud || null,
+    estado_emocional: d.estadoEmocional ? parseInt(d.estadoEmocional) : null,
+    consejeria: d.consejeria || null,
+    motivacion: d.motivacion || null,
+    meta_academica: d.metaAcademica || null,
     meta_academica_otro: d.metaAcademicaOtro || null,
-    meta_laboral:      d.metaLaboral      || null,
-    meta_laboral_otro: d.metaLaboralOtro  || null,
-    declaracion:       d.declaracion      || null,
+    meta_laboral: d.metaLaboral || null,
+    meta_laboral_otro: d.metaLaboralOtro || null,
+    declaracion: d.declaracion || null,
+
+    // 🔥 NUEVOS CAMPOS
+
+    // Ubicación
+    departamento: d.departamento || null,
+    provincia: d.provincia || null,
+
+    // Capacitación
+    tema_capacitacion: d.tema_capacitacion || null,
+    tema_capacitacion_otro: d.tema_capacitacion_otro || null,
+    participaria_capacitacion: d.participaria_capacitacion || null,
+    pagaria_certificacion: d.pagaria_certificacion || null,
+
+    // Discapacidad (BOOLEAN)
+    discapacidad: d.discapacidad === true || d.discapacidad === 'SI',
+    tipo_discapacidad: d.tipoDiscapacidad || null,
+    tipo_discapacidad_otro: d.tipoDiscapacidadOtro || null,
+
+    // Enfermedad (BOOLEAN)
+    enfermedad: d.enfermedad === true || d.enfermedad === 'SI',
+    detalle_enfermedad: d.detalleEnfermedad || null,
+    tratamiento: d.tratamiento === true || d.tratamiento === 'SI'
   };
 
   if (useMem) {
@@ -124,7 +163,7 @@ app.post('/api/ficha', async (req, res) => {
 
   const cols = Object.keys(row);
   const vals = Object.values(row);
-  const placeholders = cols.map((_, i) => `$${i+1}`).join(', ');
+  const placeholders = cols.map((_, i) => `$${i + 1}`).join(', ');
   const sql = `INSERT INTO fichas (${cols.join(', ')}) VALUES (${placeholders}) RETURNING id`;
 
   try {
@@ -177,10 +216,22 @@ app.get('/api/export/excel', async (req, res) => {
       motivacion: 'Motivación', meta_academica: 'Meta Académica',
       meta_academica_otro: 'Meta Académica (otro)', meta_laboral: 'Meta Laboral',
       meta_laboral_otro: 'Meta Laboral (otro)', declaracion: 'Declaración',
+      departamento: 'Departamento',
+      provincia: 'Provincia',
+      tema_capacitacion: 'Tema Capacitación',
+      tema_capacitacion_otro: 'Tema (otro)',
+      participaria_capacitacion: 'Participaría',
+      pagaria_certificacion: 'Pagaría Certificación',
+      discapacidad: '¿Presenta discapacidad?',
+      tipoDiscapacidad: 'Tipo de discapacidad',
+      tipoDiscapacidadOtro: 'Tipo de discapacidad (otro)',
+      enfermedad: '¿Padece enfermedad?',
+      detalleEnfermedad: 'Detalle de enfermedad',
+      tratamiento: '¿Está en tratamiento?'
     };
 
     const headerRow = Object.values(HEADERS);
-    const dataRows  = rows.map(r => Object.keys(HEADERS).map(k => r[k] ?? ''));
+    const dataRows = rows.map(r => Object.keys(HEADERS).map(k => r[k] ?? ''));
 
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([headerRow, ...dataRows]);
@@ -188,7 +239,7 @@ app.get('/api/export/excel', async (req, res) => {
     XLSX.utils.book_append_sheet(wb, ws, 'Fichas');
 
     const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
-    res.setHeader('Content-Disposition', `attachment; filename="Fichas_IESTP_${new Date().toISOString().slice(0,10)}.xlsx"`);
+    res.setHeader('Content-Disposition', `attachment; filename="Fichas_IESTP_${new Date().toISOString().slice(0, 10)}.xlsx"`);
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.send(buf);
   } catch (err) {
@@ -203,7 +254,7 @@ app.get('/api/stats', async (req, res) => {
       return res.json({ ok: true, total: memStore.length, hoy: 0 });
     }
     const total = await pool.query('SELECT COUNT(*) FROM fichas');
-    const hoy   = await pool.query("SELECT COUNT(*) FROM fichas WHERE creado_en::date = CURRENT_DATE");
+    const hoy = await pool.query("SELECT COUNT(*) FROM fichas WHERE creado_en::date = CURRENT_DATE");
     res.json({ ok: true, total: parseInt(total.rows[0].count), hoy: parseInt(hoy.rows[0].count) });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
@@ -213,8 +264,8 @@ app.get('/api/stats', async (req, res) => {
 // ── AUTH ──────────────────────────────────────────────────────
 // Credenciales (puedes cambiarlas aquí)
 const ADMIN_USERS = [
-  { usuario: 'admin',   password: 'iestp2026',  nombre: 'Administrador' },
-  { usuario: 'cabana',  password: 'bienestar1', nombre: 'Bienestar IESTP' },
+  { usuario: 'admin', password: 'iestp2026', nombre: 'Administrador' },
+  { usuario: 'cabana', password: 'bienestar1', nombre: 'Bienestar IESTP' },
 ];
 
 app.post('/api/login', (req, res) => {
