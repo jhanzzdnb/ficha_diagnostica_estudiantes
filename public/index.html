@@ -23,7 +23,18 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g
 .page-header{background:var(--navy);color:#fff;position:relative;overflow:hidden}
 .page-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.018) 40px,rgba(255,255,255,.018) 80px)}
 .header-inner{position:relative;display:flex;align-items:center;gap:1.4rem;padding:1.6rem 2rem;max-width:860px;margin:0 auto}
-.logo-circle{width:66px;height:66px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Merriweather',serif;font-size:1.1rem;font-weight:700;color:var(--navy);letter-spacing:-1px;box-shadow:0 0 0 4px rgba(200,146,42,.25)}
+.logo-circle {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  background: transparent !important; /* 🔥 clave */
+}
 .header-text .inst{font-size:.68rem;text-transform:uppercase;letter-spacing:2.5px;color:var(--gold-light);margin-bottom:.15rem}
 .header-text h1{font-family:'Merriweather',serif;font-size:1.2rem;font-weight:700;line-height:1.2;margin-bottom:.2rem}
 .header-text .sub{font-size:.78rem;color:rgba(255,255,255,.55);font-style:italic}
@@ -137,6 +148,25 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g
   .actions{flex-direction:column;align-items:stretch}
   .btn{justify-content:center}
 }
+
+.logo-circle {
+  width: 70px;
+  height: 70px;
+  min-width: 70px; /* evita que se encoja */
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff; /* opcional si tu logo tiene transparencia */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Imagen adaptable */
+.logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 🔥 llena el círculo */
+}
 </style>
 </head>
 <body>
@@ -144,7 +174,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g
 <!-- HEADER -->
 <header class="page-header">
   <div class="header-inner">
-    <div class="logo-circle">IES</div>
+    <div class="logo-circle">
+  <img src="img/IESTP_CABANA.png" alt="Logo IESTP">
+  </div>
     <div class="header-text">
       <div class="inst">Instituto de Educación Superior Tecnológico Público</div>
       <h1>IESTP Cabana — Ficha Diagnóstica del Estudiante</h1>
