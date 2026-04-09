@@ -12,7 +12,18 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);min-height:10
 body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 80px)}
 .card{background:var(--white);border-radius:var(--radius);padding:2.5rem 2rem;width:100%;max-width:380px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:var(--radius) var(--radius) 0 0}
-.logo{width:64px;height:64px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-family:'Merriweather',serif;font-size:1rem;font-weight:700;color:var(--gold)}
+.logo{
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  background: transparent !important; /* 🔥 clave */
+}
 .inst{text-align:center;font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--navy);opacity:.5;margin-bottom:.3rem}
 h1{text-align:center;font-family:'Merriweather',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.25rem}
 .sub{text-align:center;font-size:.78rem;color:#a0998a;margin-bottom:2rem}
@@ -32,7 +43,8 @@ h1{text-align:center;font-family:'Merriweather',serif;font-size:1.1rem;color:var
 </head>
 <body>
 <div class="card">
-  <div class="logo">IES</div>
+  <div class="logo">
+  <img src="img/IESTP_CABANA.png" alt="Logo IESTP">
   <div class="inst">Instituto de Educación Superior Tecnológico Público</div>
   <h1>Panel de Administración</h1>
   <div class="sub">IESTP Cabana · Área de Bienestar Estudiantil</div>
