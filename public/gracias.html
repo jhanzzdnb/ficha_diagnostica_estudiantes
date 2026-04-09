@@ -1,157 +1,376 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>¡Gracias! – IESTP Cabana</title>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<style>
-:root{--navy:#1a2744;--navy-mid:#243660;--gold:#c8922a;--gold-light:#e8b84b;--g100:#f5f4f0;--g200:#e8e6e0;--white:#fff;--green:#1e6e42;--red:#c0392b;--radius:12px}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>¡Gracias! – IESTP Cabana</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --navy: #1a2744;
+      --navy-mid: #243660;
+      --gold: #c8922a;
+      --gold-light: #e8b84b;
+      --g100: #f5f4f0;
+      --g200: #e8e6e0;
+      --white: #fff;
+      --green: #1e6e42;
+      --red: #c0392b;
+      --radius: 12px
+    }
 
-/* ── SCROLL HABILITADO EN MÓVIL ── */
-body{
-  font-family:'Source Sans 3',sans-serif;
-  background:var(--navy);
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  padding:2rem 1rem 4rem;
-  position:relative;
-  overflow-y:auto;
-  overflow-x:hidden;
-}
-body::before{
-  content:'';position:fixed;inset:0;
-  background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 80px);
-  pointer-events:none;z-index:0
-}
-@media(min-height:750px){
-  body{justify-content:center;}
-}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* Confetti fijo */
-.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:0}
-.dot{position:absolute;animation:fall linear infinite;opacity:.7}
-@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:.8}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+    /* ── SCROLL HABILITADO EN MÓVIL ── */
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1rem 4rem;
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
 
-/* Card */
-.card{background:var(--white);border-radius:var(--radius);padding:2.5rem 2rem;width:100%;max-width:520px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.45);text-align:center;z-index:1}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));border-radius:var(--radius) var(--radius) 0 0}
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255, 255, 255, .015) 40px, rgba(255, 255, 255, .015) 80px);
+      pointer-events: none;
+      z-index: 0
+    }
 
-.check-circle{width:80px;height:80px;background:linear-gradient(135deg,var(--green),#2ecc71);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.2rem;box-shadow:0 8px 24px rgba(30,110,66,.35);animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both}
-@keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+    @media(min-height:750px) {
+      body {
+        justify-content: center;
+      }
+    }
 
-.inst{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--navy);opacity:.45;margin-bottom:.4rem}
-h1{font-family:'Merriweather',serif;font-size:1.5rem;color:var(--navy);margin-bottom:.5rem;line-height:1.3}
-.tagline{font-size:.92rem;color:#6b6358;margin-bottom:.3rem;line-height:1.6}
-.nombre-badge{display:inline-block;background:var(--g100);border:1.5px solid var(--g200);border-radius:30px;padding:.35rem 1.1rem;font-size:.88rem;font-weight:600;color:var(--navy);margin:1rem 0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.divider{border:none;border-top:1.5px solid var(--g200);margin:1.3rem 0}
+    /* Confetti fijo */
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0
+    }
 
-.info-row{display:flex;align-items:flex-start;gap:.6rem;background:var(--g100);border-radius:8px;padding:.65rem 1rem;margin-bottom:.6rem;text-align:left}
-.info-row .ico{font-size:1.1rem;flex-shrink:0;margin-top:1px}
-.info-row .txt{font-size:.82rem;color:#6b6358;line-height:1.45}
-.info-row .txt strong{color:var(--navy)}
+    .dot {
+      position: absolute;
+      animation: fall linear infinite;
+      opacity: .7
+    }
 
-.export-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.6px;color:var(--navy);font-weight:600;margin-bottom:.85rem;margin-top:1.4rem}
+    @keyframes fall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: .8
+      }
 
-/* ── BOTONES — mismo estilo que index.html ── */
-.export-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
-.btn{
-  padding:.68rem 1.6rem;
-  border-radius:30px;
-  font-family:'Source Sans 3',sans-serif;
-  font-size:.87rem;
-  font-weight:600;
-  cursor:pointer;
-  border:none;
-  transition:transform .15s,box-shadow .15s;
-  display:flex;align-items:center;gap:.45rem;
-  white-space:nowrap;
-}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.2)}
-.btn:active{transform:translateY(0)}
-.btn-excel{background:var(--green);color:#fff}
-.btn-pdf{background:var(--red);color:#fff}
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0
+      }
+    }
 
-/* ── RESPONSIVE MÓVIL ── */
-@media(max-width:480px){
-  .card{padding:1.8rem 1.1rem}
-  h1{font-size:1.2rem}
-  .export-btns{flex-direction:column;align-items:stretch}
-  .btn{justify-content:center;padding:.75rem 1rem;font-size:.9rem}
-  .export-title{margin-top:1.2rem}
-}
+    /* Card */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 520px;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+      text-align: center;
+      z-index: 1
+    }
 
-.footer{margin-top:1.8rem;font-size:.72rem;color:rgba(255,255,255,.4);z-index:1;text-align:center;padding:0 1rem;line-height:1.6}
-</style>
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+      border-radius: var(--radius) var(--radius) 0 0
+    }
+
+    .check-circle {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--green), #2ecc71);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2.2rem;
+      box-shadow: 0 8px 24px rgba(30, 110, 66, .35);
+      animation: popIn .5s cubic-bezier(.175, .885, .32, 1.275) both
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0);
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .inst {
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--navy);
+      opacity: .45;
+      margin-bottom: .4rem
+    }
+
+    h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 1.5rem;
+      color: var(--navy);
+      margin-bottom: .5rem;
+      line-height: 1.3
+    }
+
+    .tagline {
+      font-size: .92rem;
+      color: #6b6358;
+      margin-bottom: .3rem;
+      line-height: 1.6
+    }
+
+    .nombre-badge {
+      display: inline-block;
+      background: var(--g100);
+      border: 1.5px solid var(--g200);
+      border-radius: 30px;
+      padding: .35rem 1.1rem;
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin: 1rem 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .divider {
+      border: none;
+      border-top: 1.5px solid var(--g200);
+      margin: 1.3rem 0
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: .6rem;
+      background: var(--g100);
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      margin-bottom: .6rem;
+      text-align: left
+    }
+
+    .info-row .ico {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px
+    }
+
+    .info-row .txt {
+      font-size: .82rem;
+      color: #6b6358;
+      line-height: 1.45
+    }
+
+    .info-row .txt strong {
+      color: var(--navy)
+    }
+
+    .export-title {
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--navy);
+      font-weight: 600;
+      margin-bottom: .85rem;
+      margin-top: 1.4rem
+    }
+
+    /* ── BOTONES — mismo estilo que index.html ── */
+    .export-btns {
+      display: flex;
+      gap: .75rem;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      padding: .68rem 1.6rem;
+      border-radius: 30px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .87rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform .15s, box-shadow .15s;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .2)
+    }
+
+    .btn:active {
+      transform: translateY(0)
+    }
+
+    .btn-excel {
+      background: var(--green);
+      color: #fff
+    }
+
+    .btn-pdf {
+      background: var(--red);
+      color: #fff
+    }
+
+    /* ── RESPONSIVE MÓVIL ── */
+    @media(max-width:480px) {
+      .card {
+        padding: 1.8rem 1.1rem
+      }
+
+      h1 {
+        font-size: 1.2rem
+      }
+
+      .export-btns {
+        flex-direction: column;
+        align-items: stretch
+      }
+
+      .btn {
+        justify-content: center;
+        padding: .75rem 1rem;
+        font-size: .9rem
+      }
+
+      .export-title {
+        margin-top: 1.2rem
+      }
+    }
+
+    .footer {
+      margin-top: 1.8rem;
+      font-size: .72rem;
+      color: rgba(255, 255, 255, .4);
+      z-index: 1;
+      text-align: center;
+      padding: 0 1rem;
+      line-height: 1.6
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="confetti" id="confetti"></div>
+  <div class="confetti" id="confetti"></div>
 
-<div class="card">
-  <div class="check-circle">✅</div>
-  <div class="inst">Instituto de Educación Superior Tecnológico Público</div>
-  <h1>¡Muchas gracias!</h1>
-  <p class="tagline">Tu ficha diagnóstica ha sido registrada exitosamente.<br>El Área de Bienestar Estudiantil del <strong>IESTP Cabana</strong> la revisará pronto.</p>
+  <div class="card">
+    <div class="check-circle">✅</div>
+    <div class="inst">Instituto de Educación Superior Tecnológico Público</div>
+    <h1>¡Muchas gracias!</h1>
+    <p class="tagline">Tu ficha diagnóstica ha sido registrada exitosamente.<br>El Área de Bienestar Estudiantil del
+      <strong>IESTP Cabana</strong> la revisará pronto.
+    </p>
 
-  <div class="nombre-badge" id="nombreBadge">👤 Cargando…</div>
+    <div class="nombre-badge" id="nombreBadge">👤 Cargando…</div>
 
-  <hr class="divider">
+    <hr class="divider">
 
-  <div class="info-row">
-    <span class="ico">🔒</span>
-    <div class="txt"><strong>Información confidencial:</strong> Tus datos son usados únicamente para fines de bienestar estudiantil y están protegidos.</div>
+    <div class="info-row">
+      <span class="ico">🔒</span>
+      <div class="txt"><strong>Información confidencial:</strong> Tus datos son usados únicamente para fines de
+        bienestar estudiantil y están protegidos.</div>
+    </div>
+    <div class="info-row">
+      <span class="ico">📋</span>
+      <div class="txt"><strong>Registro único:</strong> Solo se permite una ficha por persona. Si necesitas actualizar
+        tus datos, comunícate con el área de Bienestar.</div>
+    </div>
+    <div class="info-row">
+      <span class="ico">🕐</span>
+      <div class="txt">Registrado el: <strong id="fechaRegistro">—</strong></div>
+    </div>
+
+    <div class="export-title">💾 Descarga tu copia personal</div>
+    <div class="export-btns">
+      <button class="btn btn-excel" onclick="exportExcel()">📊 Guardar en Excel</button>
+      <button class="btn btn-pdf" onclick="exportPDF()">📄 Guardar en PDF</button>
+    </div>
   </div>
-  <div class="info-row">
-    <span class="ico">📋</span>
-    <div class="txt"><strong>Registro único:</strong> Solo se permite una ficha por persona. Si necesitas actualizar tus datos, comunícate con el área de Bienestar.</div>
-  </div>
-  <div class="info-row">
-    <span class="ico">🕐</span>
-    <div class="txt">Registrado el: <strong id="fechaRegistro">—</strong></div>
-  </div>
 
-  <div class="export-title">💾 Descarga tu copia personal</div>
-  <div class="export-btns">
-    <button class="btn btn-excel" onclick="exportExcel()">📊 Guardar en Excel</button>
-    <button class="btn btn-pdf"   onclick="exportPDF()">📄 Guardar en PDF</button>
-  </div>
-</div>
+  <div class="footer">🏫 IESTP Cabana · Área de Bienestar Estudiantil · Sistema de Seguimiento Estudiantil</div>
 
-<div class="footer">🏫 IESTP Cabana · Área de Bienestar Estudiantil · Sistema de Seguimiento Estudiantil</div>
+  <script>
+    // ── DATOS ─────────────────────────────────────────────────────
+    const raw = sessionStorage.getItem('fichaEnviada');
+    if (!raw) { window.location.href = '/'; }
+    const data = JSON.parse(raw || '{}');
 
-<script>
-// ── DATOS ─────────────────────────────────────────────────────
-const raw = sessionStorage.getItem('fichaEnviada');
-if (!raw) { window.location.href = '/'; }
-const data = JSON.parse(raw || '{}');
+    document.getElementById('nombreBadge').textContent = '👤 ' + (data.nombres || 'Estudiante');
+    document.getElementById('fechaRegistro').textContent = new Date().toLocaleString('es-PE', {
+      day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
 
-document.getElementById('nombreBadge').textContent = '👤 ' + (data.nombres || 'Estudiante');
-document.getElementById('fechaRegistro').textContent = new Date().toLocaleString('es-PE',{
-  day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'
-});
+    // ── CONFETTI ──────────────────────────────────────────────────
+    (function () {
+      const colors = ['#c8922a', '#e8b84b', '#1a2744', '#1e6e42', '#c0392b', '#3498db'];
+      const c = document.getElementById('confetti');
+      for (let i = 0; i < 35; i++) {
+        const d = document.createElement('div');
+        d.className = 'dot';
+        const s = Math.random() * 10 + 5;
+        d.style.cssText = `width:${s}px;height:${s}px;left:${Math.random() * 100}%;top:${Math.random() * -20}%;background:${colors[Math.floor(Math.random() * colors.length)]};animation-duration:${Math.random() * 3 + 2}s;animation-delay:${Math.random() * 2}s;border-radius:${Math.random() > .5 ? '50%' : '3px'}`;
+        c.appendChild(d);
+      }
+    })();
 
-// ── CONFETTI ──────────────────────────────────────────────────
-(function(){
-  const colors=['#c8922a','#e8b84b','#1a2744','#1e6e42','#c0392b','#3498db'];
-  const c=document.getElementById('confetti');
-  for(let i=0;i<35;i++){
-    const d=document.createElement('div');
-    d.className='dot';
-    const s=Math.random()*10+5;
-    d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*-20}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*2}s;border-radius:${Math.random()>.5?'50%':'3px'}`;
-    c.appendChild(d);
-  }
-})();
-
-// ── LABELS (sincronizado con index.html) ──────────────────────
-const LABELS = {
+    // ── LABELS (sincronizado con index.html) ──────────────────────
+    const LABELS = {
       nombres: 'Apellidos y Nombres', dni: 'DNI', fechaNacimiento: 'Fecha Nacimiento', edad: 'Edad',
       sexo: 'Sexo', estadoCivil: 'Estado Civil', programa: 'Programa', condicion: 'Condición',
       ciclo: 'Ciclo', turno: 'Turno', celular: 'Celular/Teléfono',
@@ -179,82 +398,96 @@ const LABELS = {
       pagariaCertificacion: '¿Pagaría por certificación?',
     };
 
-// ── EXPORT EXCEL ──────────────────────────────────────────────
-function exportExcel(){
-  const keys=Object.keys(LABELS);
-  const wb=XLSX.utils.book_new();
-  const ws=XLSX.utils.aoa_to_sheet([keys.map(k=>LABELS[k]),keys.map(k=>data[k]||'')]);
-  ws['!cols']=keys.map(()=>({wch:26}));
-  XLSX.utils.book_append_sheet(wb,ws,'Mi Ficha');
-  XLSX.writeFile(wb,`MiFicha_${(data.nombres||'Estudiante').replace(/[^a-zA-Z0-9]/g,'_')}_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
+    // ── EXPORT EXCEL ──────────────────────────────────────────────
+    function exportExcel() {
+      const keys = Object.keys(LABELS);
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet([keys.map(k => LABELS[k]), keys.map(k => data[k] || '')]);
+      ws['!cols'] = keys.map(() => ({ wch: 26 }));
+      XLSX.utils.book_append_sheet(wb, ws, 'Mi Ficha');
+      XLSX.writeFile(wb, `MiFicha_${(data.nombres || 'Estudiante').replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    }
 
-// ── EXPORT PDF (igual a index.html) ──────────────────────────
-function exportPDF(){
-  const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({unit:'mm',format:'a4'});
-  const pageW=210,M=15,cW=pageW-M*2;
-  let y=0;
-  const NAVY=[26,39,68],GOLD=[200,146,42],WHITE=[255,255,255],LIGHT=[245,244,240],DARK=[58,52,44];
-  function chk(n){if(y+n>278){doc.addPage();y=15;}}
+    // ── EXPORT PDF (igual a index.html) ──────────────────────────
+    function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pageW = 210, M = 15, cW = pageW - M * 2;
+      let y = 0;
+      const NAVY = [26, 39, 68], GOLD = [200, 146, 42], WHITE = [255, 255, 255], LIGHT = [245, 244, 240], DARK = [58, 52, 44];
+      function chk(n) { if (y + n > 278) { doc.addPage(); y = 15; } }
 
-  // Header
-  doc.setFillColor(...NAVY);doc.rect(0,0,pageW,30,'F');
-  doc.setFillColor(...GOLD);doc.rect(0,30,pageW,2,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...WHITE);
-  doc.text('IESTP CABANA',M,12);
-  doc.setFont('helvetica','normal');doc.setFontSize(8.5);
-  doc.text('Instituto de Educación Superior Tecnológico Público',M,18);
-  doc.setFont('helvetica','bold');doc.setFontSize(11);
-  doc.text('FICHA DIAGNÓSTICA DEL ESTUDIANTE',M,25);
-  doc.setFontSize(7.5);doc.setFont('helvetica','normal');
-  doc.text('Fecha: '+new Date().toLocaleDateString('es-PE'),pageW-M,25,{align:'right'});
-  y=38;
+      // Header con logo
+      doc.setFillColor(...NAVY); doc.rect(0, 0, pageW, 32, 'F');
+      doc.setFillColor(...GOLD); doc.rect(0, 32, pageW, 1.5, 'F');
 
-  const SECS=[
-    {t:'SECCIÓN 1: Datos Generales y Académicos',f:['nombres','dni','celular','fechaNacimiento','edad','sexo','estadoCivil','programa','condicion','ciclo','turno']},
-    {t:'SECCIÓN 2: Ubicación y Situación Económica',f:['direccion','distrito','ingresoFamiliar','trabaja','ocupacion']},
-    {t:'SECCIÓN 3: Apoyo y Necesidades',f:['recibeApoyo','tipoApoyo','tipoApoyoOtro','necesidades']},
-    {t:'SECCIÓN 4: Salud y Bienestar Psicológico',f:['seguroSalud','estadoEmocional','consejeria','discapacidad','tipoDiscapacidad','tipoDiscapacidadOtro','enfermedad','detalleEnfermedad','tratamiento']},
-    {t:'SECCIÓN 5: Expectativas y Metas',f:['motivacion','metaAcademica','metaAcademicaOtro','metaLaboral','metaLaboralOtro']},
-    {t:'SECCIÓN 6: Capacitación y Desarrollo Profesional',f:['temaCapacitacion','temaCapacitacionOtro','participariaCapacitacion','pagariaCertificacion']},
-    {t:'SECCIÓN 7: Declaración',f:['declaracion']},
-  ];
+      // Logo
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 100; canvas.height = 100;
+        const ctx = canvas.getContext('2d');
+        const logoTemp = new Image();
+        logoTemp.src = '/img/IESTP_CABANA.png';
+        if (logoTemp.complete) {
+          ctx.drawImage(logoTemp, 0, 0, 100, 100);
+          doc.addImage(canvas.toDataURL('image/png'), 'PNG', M, 3, 25, 25);
+        }
+      } catch (e) { }
 
-  SECS.forEach(sec=>{
-    chk(16);
-    doc.setFillColor(...NAVY);doc.roundedRect(M,y,cW,8.5,1,1,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(...WHITE);
-    doc.text(sec.t,M+3,y+5.8);y+=12;
-    sec.f.forEach(key=>{
-      const val=data[key];
-      if(!val||val==='')return;
-      const lbl=LABELS[key]||key;
-      const lines=doc.splitTextToSize(String(val),cW-52);
-      const rh=Math.max(8,lines.length*4.8+3);
-      chk(rh+2);
-      doc.setFillColor(...LIGHT);doc.rect(M,y,cW,rh,'F');
-      doc.setDrawColor(220,218,212);doc.rect(M,y,cW,rh,'S');
-      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(...NAVY);
-      doc.text(lbl+':',M+3,y+5.5);
-      doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...DARK);
-      doc.text(lines,M+52,y+5.5);
-      y+=rh+1;
-    });
-    y+=4;
-  });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5); doc.setTextColor(...GOLD);
+      doc.text('INSTITUTO DE EDUCACIÓN SUPERIOR TECNOLÓGICO PÚBLICO - CABANA', M + 29, 10);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(...WHITE);
+      doc.text('Ficha Diagnóstica del Estudiante', M + 29, 19);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(180, 170, 150);
+      doc.text('Documento académico confidencial · Área de Bienestar Estudiantil', M + 29, 26);
+      doc.setFontSize(7); doc.setTextColor(...GOLD);
+      doc.text('Fecha: ' + new Date().toLocaleDateString('es-PE'), pageW - M, 10, { align: 'right' });
+      y = 38;
 
-  // Footer
-  const tp=doc.internal.getNumberOfPages();
-  for(let i=1;i<=tp;i++){
-    doc.setPage(i);doc.setFillColor(...NAVY);doc.rect(0,287,pageW,10,'F');
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(...WHITE);
-    doc.text('IESTP Cabana · Bienestar Estudiantil · Documento confidencial',M,293);
-    doc.text(`Pág. ${i}/${tp}`,pageW-M,293,{align:'right'});
-  }
+      const SECS = [
+        { t: 'SECCIÓN 1: Datos Generales y Académicos', f: ['nombres', 'dni', 'celular', 'fechaNacimiento', 'edad', 'sexo', 'estadoCivil', 'programa', 'condicion', 'ciclo', 'turno'] },
+        { t: 'SECCIÓN 2: Ubicación y Situación Económica', f: ['direccion', 'distrito', 'ingresoFamiliar', 'trabaja', 'ocupacion'] },
+        { t: 'SECCIÓN 3: Apoyo y Necesidades', f: ['recibeApoyo', 'tipoApoyo', 'tipoApoyoOtro', 'necesidades'] },
+        { t: 'SECCIÓN 4: Salud y Bienestar Psicológico', f: ['seguroSalud', 'estadoEmocional', 'consejeria', 'discapacidad', 'tipoDiscapacidad', 'tipoDiscapacidadOtro', 'enfermedad', 'detalleEnfermedad', 'tratamiento'] },
+        { t: 'SECCIÓN 5: Expectativas y Metas', f: ['motivacion', 'metaAcademica', 'metaAcademicaOtro', 'metaLaboral', 'metaLaboralOtro'] },
+        { t: 'SECCIÓN 6: Capacitación y Desarrollo Profesional', f: ['temaCapacitacion', 'temaCapacitacionOtro', 'participariaCapacitacion', 'pagariaCertificacion'] },
+        { t: 'SECCIÓN 7: Declaración', f: ['declaracion'] },
+      ];
 
-  doc.save(`MiFicha_${(data.nombres||'Estudiante').replace(/[^a-zA-Z0-9]/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`);
-}
-</script>
+      SECS.forEach(sec => {
+        chk(16);
+        doc.setFillColor(...NAVY); doc.roundedRect(M, y, cW, 8.5, 1, 1, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...WHITE);
+        doc.text(sec.t, M + 3, y + 5.8); y += 12;
+        sec.f.forEach(key => {
+          const val = data[key];
+          if (!val || val === '') return;
+          const lbl = LABELS[key] || key;
+          const lines = doc.splitTextToSize(String(val), cW - 52);
+          const rh = Math.max(8, lines.length * 4.8 + 3);
+          chk(rh + 2);
+          doc.setFillColor(...LIGHT); doc.rect(M, y, cW, rh, 'F');
+          doc.setDrawColor(220, 218, 212); doc.rect(M, y, cW, rh, 'S');
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...NAVY);
+          doc.text(lbl + ':', M + 3, y + 5.5);
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...DARK);
+          doc.text(lines, M + 52, y + 5.5);
+          y += rh + 1;
+        });
+        y += 4;
+      });
+
+      // Footer
+      const tp = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= tp; i++) {
+        doc.setPage(i); doc.setFillColor(...NAVY); doc.rect(0, 287, pageW, 10, 'F');
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...WHITE);
+        doc.text('IESTP Cabana · Bienestar Estudiantil · Documento confidencial', M, 293);
+        doc.text(`Pág. ${i}/${tp}`, pageW - M, 293, { align: 'right' });
+      }
+
+      doc.save(`MiFicha_${(data.nombres || 'Estudiante').replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
+  </script>
 </body>
 </html>

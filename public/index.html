@@ -1446,17 +1446,31 @@
       const NAVY = [26, 39, 68], GOLD = [200, 146, 42], WHITE = [255, 255, 255], LIGHT = [245, 244, 240], DARK = [58, 52, 44];
       function chk(n) { if (y + n > 278) { doc.addPage(); y = 15; } }
       function hdr() {
-        doc.setFillColor(...NAVY); doc.rect(0, 0, pageW, 28, 'F');
-        doc.setFillColor(...GOLD); doc.rect(0, 28, pageW, 1.5, 'F');
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(...WHITE);
-        doc.text('IESTP CABANA', M, 11);
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
-        doc.text('Instituto de Educación Superior Tecnológico Público', M, 17);
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
-        doc.text('FICHA DIAGNÓSTICA DEL ESTUDIANTE', M, 24);
-        doc.setFontSize(7.5); doc.setFont('helvetica', 'normal');
-        doc.text('Fecha: ' + new Date().toLocaleDateString('es-PE'), pageW - M, 24, { align: 'right' });
-        y = 35;
+        doc.setFillColor(...NAVY); doc.rect(0, 0, pageW, 32, 'F');
+        doc.setFillColor(...GOLD); doc.rect(0, 32, pageW, 1.5, 'F');
+
+        // ── LOGO ──
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = 100; canvas.height = 100;
+          const ctx = canvas.getContext('2d');
+          const logoEl = document.querySelector('.logo-circle img');
+          if (logoEl && logoEl.complete) {
+            ctx.drawImage(logoEl, 0, 0, 100, 100);
+            doc.addImage(canvas.toDataURL('image/png'), 'PNG', M, 3, 25, 25);
+          }
+        } catch (e) { }
+
+        // ── TEXTO ──
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5); doc.setTextColor(...GOLD);
+        doc.text('INSTITUTO DE EDUCACIÓN SUPERIOR TECNOLÓGICO PÚBLICO - CABANA', M + 29, 10);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(...WHITE);
+        doc.text('Ficha Diagnóstica del Estudiante', M + 29, 19);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(180, 170, 150);
+        doc.text('Documento académico confidencial · Área de Bienestar Estudiantil', M + 29, 26);
+        doc.setFontSize(7); doc.setTextColor(...GOLD);
+        doc.text('Fecha: ' + new Date().toLocaleDateString('es-PE'), pageW - M, 10, { align: 'right' });
+        y = 38;
       }
       const SECS = [
         { t: 'SECCIÓN 1: Datos Generales y Académicos', f: ['nombres', 'dni', 'celular', 'fechaNacimiento', 'edad', 'sexo', 'estadoCivil', 'programa', 'condicion', 'ciclo', 'turno'] },
