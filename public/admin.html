@@ -1,222 +1,531 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Panel Admin – Fichas IESTP Cabana</title>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{--navy:#1a2744;--navy-mid:#243660;--gold:#c8922a;--gold-light:#e8b84b;--g100:#f5f4f0;--g200:#e8e6e0;--g400:#a0998a;--g800:#3a342c;--white:#fff;--green:#1e6e42;--red:#c0392b;--radius:8px}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g800);font-size:14px}
-.header{background:var(--navy);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.header-left h1{font-family:'Merriweather',serif;font-size:1rem}
-.header-left .sub{font-size:.75rem;color:rgba(255,255,255,.55);margin-top:.1rem}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:1rem}
-.user-badge{font-size:.78rem;color:var(--gold-light);display:flex;align-items:center;gap:.35rem}
-.btn-logout{padding:.38rem .9rem;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:.75rem;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:background .15s}
-.btn-logout:hover{background:rgba(255,255,255,.2)}
-.gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),transparent)}
-.content{max-width:1200px;margin:1.5rem auto;padding:0 1rem}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
-.stat-card{background:var(--white);border-radius:var(--radius);padding:1rem 1.2rem;box-shadow:0 2px 10px rgba(26,39,68,.08);border-top:3px solid var(--gold)}
-.stat-card .val{font-size:2rem;font-weight:700;color:var(--navy);font-family:'Merriweather',serif}
-.stat-card .lbl{font-size:.73rem;color:var(--g400);text-transform:uppercase;letter-spacing:.5px;margin-top:.2rem}
-.toolbar{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
-.btn{padding:.55rem 1.2rem;border-radius:30px;font-family:'Source Sans 3',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:.4rem;transition:opacity .15s,transform .15s}
-.btn:hover{opacity:.88;transform:translateY(-1px)}
-.btn-green{background:var(--green);color:#fff}
-.btn-navy{background:var(--navy);color:#fff}
-.search{flex:1;min-width:200px;padding:.5rem .9rem;border:1.5px solid var(--g200);border-radius:30px;font-family:'Source Sans 3',sans-serif;font-size:.85rem;outline:none}
-.search:focus{border-color:var(--gold)}
-.filter-row{display:flex;gap:.6rem;margin-bottom:.8rem;flex-wrap:wrap}
-.filter-select{padding:.42rem .8rem;border:1.5px solid var(--g200);border-radius:20px;font-family:'Source Sans 3',sans-serif;font-size:.82rem;outline:none;background:#fff;cursor:pointer}
-.filter-select:focus{border-color:var(--gold)}
-.table-wrap{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 10px rgba(26,39,68,.08);overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:1000px}
-thead{background:var(--navy-mid)}
-thead th{color:#fff;padding:.6rem .85rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;font-weight:600;text-align:left;white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--g200);transition:background .12s}
-tbody tr:hover{background:var(--g100)}
-tbody td{padding:.55rem .85rem;font-size:.82rem;color:var(--g800);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.badge{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.7rem;font-weight:600}
-.badge-ciclo{background:#cce5ff;color:#004085}
-.badge-si{background:#d4edda;color:#155724}
-.badge-no{background:#f8d7da;color:#721c24}
-.empty{text-align:center;padding:3rem;color:var(--g400);font-style:italic}
-.pager{display:flex;justify-content:center;gap:.5rem;padding:1rem;flex-wrap:wrap}
-.pager button{padding:.35rem .75rem;border-radius:20px;border:1.5px solid var(--g200);background:#fff;cursor:pointer;font-size:.8rem;transition:all .15s}
-.pager button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.pager button:hover:not(.active){border-color:var(--gold)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Panel Admin – Fichas IESTP Cabana</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2744;
+      --navy-mid: #243660;
+      --gold: #c8922a;
+      --gold-light: #e8b84b;
+      --g100: #f5f4f0;
+      --g200: #e8e6e0;
+      --g400: #a0998a;
+      --g800: #3a342c;
+      --white: #fff;
+      --green: #1e6e42;
+      --red: #c0392b;
+      --radius: 8px
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--g100);
+      color: var(--g800);
+      font-size: 14px
+    }
+
+    .header {
+      background: var(--navy);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem
+    }
+
+    .header-left h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 1rem
+    }
+
+    .header-left .sub {
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .55);
+      margin-top: .1rem
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 1rem
+    }
+
+    .user-badge {
+      font-size: .78rem;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: .35rem
+    }
+
+    .btn-logout {
+      padding: .38rem .9rem;
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 20px;
+      font-size: .75rem;
+      cursor: pointer;
+      font-family: 'Source Sans 3', sans-serif;
+      transition: background .15s
+    }
+
+    .btn-logout:hover {
+      background: rgba(255, 255, 255, .2)
+    }
+
+    .gold-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent)
+    }
+
+    .content {
+      max-width: 1200px;
+      margin: 1.5rem auto;
+      padding: 0 1rem
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      box-shadow: 0 2px 10px rgba(26, 39, 68, .08);
+      border-top: 3px solid var(--gold)
+    }
+
+    .stat-card .val {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--navy);
+      font-family: 'Merriweather', serif
+    }
+
+    .stat-card .lbl {
+      font-size: .73rem;
+      color: var(--g400);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-top: .2rem
+    }
+
+    .toolbar {
+      display: flex;
+      gap: .75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .btn {
+      padding: .55rem 1.2rem;
+      border-radius: 30px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: opacity .15s, transform .15s
+    }
+
+    .btn:hover {
+      opacity: .88;
+      transform: translateY(-1px)
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: #fff
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff
+    }
+
+    .search {
+      flex: 1;
+      min-width: 200px;
+      padding: .5rem .9rem;
+      border: 1.5px solid var(--g200);
+      border-radius: 30px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .85rem;
+      outline: none
+    }
+
+    .search:focus {
+      border-color: var(--gold)
+    }
+
+    .filter-row {
+      display: flex;
+      gap: .6rem;
+      margin-bottom: .8rem;
+      flex-wrap: wrap
+    }
+
+    .filter-select {
+      padding: .42rem .8rem;
+      border: 1.5px solid var(--g200);
+      border-radius: 20px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .82rem;
+      outline: none;
+      background: #fff;
+      cursor: pointer
+    }
+
+    .filter-select:focus {
+      border-color: var(--gold)
+    }
+
+    .table-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 10px rgba(26, 39, 68, .08);
+      overflow-x: auto
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px
+    }
+
+    thead {
+      background: var(--navy-mid)
+    }
+
+    thead th {
+      color: #fff;
+      padding: .6rem .85rem;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      font-weight: 600;
+      text-align: left;
+      white-space: nowrap
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--g200);
+      transition: background .12s
+    }
+
+    tbody tr:hover {
+      background: var(--g100)
+    }
+
+    tbody td {
+      padding: .55rem .85rem;
+      font-size: .82rem;
+      color: var(--g800);
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .badge {
+      display: inline-block;
+      padding: .15rem .55rem;
+      border-radius: 20px;
+      font-size: .7rem;
+      font-weight: 600
+    }
+
+    .badge-ciclo {
+      background: #cce5ff;
+      color: #004085
+    }
+
+    .badge-si {
+      background: #d4edda;
+      color: #155724
+    }
+
+    .badge-no {
+      background: #f8d7da;
+      color: #721c24
+    }
+
+    .empty {
+      text-align: center;
+      padding: 3rem;
+      color: var(--g400);
+      font-style: italic
+    }
+
+    .pager {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      padding: 1rem;
+      flex-wrap: wrap
+    }
+
+    .pager button {
+      padding: .35rem .75rem;
+      border-radius: 20px;
+      border: 1.5px solid var(--g200);
+      background: #fff;
+      cursor: pointer;
+      font-size: .8rem;
+      transition: all .15s
+    }
+
+    .pager button.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
+
+    .pager button:hover:not(.active) {
+      border-color: var(--gold)
+    }
+  </style>
 </head>
+
 <body>
 
-<script>
-if (sessionStorage.getItem('adminAuth') !== 'ok') {
-  window.location.href = '/login';
-}
-</script>
-
-<div class="header">
-  <div class="header-left">
-    <h1>🔐 Panel de Administración – Fichas Diagnósticas</h1>
-    <div class="sub">IESTP Cabana · Área de Bienestar Estudiantil y Psicología</div>
-  </div>
-  <div class="header-right">
-    <div class="user-badge">👤 <span id="userLabel">Admin</span></div>
-    <a href="/" style="color:rgba(255,255,255,.6);font-size:.78rem;text-decoration:none">← Formulario</a>
-    <button class="btn-logout" onclick="logout()">🚪 Salir</button>
-  </div>
-</div>
-<div class="gold-bar"></div>
-
-<div class="content">
-  <div class="stats-row">
-    <div class="stat-card"><div class="val" id="sTotal">…</div><div class="lbl">📋 Total Fichas</div></div>
-    <div class="stat-card"><div class="val" id="sHoy">…</div><div class="lbl">📅 Registradas Hoy</div></div>
-    <div class="stat-card"><div class="val" id="sPrograma">…</div><div class="lbl">🏫 Programas</div></div>
-    <div class="stat-card"><div class="val" id="sConsejeria">…</div><div class="lbl">🧘 Necesitan Consejería</div></div>
-  </div>
-
-  <div class="filter-row">
-    <select class="filter-select" id="filtroPrograma" onchange="renderTable()">
-      <option value="">🏫 Todos los programas</option>
-      <option value="Arquitectura de Plataformas y Servicios de TI">Arquitectura TI</option>
-      <option value="Industrias de Alimentos y Bebidas">Alimentos y Bebidas</option>
-      <option value="Computación e Informática">Computación</option>
-      <option value="Industrias Alimentarias">Industrias Alimentarias</option>
-    </select>
-    <select class="filter-select" id="filtroCiclo" onchange="renderTable()">
-      <option value="">📚 Todos los ciclos</option>
-      <option value="I">I Ciclo</option><option value="II">II Ciclo</option>
-      <option value="III">III Ciclo</option><option value="IV">IV Ciclo</option>
-      <option value="V">V Ciclo</option><option value="VI">VI Ciclo</option>
-    </select>
-    <select class="filter-select" id="filtroTurno" onchange="renderTable()">
-      <option value="">🕐 Todos los turnos</option>
-      <option value="Mañana">Mañana</option>
-      <option value="Tarde">Tarde</option>
-      <option value="Noche">Noche</option>
-    </select>
-    <select class="filter-select" id="filtroConsejeria" onchange="renderTable()">
-      <option value="">🧘 Consejería: Todos</option>
-      <option value="Sí">Necesitan consejería</option>
-      <option value="No">No necesitan</option>
-    </select>
-  </div>
-
-  <div class="toolbar">
-    <input class="search" type="text" id="searchInput" placeholder="🔍 Buscar por nombre, DNI, distrito…" oninput="renderTable()">
-    <button class="btn btn-green" onclick="exportExcel()">📊 Exportar Excel</button>
-    <button class="btn btn-navy" onclick="loadData()">🔄 Actualizar</button>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th><th>Fecha</th><th>Nombres</th><th>DNI</th><th>Celular</th>
-          <th>Programa</th><th>Ciclo</th><th>Turno</th><th>Distrito</th>
-          <th>Ingreso Familiar</th><th>Trabaja</th><th>Seguro</th>
-          <th>Estado Em.</th><th>Consejería</th><th>Meta Acad.</th><th>Meta Lab.</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <tr><td colspan="16" class="empty">Cargando datos…</td></tr>
-      </tbody>
-    </table>
-    <div class="pager" id="pager"></div>
-  </div>
-</div>
-
-<script>
-document.getElementById('userLabel').textContent = sessionStorage.getItem('adminUser') || 'Admin';
-
-let allData = [], page = 1;
-const PER = 15;
-
-function logout() {
-  if (confirm('¿Deseas cerrar sesión?')) {
-    sessionStorage.removeItem('adminAuth');
-    sessionStorage.removeItem('adminUser');
-    window.location.href = '/login';
-  }
-}
-
-async function loadData() {
-  try {
-    const res = await fetch('/api/fichas');
-    const d   = await res.json();
-    if (d.ok) {
-      allData = d.data;
-      document.getElementById('sTotal').textContent = d.total;
-      const today = new Date().toISOString().slice(0,10);
-      document.getElementById('sHoy').textContent = d.data.filter(r=>(r.creado_en||'').slice(0,10)===today).length;
-      document.getElementById('sPrograma').textContent = new Set(d.data.map(r=>r.programa).filter(Boolean)).size;
-      document.getElementById('sConsejeria').textContent = d.data.filter(r=>r.consejeria==='Sí').length;
-      page = 1; renderTable();
+  <script>
+    if (sessionStorage.getItem('adminAuth') !== 'ok') {
+      window.location.href = '/login';
     }
-  } catch {
-    document.getElementById('tableBody').innerHTML = '<tr><td colspan="16" class="empty">❌ Error al cargar datos.</td></tr>';
-  }
-}
+  </script>
 
-function renderTable() {
-  const q  = document.getElementById('searchInput').value.toLowerCase();
-  const fP = document.getElementById('filtroPrograma').value;
-  const fC = document.getElementById('filtroCiclo').value;
-  const fT = document.getElementById('filtroTurno').value;
-  const fCo= document.getElementById('filtroConsejeria').value;
+  <div class="header">
+    <div class="header-left">
+      <h1>🔐 Panel de Administración – Fichas Diagnósticas</h1>
+      <div class="sub">IESTP Cabana · Área de Bienestar Estudiantil y Psicología</div>
+    </div>
+    <div class="header-right">
+      <div class="user-badge">👤 <span id="userLabel">Admin</span></div>
+      <a href="/" style="color:rgba(255,255,255,.6);font-size:.78rem;text-decoration:none">← Formulario</a>
+      <button class="btn-logout" onclick="logout()">🚪 Salir</button>
+    </div>
+  </div>
+  <div class="gold-bar"></div>
 
-  const filtered = allData.filter(r =>
-    ((r.nombres||'').toLowerCase().includes(q)||(r.dni||'').includes(q)||(r.distrito||'').toLowerCase().includes(q)) &&
-    (!fP || r.programa===fP) && (!fC || r.ciclo===fC) &&
-    (!fT || r.turno===fT)    && (!fCo|| r.consejeria===fCo)
-  );
+  <div class="content">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="val" id="sTotal">…</div>
+        <div class="lbl">📋 Total Fichas</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" id="sHoy">…</div>
+        <div class="lbl">📅 Registradas Hoy</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" id="sPrograma">…</div>
+        <div class="lbl">🏫 Programas</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" id="sConsejeria">…</div>
+        <div class="lbl">🧘 Necesitan Consejería</div>
+      </div>
+    </div>
 
-  const pages = Math.ceil(filtered.length/PER)||1;
-  if (page>pages) page=pages;
-  const slice = filtered.slice((page-1)*PER, page*PER);
-  const tbody = document.getElementById('tableBody');
+    <div class="filter-row">
+      <select class="filter-select" id="filtroPrograma" onchange="renderTable()">
+        <option value="">🏫 Todos los programas</option>
+        <option value="Arquitectura de Plataformas y Servicios de TI">Arquitectura TI</option>
+        <option value="Industrias de Alimentos y Bebidas">Alimentos y Bebidas</option>
+        <option value="Computación e Informática">Computación</option>
+        <option value="Industrias Alimentarias">Industrias Alimentarias</option>
+      </select>
+      <select class="filter-select" id="filtroCiclo" onchange="renderTable()">
+        <option value="">📚 Todos los ciclos</option>
+        <option value="I">I Ciclo</option>
+        <option value="II">II Ciclo</option>
+        <option value="III">III Ciclo</option>
+        <option value="IV">IV Ciclo</option>
+        <option value="V">V Ciclo</option>
+        <option value="VI">VI Ciclo</option>
+      </select>
+      <select class="filter-select" id="filtroTurno" onchange="renderTable()">
+        <option value="">🕐 Todos los turnos</option>
+        <option value="Mañana">Mañana</option>
+        <option value="Tarde">Tarde</option>
+        <option value="Noche">Noche</option>
+      </select>
+      <select class="filter-select" id="filtroConsejeria" onchange="renderTable()">
+        <option value="">🧘 Consejería: Todos</option>
+        <option value="Sí">Necesitan consejería</option>
+        <option value="No">No necesitan</option>
+      </select>
+    </div>
 
-  if (!slice.length) {
-    tbody.innerHTML='<tr><td colspan="16" class="empty">Sin resultados.</td></tr>';
-    document.getElementById('pager').innerHTML=''; return;
-  }
+    <div class="toolbar">
+      <input class="search" type="text" id="searchInput" placeholder="🔍 Buscar por nombre, DNI, distrito…"
+        oninput="renderTable()">
+      <button class="btn btn-green" onclick="exportExcel()">📊 Exportar Excel</button>
+      <button class="btn btn-navy" onclick="loadData()">🔄 Actualizar</button>
+    </div>
 
-  tbody.innerHTML = slice.map(r=>`
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Nombres</th>
+            <th>DNI</th>
+            <th>Celular</th>
+            <th>Programa</th>
+            <th>Ciclo</th>
+            <th>Turno</th>
+            <th>Distrito</th>
+            <th>Ingreso Familiar</th>
+            <th>Trabaja</th>
+            <th>Seguro</th>
+            <th>Estado Em.</th>
+            <th>Consejería</th>
+            <th>Meta Acad.</th>
+            <th>Meta Lab.</th>
+            <th>Discap.</th>
+            <th>Enfermedad</th>
+            <th>Capacitación</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr>
+            <td colspan="19" class="empty">Cargando datos…</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pager" id="pager"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('userLabel').textContent = sessionStorage.getItem('adminUser') || 'Admin';
+
+    let allData = [], page = 1;
+    const PER = 15;
+
+    function logout() {
+      if (confirm('¿Deseas cerrar sesión?')) {
+        sessionStorage.removeItem('adminAuth');
+        sessionStorage.removeItem('adminUser');
+        window.location.href = '/login';
+      }
+    }
+
+    async function loadData() {
+      try {
+        const res = await fetch('/api/fichas');
+        const d = await res.json();
+        if (d.ok) {
+          allData = d.data;
+          document.getElementById('sTotal').textContent = d.total;
+          const today = new Date().toISOString().slice(0, 10);
+          document.getElementById('sHoy').textContent = d.data.filter(r => (r.creado_en || '').slice(0, 10) === today).length;
+          document.getElementById('sPrograma').textContent = new Set(d.data.map(r => r.programa).filter(Boolean)).size;
+          document.getElementById('sConsejeria').textContent = d.data.filter(r => r.consejeria === 'Sí').length;
+          page = 1; renderTable();
+        }
+      } catch {
+        document.getElementById('tableBody').innerHTML = '<tr><td colspan="16" class="empty">❌ Error al cargar datos.</td></tr>';
+      }
+    }
+
+    function renderTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const fP = document.getElementById('filtroPrograma').value;
+      const fC = document.getElementById('filtroCiclo').value;
+      const fT = document.getElementById('filtroTurno').value;
+      const fCo = document.getElementById('filtroConsejeria').value;
+
+      const filtered = allData.filter(r =>
+        ((r.nombres || '').toLowerCase().includes(q) || (r.dni || '').includes(q) || (r.distrito || '').toLowerCase().includes(q)) &&
+        (!fP || r.programa === fP) && (!fC || r.ciclo === fC) &&
+        (!fT || r.turno === fT) && (!fCo || r.consejeria === fCo)
+      );
+
+      const pages = Math.ceil(filtered.length / PER) || 1;
+      if (page > pages) page = pages;
+      const slice = filtered.slice((page - 1) * PER, page * PER);
+      const tbody = document.getElementById('tableBody');
+
+      if (!slice.length) {
+        tbody.innerHTML = '<tr><td colspan="16" class="empty">Sin resultados.</td></tr>';
+        document.getElementById('pager').innerHTML = ''; return;
+      }
+
+      tbody.innerHTML = slice.map(r => `
     <tr>
       <td><strong>${r.id}</strong></td>
-      <td>${r.creado_en?new Date(r.creado_en).toLocaleDateString('es-PE'):'—'}</td>
-      <td title="${r.nombres||''}">${r.nombres||'—'}</td>
-      <td>${r.dni||'—'}</td>
-      <td>${r.celular||'—'}</td>
-      <td title="${r.programa||''}">${(r.programa||'—').split(' ').slice(0,3).join(' ')}…</td>
-      <td><span class="badge badge-ciclo">${r.ciclo||'—'}</span></td>
-      <td>${r.turno||'—'}</td>
-      <td>${r.distrito||'—'}</td>
-      <td>${r.ingreso_familiar||'—'}</td>
-      <td><span class="badge ${r.trabaja==='Sí'?'badge-si':'badge-no'}">${r.trabaja||'—'}</span></td>
-      <td>${r.seguro_salud||'—'}</td>
-      <td style="text-align:center;font-weight:600">${r.estado_emocional||'—'}/5</td>
-      <td><span class="badge ${r.consejeria==='Sí'?'badge-si':'badge-no'}">${r.consejeria||'—'}</span></td>
-      <td title="${r.meta_academica||''}">${(r.meta_academica||'—').slice(0,20)}${(r.meta_academica||'').length>20?'…':''}</td>
-      <td title="${r.meta_laboral||''}">${(r.meta_laboral||'—').slice(0,20)}${(r.meta_laboral||'').length>20?'…':''}</td>
+      <td>${r.creado_en ? new Date(r.creado_en).toLocaleDateString('es-PE') : '—'}</td>
+      <td title="${r.nombres || ''}">${r.nombres || '—'}</td>
+      <td>${r.dni || '—'}</td>
+      <td>${r.celular || '—'}</td>
+      <td title="${r.programa || ''}">${(r.programa || '—').split(' ').slice(0, 3).join(' ')}…</td>
+      <td><span class="badge badge-ciclo">${r.ciclo || '—'}</span></td>
+      <td>${r.turno || '—'}</td>
+      <td>${r.distrito || '—'}</td>
+      <td>${r.ingreso_familiar || '—'}</td>
+      <td><span class="badge ${r.trabaja === 'Sí' ? 'badge-si' : 'badge-no'}">${r.trabaja || '—'}</span></td>
+      <td>${r.seguro_salud || '—'}</td>
+      <td style="text-align:center;font-weight:600">${r.estado_emocional || '—'}/5</td>
+      <td><span class="badge ${r.consejeria === 'Sí' ? 'badge-si' : 'badge-no'}">${r.consejeria || '—'}</span></td>
+      <td title="${r.meta_academica || ''}">${(r.meta_academica || '—').slice(0, 20)}${(r.meta_academica || '').length > 20 ? '…' : ''}</td>
+      <td title="${r.meta_laboral || ''}">${(r.meta_laboral || '—').slice(0, 20)}${(r.meta_laboral || '').length > 20 ? '…' : ''}</td>
+      <td>
+      <span class="badge ${r.discapacidad === 'Sí' ? 'badge-si' : 'badge-no'}">
+      ${r.discapacidad || '—'}
+      </span>
+      </td>
+
+      <td title="${r.detalle_enfermedad || ''}">
+      ${r.enfermedad || '—'}
+      </td>
+
+      <td title="${r.tema_capacitacion || ''}">
+      ${(r.tema_capacitacion || '—').slice(0, 15)}${(r.tema_capacitacion || '').length > 15 ? '…' : ''}
+      </td>
     </tr>`).join('');
 
-  const pager = document.getElementById('pager');
-  pager.innerHTML='';
-  for(let i=1;i<=pages;i++){
-    const btn=document.createElement('button');
-    btn.textContent=i; if(i===page)btn.classList.add('active');
-    btn.onclick=()=>{page=i;renderTable();}; pager.appendChild(btn);
-  }
-}
+      const pager = document.getElementById('pager');
+      pager.innerHTML = '';
+      for (let i = 1; i <= pages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i; if (i === page) btn.classList.add('active');
+        btn.onclick = () => { page = i; renderTable(); }; pager.appendChild(btn);
+      }
+    }
 
-function exportExcel(){ window.location.href='/api/export/excel'; }
-loadData();
-setInterval(loadData, 30000);
-</script>
+    function exportExcel() { window.location.href = '/api/export/excel'; }
+    loadData();
+    setInterval(loadData, 30000);
+  </script>
 </body>
+
 </html>
