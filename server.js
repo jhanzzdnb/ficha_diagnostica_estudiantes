@@ -4,6 +4,13 @@ const { Pool } = require('pg');
 const XLSX = require('xlsx');
 const path = require('path');
 
+// ── HELPER GLOBAL ─────────────────────────────
+const formatValue = (value) => {
+  if (value === true) return 'SI';
+  if (value === false) return 'NO';
+  return value ?? '';
+};
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -231,7 +238,9 @@ app.get('/api/export/excel', async (req, res) => {
     };
 
     const headerRow = Object.values(HEADERS);
-    const dataRows = rows.map(r => Object.keys(HEADERS).map(k => r[k] ?? ''));
+    const dataRows = rows.map(r =>
+      Object.keys(HEADERS).map(k => formatValue(r[k]))
+    );
 
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet([headerRow, ...dataRows]);
