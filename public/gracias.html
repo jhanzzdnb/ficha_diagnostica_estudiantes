@@ -412,37 +412,18 @@
     function exportPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
       const pageW = 210, M = 15, cW = pageW - M * 2;
       let y = 0;
+
       const NAVY = [26, 39, 68], GOLD = [200, 146, 42], WHITE = [255, 255, 255], LIGHT = [245, 244, 240], DARK = [58, 52, 44];
-      function chk(n) { if (y + n > 278) { doc.addPage(); y = 15; } }
 
-      // Header con logo
-      doc.setFillColor(...NAVY); doc.rect(0, 0, pageW, 32, 'F');
-      doc.setFillColor(...GOLD); doc.rect(0, 32, pageW, 1.5, 'F');
-
-      // Logo
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = 100; canvas.height = 100;
-        const ctx = canvas.getContext('2d');
-        const logoTemp = new Image();
-        logoTemp.src = '/img/IESTP_CABANA.png';
-        if (logoTemp.complete) {
-          ctx.drawImage(logoTemp, 0, 0, 100, 100);
-          doc.addImage(canvas.toDataURL('image/png'), 'PNG', M, 3, 25, 25);
+      function chk(n) {
+        if (y + n > 278) {
+          doc.addPage();
+          y = 15;
         }
-      } catch (e) { }
-
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5); doc.setTextColor(...GOLD);
-      doc.text('INSTITUTO DE EDUCACIÓN SUPERIOR TECNOLÓGICO PÚBLICO - CABANA', M + 29, 10);
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(...WHITE);
-      doc.text('Ficha Diagnóstica del Estudiante', M + 29, 19);
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(180, 170, 150);
-      doc.text('Documento académico confidencial · Área de Bienestar Estudiantil', M + 29, 26);
-      doc.setFontSize(7); doc.setTextColor(...GOLD);
-      doc.text('Fecha: ' + new Date().toLocaleDateString('es-PE'), pageW - M, 10, { align: 'right' });
-      y = 38;
+      }
 
       const SECS = [
         { t: 'SECCIÓN 1: Datos Generales y Académicos', f: ['nombres', 'dni', 'celular', 'fechaNacimiento', 'edad', 'sexo', 'estadoCivil', 'programa', 'condicion', 'ciclo', 'turno'] },
@@ -450,43 +431,118 @@
         { t: 'SECCIÓN 3: Apoyo y Necesidades', f: ['recibeApoyo', 'tipoApoyo', 'tipoApoyoOtro', 'necesidades'] },
         { t: 'SECCIÓN 4: Salud y Bienestar Psicológico', f: ['seguroSalud', 'estadoEmocional', 'consejeria', 'discapacidad', 'tipoDiscapacidad', 'tipoDiscapacidadOtro', 'enfermedad', 'detalleEnfermedad', 'tratamiento'] },
         { t: 'SECCIÓN 5: Expectativas y Metas', f: ['motivacion', 'metaAcademica', 'metaAcademicaOtro', 'metaLaboral', 'metaLaboralOtro'] },
-        { t: 'SECCIÓN 6: Capacitación y Desarrollo Profesional', f: ['temaCapacitacion', 'temaCapacitacionOtro', 'participariaCapacitacion', 'pagariaCertificacion'] },
+        { t: 'SECCIÓN 6: Capacitación', f: ['tema_capacitacion', 'tema_capacitacion_otro', 'participariaCapacitacion', 'pagariaCertificacion'] },
         { t: 'SECCIÓN 7: Declaración', f: ['declaracion'] },
       ];
 
-      SECS.forEach(sec => {
-        chk(16);
-        doc.setFillColor(...NAVY); doc.roundedRect(M, y, cW, 8.5, 1, 1, 'F');
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...WHITE);
-        doc.text(sec.t, M + 3, y + 5.8); y += 12;
-        sec.f.forEach(key => {
-          const val = data[key];
-          if (!val || val === '') return;
-          const lbl = LABELS[key] || key;
-          const lines = doc.splitTextToSize(String(val), cW - 52);
-          const rh = Math.max(8, lines.length * 4.8 + 3);
-          chk(rh + 2);
-          doc.setFillColor(...LIGHT); doc.rect(M, y, cW, rh, 'F');
-          doc.setDrawColor(220, 218, 212); doc.rect(M, y, cW, rh, 'S');
-          doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...NAVY);
-          doc.text(lbl + ':', M + 3, y + 5.5);
-          doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...DARK);
-          doc.text(lines, M + 52, y + 5.5);
-          y += rh + 1;
+      // ── HEADER BASE ──
+      doc.setFillColor(...NAVY);
+      doc.rect(0, 0, pageW, 32, 'F');
+
+      doc.setFillColor(...GOLD);
+      doc.rect(0, 32, pageW, 1.5, 'F');
+
+      // ── LOGO ──
+      const logo = new Image();
+      logo.src = 'img/IESTP_CABANA.png';
+
+      logo.onload = function () {
+        doc.addImage(logo, 'PNG', M, 3, 25, 25);
+        generarPDF();
+      };
+
+      logo.onerror = function () {
+        alert('No se cargó el logo'); // 👈 para detectar error
+        generarPDF();
+      };
+
+      function generarPDF() {
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(6.5);
+        doc.setTextColor(...GOLD);
+        doc.text('INSTITUTO DE EDUCACIÓN SUPERIOR TECNOLÓGICO PÚBLICO - CABANA', M + 29, 10);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(...WHITE);
+        doc.text('Ficha Diagnóstica del Estudiante', M + 29, 19);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.setTextColor(180, 170, 150);
+        doc.text('Documento académico confidencial · Área de Bienestar Estudiantil', M + 29, 26);
+
+        doc.setFontSize(7);
+        doc.setTextColor(...GOLD);
+        doc.text('Fecha: ' + new Date().toLocaleDateString('es-PE'), pageW - M, 10, { align: 'right' });
+
+        y = 38;
+
+        // ── CONTENIDO ──
+        SECS.forEach(sec => {
+          chk(16);
+
+          doc.setFillColor(...NAVY);
+          doc.roundedRect(M, y, cW, 8.5, 1, 1, 'F');
+
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(8.5);
+          doc.setTextColor(...WHITE);
+          doc.text(sec.t, M + 3, y + 5.8);
+
+          y += 12;
+
+          sec.f.forEach(key => {
+            const val = data[key];
+            if (!val) return;
+
+            const lbl = LABELS[key] || key;
+            const lines = doc.splitTextToSize(String(val), cW - 52);
+            const rh = Math.max(8, lines.length * 4.8 + 3);
+
+            chk(rh + 2);
+
+            doc.setFillColor(...LIGHT);
+            doc.rect(M, y, cW, rh, 'F');
+
+            doc.setDrawColor(220, 218, 212);
+            doc.rect(M, y, cW, rh, 'S');
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            doc.setTextColor(...NAVY);
+            doc.text(lbl + ':', M + 3, y + 5.5);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(...DARK);
+            doc.text(lines, M + 52, y + 5.5);
+
+            y += rh + 1;
+          });
+
+          y += 4;
         });
-        y += 4;
-      });
 
-      // Footer
-      const tp = doc.internal.getNumberOfPages();
-      for (let i = 1; i <= tp; i++) {
-        doc.setPage(i); doc.setFillColor(...NAVY); doc.rect(0, 287, pageW, 10, 'F');
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...WHITE);
-        doc.text('IESTP Cabana · Bienestar Estudiantil · Documento confidencial', M, 293);
-        doc.text(`Pág. ${i}/${tp}`, pageW - M, 293, { align: 'right' });
+        // ── FOOTER ──
+        const tp = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= tp; i++) {
+          doc.setPage(i);
+
+          doc.setFillColor(...NAVY);
+          doc.rect(0, 287, pageW, 10, 'F');
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(7);
+          doc.setTextColor(...WHITE);
+
+          doc.text('IESTP Cabana · Bienestar Estudiantil · Documento confidencial', M, 293);
+          doc.text(`Pág. ${i}/${tp}`, pageW - M, 293, { align: 'right' });
+        }
+
+        doc.save(`MiFicha_${(data.nombres || 'Estudiante').replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`);
       }
-
-      doc.save(`MiFicha_${(data.nombres || 'Estudiante').replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`);
     }
   </script>
 </body>
