@@ -211,6 +211,12 @@ app.get('/api/stats', async (req, res) => {
 });
 
 // Cualquier otra ruta → index.html
+// Ruta admin
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Cualquier otra ruta → index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
