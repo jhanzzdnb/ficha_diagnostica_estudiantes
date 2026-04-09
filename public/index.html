@@ -191,7 +191,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g
 </header>
 
 <div class="notice">
-  <strong>🔒 Confidencialidad:</strong> Tu información será usada únicamente para fines de bienestar estudiantil y será tratada con estricta confidencialidad por el IESTP Cabana.
+  <strong>🔒 Confidencialidad:</strong> Tu información es usada únicamente para fines de bienestar estudiantil y es tratada con estricta confidencialidad por el IESTP Cabana.
 </div>
 
 <form id="fichaForm" class="form-wrapper" novalidate>
@@ -257,7 +257,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g
         </select>
       </div>
 
-      <div class="field">
+     <div class="field">
         <label class="lbl"><span class="ico">📋</span> Condición (Estudiante) <span class="req">*</span></label>
         <div class="pill-group">
           <label><input type="radio" name="condicion" value="Regular" required><span class="pill">✅ Regular</span></label>
@@ -624,7 +624,21 @@ async function submitForm() {
   if (!validate()) return;
   const data = collect();
   const btn = document.getElementById('btnEnviar');
+
+  // Verificar DNI duplicado
   btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Verificando…';
+  try {
+    const chk = await fetch('/api/check-dni/' + data.dni);
+    const chkJson = await chk.json();
+    if (chkJson.existe) {
+      toast('⚠️ Ya existe una ficha registrada con este DNI. Solo se permite un registro por persona.','err');
+      btn.disabled = false;
+      btn.innerHTML = '📤 Enviar Ficha';
+      return;
+    }
+  } catch(e) {}
+
   btn.innerHTML = '<span class="spinner"></span> Enviando…';
   try {
     const res = await fetch('/api/ficha', {
@@ -634,20 +648,19 @@ async function submitForm() {
     });
     const json = await res.json();
     if (json.ok) {
-      toast(`✅ ¡Ficha enviada correctamente! (ID #${json.id})`,'ok');
-      loadStats();
-      setTimeout(() => {
-        if (confirm('✅ Ficha registrada. ¿Deseas limpiar el formulario para una nueva entrada?'))
-          clearForm();
-      }, 1200);
+      // Guardar datos en sessionStorage para la página de gracias
+      sessionStorage.setItem('fichaEnviada', JSON.stringify(data));
+      window.location.href = '/gracias';
     } else {
       toast('❌ Error al guardar: ' + json.error,'err');
+      btn.disabled = false;
+      btn.innerHTML = '📤 Enviar Ficha';
     }
   } catch (e) {
     toast('❌ No se pudo conectar al servidor. Revisa tu conexión.','err');
+    btn.disabled = false;
+    btn.innerHTML = '📤 Enviar Ficha';
   }
-  btn.disabled = false;
-  btn.innerHTML = '📤 Enviar Ficha';
 }
 
 function clearForm() {
@@ -765,6 +778,42 @@ function exportPDFLocal() {
 document.querySelector('[name=dni]').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,8)});
 // Celular solo números
 document.querySelector('[name=celular]').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,12)});
+</script>
+
+<script>
+// Override submitForm to add DNI check and redirect to gracias
+async function submitForm() {
+  if (!validate()) return;
+  const data = collect();
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Verificando…';
+  try {
+    const chk = await fetch('/api/check-dni/' + data.dni);
+    const chkJson = await chk.json();
+    if (chkJson.existe) {
+      toast('⚠️ Tu DNI ya tiene una ficha registrada. Solo se permite un registro por persona.','err');
+      btn.disabled = false; btn.innerHTML = '📤 Enviar Ficha'; return;
+    }
+  } catch(e) {}
+  btn.innerHTML = '<span class="spinner"></span> Enviando…';
+  try {
+    const res = await fetch('/api/ficha', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.ok) {
+      sessionStorage.setItem('fichaEnviada', JSON.stringify(data));
+      window.location.href = '/gracias';
+    } else {
+      toast('❌ Error: ' + json.error,'err');
+      btn.disabled=false; btn.innerHTML='📤 Enviar Ficha';
+    }
+  } catch(e) {
+    toast('❌ Sin conexión al servidor.','err');
+    btn.disabled=false; btn.innerHTML='📤 Enviar Ficha';
+  }
+}
 </script>
 </body>
 </html>

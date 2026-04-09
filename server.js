@@ -234,6 +234,23 @@ app.get('/admin', (req, res) => {
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
+app.get('/gracias', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'gracias.html'));
+});
+
+// GET /api/check-dni/:dni
+app.get('/api/check-dni/:dni', async (req, res) => {
+  const { dni } = req.params;
+  if (useMem) {
+    return res.json({ ok: true, existe: memStore.some(r => r.dni === dni) });
+  }
+  try {
+    const result = await pool.query('SELECT id FROM fichas WHERE dni = $1 LIMIT 1', [dni]);
+    res.json({ ok: true, existe: result.rows.length > 0 });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
 
 // Cualquier otra ruta → index.html
 app.get('*', (req, res) => {
@@ -244,3 +261,5 @@ app.get('*', (req, res) => {
 initDB().then(() => {
   app.listen(PORT, () => console.log(`🚀 Servidor en http://localhost:${PORT}`));
 });
+
+// NOTE: routes added below via append
