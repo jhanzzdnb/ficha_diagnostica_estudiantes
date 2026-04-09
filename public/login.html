@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Acceso Admin – IESTP Cabana</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navy-mid:#243660;--gold:#c8922a;--gold-light:#e8b84b;--g100:#f5f4f0;--g200:#e8e6e0;--white:#fff;--red:#c0392b;--radius:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',sans-serif;background:var(--navy);min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 80px)}
+.card{background:var(--white);border-radius:var(--radius);padding:2.5rem 2rem;width:100%;max-width:380px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:var(--radius) var(--radius) 0 0}
+.logo{width:64px;height:64px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-family:'Merriweather',serif;font-size:1rem;font-weight:700;color:var(--gold)}
+.inst{text-align:center;font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--navy);opacity:.5;margin-bottom:.3rem}
+h1{text-align:center;font-family:'Merriweather',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.25rem}
+.sub{text-align:center;font-size:.78rem;color:#a0998a;margin-bottom:2rem}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:.75rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.35rem}
+.field input{width:100%;padding:.6rem .9rem;border:1.5px solid var(--g200);border-radius:var(--radius);font-family:'Source Sans 3',sans-serif;font-size:.92rem;color:var(--navy);background:var(--g100);outline:none;transition:border-color .2s,box-shadow .2s}
+.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,146,42,.13);background:#fff}
+.btn-login{width:100%;padding:.75rem;background:var(--navy);color:#fff;border:none;border-radius:30px;font-family:'Source Sans 3',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s,transform .15s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-login:hover{background:var(--navy-mid);transform:translateY(-1px)}
+.btn-login:active{transform:translateY(0)}
+.error{background:#fdecea;border:1px solid #f5c6cb;color:var(--red);border-radius:var(--radius);padding:.6rem .9rem;font-size:.82rem;margin-bottom:1rem;display:none;text-align:center}
+.error.on{display:block}
+.footer-note{text-align:center;font-size:.72rem;color:#a0998a;margin-top:1.5rem}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">IES</div>
+  <div class="inst">Instituto de Educación Superior Tecnológico Público</div>
+  <h1>Panel de Administración</h1>
+  <div class="sub">IESTP Cabana · Área de Bienestar Estudiantil</div>
+
+  <div class="error" id="errorMsg">❌ Usuario o contraseña incorrectos</div>
+
+  <div class="field">
+    <label>👤 Usuario</label>
+    <input type="text" id="usuario" placeholder="Ingrese su usuario" autocomplete="username">
+  </div>
+  <div class="field">
+    <label>🔒 Contraseña</label>
+    <input type="password" id="password" placeholder="Ingrese su contraseña" autocomplete="current-password">
+  </div>
+  <button class="btn-login" id="btnLogin" onclick="doLogin()">🔐 Ingresar al Panel</button>
+  <div class="footer-note">Acceso restringido · Solo personal autorizado del IESTP Cabana</div>
+</div>
+
+<script>
+// Verificar si ya está autenticado
+if (sessionStorage.getItem('adminAuth') === 'ok') {
+  window.location.href = '/admin';
+}
+
+document.getElementById('password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('usuario').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('password').focus();
+});
+
+async function doLogin() {
+  const usuario  = document.getElementById('usuario').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const btn      = document.getElementById('btnLogin');
+  const errMsg   = document.getElementById('errorMsg');
+
+  if (!usuario || !password) {
+    errMsg.textContent = '⚠️ Ingrese usuario y contraseña';
+    errMsg.classList.add('on');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Verificando…';
+  errMsg.classList.remove('on');
+
+  try {
+    const res  = await fetch('/api/login', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ usuario, password })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      sessionStorage.setItem('adminAuth', 'ok');
+      sessionStorage.setItem('adminUser', data.nombre);
+      window.location.href = '/admin';
+    } else {
+      errMsg.textContent = '❌ Usuario o contraseña incorrectos';
+      errMsg.classList.add('on');
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
+    }
+  } catch (e) {
+    errMsg.textContent = '❌ Error de conexión. Intente nuevamente.';
+    errMsg.classList.add('on');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '🔐 Ingresar al Panel';
+}
+</script>
+</body>
+</html>

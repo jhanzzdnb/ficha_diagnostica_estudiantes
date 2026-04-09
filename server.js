@@ -210,10 +210,29 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// Cualquier otra ruta → index.html
-// Ruta admin
+// ── AUTH ──────────────────────────────────────────────────────
+// Credenciales (puedes cambiarlas aquí)
+const ADMIN_USERS = [
+  { usuario: 'admin',   password: 'iestp2024',  nombre: 'Administrador' },
+  { usuario: 'cabana',  password: 'bienestar1', nombre: 'Bienestar IESTP' },
+];
+
+app.post('/api/login', (req, res) => {
+  const { usuario, password } = req.body;
+  const user = ADMIN_USERS.find(u => u.usuario === usuario && u.password === password);
+  if (user) {
+    res.json({ ok: true, nombre: user.nombre });
+  } else {
+    res.status(401).json({ ok: false, message: 'Credenciales incorrectas' });
+  }
+});
+
+// Rutas de páginas
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // Cualquier otra ruta → index.html
