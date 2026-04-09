@@ -1404,7 +1404,10 @@
       seguroSalud: 'Seguro Salud', estadoEmocional: 'Estado Emocional (1-5)',
       consejeria: 'Consejería Psicológica', motivacion: 'Motivación',
       metaAcademica: 'Meta Académica', metaAcademicaOtro: 'Meta Académica (otro)',
-      metaLaboral: 'Meta Laboral', metaLaboralOtro: 'Meta Laboral (otro)', declaracion: 'Declaración',
+      metaLaboral: 'Meta Laboral', metaLaboralOtro: 'Meta Laboral (otro)',
+      declaracion: 'Declaración',
+
+      // SALUD
       discapacidad: '¿Presenta alguna discapacidad?',
       tipoDiscapacidad: 'Tipo de discapacidad',
       tipoDiscapacidadOtro: 'Tipo de discapacidad (otro)',
@@ -1412,6 +1415,11 @@
       detalleEnfermedad: 'Detalle de enfermedad',
       tratamiento: '¿Está en tratamiento?',
 
+      // CAPACITACIÓN
+      tema_capacitacion: 'Tema de capacitación de interés',
+      tema_capacitacion_otro: 'Tema de capacitación (otro)',
+      participariaCapacitacion: '¿Participaría en capacitación?',
+      pagariaCertificacion: '¿Pagaría por certificación?',
     };
     function exportExcelLocal() {
       if (!validate()) return;
@@ -1427,6 +1435,7 @@
     }
 
     // ── EXPORT PDF (local) ────────────────────────────────────────
+    const esSi = v => String(v).toLowerCase() === 'si' || String(v).toLowerCase() === 'sí';
     function exportPDFLocal() {
       if (!validate()) return;
       const { jsPDF } = window.jspdf;
@@ -1477,17 +1486,83 @@
         doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...WHITE);
         doc.text(sec.t, M + 3, y + 5.8); y += 12;
         sec.f.forEach(key => {
-          const val = data[key]; if (!val) return;
+          let val = data[key];
+          if (val === undefined || val === null || val === '') return;
+
+          // ── NORMALIZAR SI/NO ─────────────────────────────
+          if (['discapacidad', 'enfermedad', 'tratamiento', 'participariaCapacitacion', 'pagariaCertificacion'].includes(key)) {
+            val = esSi(val) ? 'Sí' : 'No';
+          }
+
+          // ── OCULTAR CAMPOS QUE NO APLICAN ────────────────
+          if (key === 'tipoDiscapacidad' && !esSi(data.discapacidad)) return;
+          if (key === 'tipoDiscapacidadOtro' && !esSi(data.discapacidad)) return;
+
+          if (key === 'detalleEnfermedad' && !esSi(data.enfermedad)) return;
+          if (key === 'tratamiento' && !esSi(data.enfermedad)) return;
+
+          if (
+            key === 'tema_capacitacion_otro' &&
+            (!data.tema_capacitacion || !data.tema_capacitacion.includes('Otro'))
+          ) return;
+
+          // ── TIPO DISCAPACIDAD (MULTI + OTRO) ─────────────
+          if (key === 'tipoDiscapacidad') {
+            let tipos = val.split(';').map(v => v.trim()).filter(Boolean);
+
+            if (tipos.includes('Otro')) {
+              if (data.tipoDiscapacidadOtro) {
+                tipos = tipos.map(t =>
+                  t === 'Otro' ? `Otro: ${data.tipoDiscapacidadOtro}` : t
+                );
+              } else {
+                tipos = tipos.filter(t => t !== 'Otro');
+              }
+            }
+
+            val = tipos.join(', ');
+          }
+
+          // ── CAPACITACIÓN (MULTI + OTRO) ──────────────────
+          if (key === 'tema_capacitacion') {
+            let temas = val.split(';').map(v => v.trim()).filter(Boolean);
+
+            if (temas.includes('Otro')) {
+              if (data.tema_capacitacion_otro) {
+                temas = temas.map(t =>
+                  t === 'Otro' ? `Otro: ${data.tema_capacitacion_otro}` : t
+                );
+              } else {
+                temas = temas.filter(t => t !== 'Otro');
+              }
+            }
+
+            val = temas.join(', ');
+          }
+
+          // ── LABEL Y RENDER ───────────────────────────────
           const lbl = LABELS[key] || key;
           const lines = doc.splitTextToSize(val, cW - 52);
           const rh = Math.max(8, lines.length * 4.8 + 3);
+
           chk(rh + 2);
-          doc.setFillColor(...LIGHT); doc.rect(M, y, cW, rh, 'F');
-          doc.setDrawColor(220, 218, 212); doc.rect(M, y, cW, rh, 'S');
-          doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...NAVY);
+
+          doc.setFillColor(...LIGHT);
+          doc.rect(M, y, cW, rh, 'F');
+
+          doc.setDrawColor(220, 218, 212);
+          doc.rect(M, y, cW, rh, 'S');
+
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(8);
+          doc.setTextColor(...NAVY);
           doc.text(lbl + ':', M + 3, y + 5.5);
-          doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...DARK);
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8);
+          doc.setTextColor(...DARK);
           doc.text(lines, M + 52, y + 5.5);
+
           y += rh + 1;
         });
         y += 4;
