@@ -500,12 +500,14 @@
       <td title="${r.meta_laboral || ''}">${(r.meta_laboral || '—').slice(0, 20)}${(r.meta_laboral || '').length > 20 ? '…' : ''}</td>
       <td>
       <span class="badge ${r.discapacidad === 'Sí' ? 'badge-si' : 'badge-no'}">
-      ${r.discapacidad || '—'}
+      ${r.discapacidad === 'Sí' ? 'Sí' : 'No'}
       </span>
       </td>
 
-      <td title="${r.detalle_enfermedad || ''}">
-      ${r.enfermedad || '—'}
+      <td>
+      <span class="badge ${r.enfermedad === 'Sí' ? 'badge-si' : 'badge-no'}">
+      ${r.enfermedad === 'Sí' ? 'Sí' : 'No'}
+      </span>
       </td>
 
       <td title="${r.tema_capacitacion || ''}">
