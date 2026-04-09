@@ -213,7 +213,7 @@ app.get('/api/stats', async (req, res) => {
 // ── AUTH ──────────────────────────────────────────────────────
 // Credenciales (puedes cambiarlas aquí)
 const ADMIN_USERS = [
-  { usuario: 'admin',   password: 'iestp2024',  nombre: 'Administrador' },
+  { usuario: 'admin',   password: 'iestp2026',  nombre: 'Administrador' },
   { usuario: 'cabana',  password: 'bienestar1', nombre: 'Bienestar IESTP' },
 ];
 
