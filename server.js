@@ -192,7 +192,17 @@ app.get('/api/fichas', async (req, res) => {
       const result = await pool.query('SELECT * FROM fichas ORDER BY creado_en DESC');
       rows = result.rows;
     }
-    res.json({ ok: true, total: rows.length, data: rows });
+    const cleanRows = rows.map(r => ({
+  ...r,
+
+  trabaja: r.trabaja === true ? 'Sí' : r.trabaja === false ? 'No' : r.trabaja,
+  consejeria: r.consejeria === true ? 'Sí' : r.consejeria === false ? 'No' : r.consejeria,
+  discapacidad: r.discapacidad === true ? 'Sí' : r.discapacidad === false ? 'No' : r.discapacidad,
+  enfermedad: r.enfermedad === true ? 'Sí' : r.enfermedad === false ? 'No' : r.enfermedad,
+  tratamiento: r.tratamiento === true ? 'Sí' : r.tratamiento === false ? 'No' : r.tratamiento
+}));
+
+res.json({ ok: true, total: cleanRows.length, data: cleanRows });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
