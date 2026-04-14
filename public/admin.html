@@ -1,661 +1,1221 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Panel Admin – Fichas IESTP Cabana</title>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-:root{
-  --navy:#1a2744;--navy-mid:#243660;--gold:#c8922a;--gold-light:#e8b84b;
-  --g100:#f5f4f0;--g200:#e8e6e0;--g400:#a0998a;--g800:#3a342c;
-  --white:#fff;--green:#1e6e42;--red:#c0392b;--blue:#1565c0;--radius:8px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',sans-serif;background:var(--g100);color:var(--g800);font-size:14px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Panel Admin – Fichas IESTP Cabana</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --navy: #1a2744;
+      --navy-mid: #243660;
+      --gold: #c8922a;
+      --gold-light: #e8b84b;
+      --g100: #f5f4f0;
+      --g200: #e8e6e0;
+      --g400: #a0998a;
+      --g800: #3a342c;
+      --white: #fff;
+      --green: #1e6e42;
+      --red: #c0392b;
+      --blue: #1565c0;
+      --radius: 8px;
+    }
 
-/* ── HEADER ── */
-.header{background:var(--navy);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem}
-.header-left h1{font-family:'Merriweather',serif;font-size:1rem}
-.header-left .sub{font-size:.75rem;color:rgba(255,255,255,.55);margin-top:.1rem}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
-.user-badge{font-size:.78rem;color:var(--gold-light);display:flex;align-items:center;gap:.35rem}
-.btn-logout{padding:.38rem .9rem;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:.75rem;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:background .15s}
-.btn-logout:hover{background:rgba(255,255,255,.2)}
-.gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),transparent)}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* ── TABS ── */
-.tabs{background:var(--white);border-bottom:2px solid var(--g200);display:flex;gap:0;padding:0 1.5rem}
-.tab{padding:.75rem 1.4rem;font-size:.85rem;font-weight:600;color:var(--g400);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:.4rem}
-.tab:hover{color:var(--navy)}
-.tab.active{color:var(--navy);border-bottom-color:var(--gold)}
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--g100);
+      color: var(--g800);
+      font-size: 14px
+    }
 
-/* ── CONTENT ── */
-.content{max-width:1300px;margin:1.5rem auto;padding:0 1rem}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
+    /* ── HEADER ── */
+    .header {
+      background: var(--navy);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem
+    }
 
-/* ── KPI CARDS ── */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
-.kpi{background:var(--white);border-radius:var(--radius);padding:1.1rem 1.3rem;box-shadow:0 2px 10px rgba(26,39,68,.08);border-top:3px solid var(--gold);display:flex;align-items:center;gap:.9rem}
-.kpi-ico{font-size:1.8rem;flex-shrink:0}
-.kpi-val{font-size:1.8rem;font-weight:700;color:var(--navy);font-family:'Merriweather',serif;line-height:1}
-.kpi-lbl{font-size:.7rem;color:var(--g400);text-transform:uppercase;letter-spacing:.5px;margin-top:.2rem}
-.kpi.green{border-top-color:var(--green)}
-.kpi.red{border-top-color:var(--red)}
-.kpi.blue{border-top-color:var(--blue)}
+    .header-left h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 1rem
+    }
 
-/* ── CHARTS GRID ── */
-.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem}
-.charts-grid.full{grid-template-columns:1fr}
-.charts-grid.three{grid-template-columns:1fr 1fr 1fr}
-.chart-card{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 10px rgba(26,39,68,.08);overflow:hidden}
-.chart-header{padding:.85rem 1.2rem;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between}
-.chart-title{font-family:'Merriweather',serif;font-size:.85rem;font-weight:700;color:var(--navy)}
-.chart-subtitle{font-size:.72rem;color:var(--g400);margin-top:.1rem}
-.chart-body{padding:1rem;position:relative;min-height:240px;display:flex;align-items:center;justify-content:center}
-.chart-body canvas{max-height:280px}
-.btn-dl{padding:.3rem .75rem;border-radius:20px;background:var(--g100);border:1px solid var(--g200);font-size:.72rem;font-weight:600;cursor:pointer;color:var(--navy);font-family:'Source Sans 3',sans-serif;transition:all .15s;display:flex;align-items:center;gap:.3rem}
-.btn-dl:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .header-left .sub {
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .55);
+      margin-top: .1rem
+    }
 
-/* ── TABLA ── */
-.toolbar{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
-.btn{padding:.55rem 1.2rem;border-radius:30px;font-family:'Source Sans 3',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:.4rem;transition:opacity .15s,transform .15s}
-.btn:hover{opacity:.88;transform:translateY(-1px)}
-.btn-green{background:var(--green);color:#fff}
-.btn-navy{background:var(--navy);color:#fff}
-.btn-red{background:var(--red);color:#fff}
-.btn-gold{background:var(--gold);color:var(--navy)}
-.search{flex:1;min-width:200px;padding:.5rem .9rem;border:1.5px solid var(--g200);border-radius:30px;font-family:'Source Sans 3',sans-serif;font-size:.85rem;outline:none}
-.search:focus{border-color:var(--gold)}
-.filter-row{display:flex;gap:.6rem;margin-bottom:.8rem;flex-wrap:wrap}
-.filter-select{padding:.42rem .8rem;border:1.5px solid var(--g200);border-radius:20px;font-family:'Source Sans 3',sans-serif;font-size:.82rem;outline:none;background:#fff;cursor:pointer}
-.filter-select:focus{border-color:var(--gold)}
-.table-wrap{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 10px rgba(26,39,68,.08);overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:1000px}
-thead{background:var(--navy-mid)}
-thead th{color:#fff;padding:.6rem .85rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;font-weight:600;text-align:left;white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--g200);transition:background .12s}
-tbody tr:hover{background:var(--g100)}
-tbody td{padding:.55rem .85rem;font-size:.82rem;color:var(--g800);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.badge{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.7rem;font-weight:600}
-.badge-ciclo{background:#cce5ff;color:#004085}
-.badge-si{background:#d4edda;color:#155724}
-.badge-no{background:#f8d7da;color:#721c24}
-.empty{text-align:center;padding:3rem;color:var(--g400);font-style:italic}
-.pager{display:flex;justify-content:center;gap:.5rem;padding:1rem;flex-wrap:wrap}
-.pager button{padding:.35rem .75rem;border-radius:20px;border:1.5px solid var(--g200);background:#fff;cursor:pointer;font-size:.8rem;transition:all .15s}
-.pager button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.pager button:hover:not(.active){border-color:var(--gold)}
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap
+    }
 
-/* ── PDF REPORT BTN ── */
-.report-bar{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 10px rgba(26,39,68,.08);padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
-.report-bar-text h3{font-family:'Merriweather',serif;font-size:.9rem;color:var(--navy)}
-.report-bar-text p{font-size:.75rem;color:var(--g400);margin-top:.15rem}
+    .user-badge {
+      font-size: .78rem;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: .35rem
+    }
 
-/* Responsive */
-@media(max-width:900px){.kpi-row{grid-template-columns:1fr 1fr}.charts-grid{grid-template-columns:1fr}.charts-grid.three{grid-template-columns:1fr}}
-@media(max-width:500px){.kpi-row{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
+    .btn-logout {
+      padding: .38rem .9rem;
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 20px;
+      font-size: .75rem;
+      cursor: pointer;
+      font-family: 'Source Sans 3', sans-serif;
+      transition: background .15s
+    }
 
-<script>
-if (sessionStorage.getItem('adminAuth') !== 'ok') window.location.href = '/login';
-</script>
+    .btn-logout:hover {
+      background: rgba(255, 255, 255, .2)
+    }
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <h1>🔐 Panel de Administración – Fichas Diagnósticas</h1>
-    <div class="sub">IESTP Cabana · Área de Bienestar Estudiantil</div>
-  </div>
-  <div class="header-right">
-    <div class="user-badge">👤 <span id="userLabel">Admin</span></div>
-    <a href="/" style="color:rgba(255,255,255,.6);font-size:.78rem;text-decoration:none">← Formulario</a>
-    <button class="btn-logout" onclick="logout()">🚪 Salir</button>
-  </div>
-</div>
-<div class="gold-bar"></div>
+    .gold-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent)
+    }
 
-<!-- TABS -->
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('estadisticas')">📊 Estadísticas</div>
-  <div class="tab" onclick="switchTab('registros')">📋 Registros</div>
-</div>
+    /* ── TABS ── */
+    .tabs {
+      background: var(--white);
+      border-bottom: 2px solid var(--g200);
+      display: flex;
+      gap: 0;
+      padding: 0 1.5rem
+    }
 
-<div class="content">
+    .tab {
+      padding: .75rem 1.4rem;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--g400);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: .4rem
+    }
 
-  <!-- ══ TAB ESTADÍSTICAS ══ -->
-  <div class="tab-panel active" id="tab-estadisticas">
+    .tab:hover {
+      color: var(--navy)
+    }
 
-    <!-- KPIs -->
-    <div class="kpi-row">
-      <div class="kpi"><span class="kpi-ico">📋</span><div><div class="kpi-val" id="kTotal">…</div><div class="kpi-lbl">Total Fichas</div></div></div>
-      <div class="kpi green"><span class="kpi-ico">📅</span><div><div class="kpi-val" id="kHoy">…</div><div class="kpi-lbl">Registradas Hoy</div></div></div>
-      <div class="kpi red"><span class="kpi-ico">🧘</span><div><div class="kpi-val" id="kConsejeria">…</div><div class="kpi-lbl">Necesitan Consejería</div></div></div>
-      <div class="kpi blue"><span class="kpi-ico">💼</span><div><div class="kpi-val" id="kTrabajan">…</div><div class="kpi-lbl">Trabajan Actualmente</div></div></div>
-    </div>
+    .tab.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold)
+    }
 
-    <!-- Botón descarga reporte PDF completo -->
-    <div class="report-bar">
-      <div class="report-bar-text">
-        <h3>📄 Reporte Estadístico Completo</h3>
-        <p>Descarga todos los gráficos en un PDF listo para exposición</p>
-      </div>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-        <button class="btn btn-gold" onclick="downloadAllChartsPDF()">📄 Descargar PDF con todos los gráficos</button>
-        <button class="btn btn-navy" onclick="loadData()">🔄 Actualizar datos</button>
-      </div>
-    </div>
+    /* ── CONTENT ── */
+    .content {
+      max-width: 1300px;
+      margin: 1.5rem auto;
+      padding: 0 1rem
+    }
 
-    <!-- FILA 1: Programa + Sexo -->
-    <div class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">🏫 Programa de Estudios</div><div class="chart-subtitle">Distribución por carrera</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartPrograma','Programa_Estudios')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartPrograma"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">⚧ Distribución por Sexo</div><div class="chart-subtitle">Masculino / Femenino / Otro</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartSexo','Distribucion_Sexo')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartSexo"></canvas></div>
-      </div>
-    </div>
+    .tab-panel {
+      display: none
+    }
 
-    <!-- FILA 2: Ciclo + Turno -->
-    <div class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">📚 Ciclo Académico</div><div class="chart-subtitle">Cantidad de estudiantes por ciclo</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartCiclo','Ciclo_Academico')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartCiclo"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">🕐 Turno</div><div class="chart-subtitle">Mañana / Tarde / Noche</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartTurno','Turno')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartTurno"></canvas></div>
-      </div>
-    </div>
+    .tab-panel.active {
+      display: block
+    }
 
-    <!-- FILA 3: Ingreso + Seguro -->
-    <div class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">💰 Ingreso Familiar Mensual</div><div class="chart-subtitle">Rango de ingresos del hogar</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartIngreso','Ingreso_Familiar')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartIngreso"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">🏥 Seguro de Salud</div><div class="chart-subtitle">Tipo de cobertura médica</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartSeguro','Seguro_Salud')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartSeguro"></canvas></div>
-      </div>
-    </div>
+    /* ── KPI CARDS ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem
+    }
 
-    <!-- FILA 4: Estado emocional + Necesidades -->
-    <div class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">😊 Estado Emocional</div><div class="chart-subtitle">Escala 1 (Muy mal) a 5 (Muy bien)</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartEmocional','Estado_Emocional')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartEmocional"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">📌 Principales Necesidades</div><div class="chart-subtitle">Necesidades reportadas por estudiantes</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartNecesidades','Necesidades')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartNecesidades"></canvas></div>
-      </div>
-    </div>
+    .kpi {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.3rem;
+      box-shadow: 0 2px 10px rgba(26, 39, 68, .08);
+      border-top: 3px solid var(--gold);
+      display: flex;
+      align-items: center;
+      gap: .9rem
+    }
 
-    <!-- FILA 5: Meta académica + Meta laboral -->
-    <div class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">🎯 Meta Académica</div><div class="chart-subtitle">Objetivo principal de los estudiantes</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartMetaAcad','Meta_Academica')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartMetaAcad"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">💼 Meta Laboral</div><div class="chart-subtitle">Aspiración laboral de los estudiantes</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartMetaLab','Meta_Laboral')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartMetaLab"></canvas></div>
-      </div>
-    </div>
+    .kpi-ico {
+      font-size: 1.8rem;
+      flex-shrink: 0
+    }
 
-    <!-- FILA 6: Capacitación -->
-    <div class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">🏆 ¿Participaría en capacitación?</div><div class="chart-subtitle">Interés en capacitación certificada</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartCapacitacion','Capacitacion')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartCapacitacion"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><div class="chart-title">💳 ¿Pagaría por certificación?</div><div class="chart-subtitle">Disposición de pago por certificado</div></div>
-          <button class="btn-dl" onclick="downloadChart('chartPagaria','Pagaria_Certificacion')">⬇ PNG</button>
-        </div>
-        <div class="chart-body"><canvas id="chartPagaria"></canvas></div>
-      </div>
-    </div>
+    .kpi-val {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--navy);
+      font-family: 'Merriweather', serif;
+      line-height: 1
+    }
 
-  </div><!-- /tab estadisticas -->
+    .kpi-lbl {
+      font-size: .7rem;
+      color: var(--g400);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-top: .2rem
+    }
 
-  <!-- ══ TAB REGISTROS ══ -->
-  <div class="tab-panel" id="tab-registros">
+    .kpi.green {
+      border-top-color: var(--green)
+    }
 
-    <div class="kpi-row">
-      <div class="kpi"><span class="kpi-ico">📋</span><div><div class="kpi-val" id="rTotal">…</div><div class="kpi-lbl">Total Fichas</div></div></div>
-      <div class="kpi green"><span class="kpi-ico">📅</span><div><div class="kpi-val" id="rHoy">…</div><div class="kpi-lbl">Registradas Hoy</div></div></div>
-      <div class="kpi red"><span class="kpi-ico">🧘</span><div><div class="kpi-val" id="rConsejeria">…</div><div class="kpi-lbl">Necesitan Consejería</div></div></div>
-      <div class="kpi blue"><span class="kpi-ico">🏫</span><div><div class="kpi-val" id="rProgramas">…</div><div class="kpi-lbl">Programas</div></div></div>
-    </div>
+    .kpi.red {
+      border-top-color: var(--red)
+    }
 
-    <div class="filter-row">
-      <select class="filter-select" id="filtroPrograma" onchange="renderTable()">
-        <option value="">🏫 Todos los programas</option>
-        <option value="Arquitectura de Plataformas y Servicios de TI">Arquitectura TI</option>
-        <option value="Industrias de Alimentos y Bebidas">Alimentos y Bebidas</option>
-        <option value="Computación e Informática">Computación</option>
-        <option value="Industrias Alimentarias">Industrias Alimentarias</option>
-      </select>
-      <select class="filter-select" id="filtroCiclo" onchange="renderTable()">
-        <option value="">📚 Todos los ciclos</option>
-        <option value="I">I</option><option value="II">II</option><option value="III">III</option>
-        <option value="IV">IV</option><option value="V">V</option><option value="VI">VI</option>
-      </select>
-      <select class="filter-select" id="filtroTurno" onchange="renderTable()">
-        <option value="">🕐 Todos los turnos</option>
-        <option value="Mañana">Mañana</option>
-        <option value="Tarde">Tarde</option>
-        <option value="Noche">Noche</option>
-      </select>
-      <select class="filter-select" id="filtroConsejeria" onchange="renderTable()">
-        <option value="">🧘 Consejería: Todos</option>
-        <option value="Sí">Necesitan</option>
-        <option value="No">No necesitan</option>
-      </select>
-    </div>
+    .kpi.blue {
+      border-top-color: var(--blue)
+    }
 
-    <div class="toolbar">
-      <input class="search" type="text" id="searchInput" placeholder="🔍 Buscar por nombre, DNI, distrito…" oninput="renderTable()">
-      <button class="btn btn-green" onclick="exportExcel()">📊 Exportar Excel</button>
-      <button class="btn btn-navy" onclick="loadData()">🔄 Actualizar</button>
-    </div>
+    /* ── CHARTS GRID ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem
+    }
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th><th>Fecha</th><th>Nombres</th><th>DNI</th><th>Celular</th>
-            <th>Programa</th><th>Ciclo</th><th>Turno</th><th>Distrito</th>
-            <th>Ingreso</th><th>Trabaja</th><th>Seguro</th>
-            <th>Estado Em.</th><th>Consejería</th><th>Meta Acad.</th><th>Meta Lab.</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-          <tr><td colspan="16" class="empty">Cargando datos…</td></tr>
-        </tbody>
-      </table>
-      <div class="pager" id="pager"></div>
-    </div>
-  </div><!-- /tab registros -->
+    .charts-grid.full {
+      grid-template-columns: 1fr
+    }
 
-</div><!-- /content -->
+    .charts-grid.three {
+      grid-template-columns: 1fr 1fr 1fr
+    }
 
-<script>
-document.getElementById('userLabel').textContent = sessionStorage.getItem('adminUser') || 'Admin';
+    .chart-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 10px rgba(26, 39, 68, .08);
+      overflow: hidden
+    }
 
-let allData = [], page = 1, charts = {};
-const PER = 15;
+    .chart-header {
+      padding: .85rem 1.2rem;
+      border-bottom: 1px solid var(--g200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
 
-// ── PALETAS ──────────────────────────────────────────────────
-const PAL = ['#1a2744','#c8922a','#1e6e42','#c0392b','#1565c0','#7b2d8b','#e67e22','#16a085','#2980b9','#8e44ad'];
-const PAL_LIGHT = PAL.map(c => c + 'cc');
+    .chart-title {
+      font-family: 'Merriweather', serif;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--navy)
+    }
 
-// ── TABS ─────────────────────────────────────────────────────
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['estadisticas','registros'][i]===name));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id==='tab-'+name));
-}
+    .chart-subtitle {
+      font-size: .72rem;
+      color: var(--g400);
+      margin-top: .1rem
+    }
 
-function logout() {
-  if(confirm('¿Deseas cerrar sesión?')) {
-    sessionStorage.removeItem('adminAuth'); sessionStorage.removeItem('adminUser');
-    window.location.href = '/login';
-  }
-}
+    .chart-body {
+      padding: 1rem;
+      position: relative;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
 
-// ── LOAD DATA ─────────────────────────────────────────────────
-async function loadData() {
-  try {
-    const res = await fetch('/api/fichas');
-    const d   = await res.json();
-    if (!d.ok) return;
-    allData = d.data;
-    updateKPIs();
-    buildAllCharts();
-    renderTable();
-  } catch(e) {
-    console.error(e);
-  }
-}
+    .chart-body canvas {
+      max-height: 280px
+    }
 
-function updateKPIs() {
-  const total = allData.length;
-  const today = new Date().toISOString().slice(0,10);
-  const hoy   = allData.filter(r => (r.creado_en||'').slice(0,10) === today).length;
-  const cons  = allData.filter(r => r.consejeria === 'Sí').length;
-  const trab  = allData.filter(r => r.trabaja === 'Sí').length;
-  const progs = new Set(allData.map(r=>r.programa).filter(Boolean)).size;
+    .btn-dl {
+      padding: .3rem .75rem;
+      border-radius: 20px;
+      background: var(--g100);
+      border: 1px solid var(--g200);
+      font-size: .72rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--navy);
+      font-family: 'Source Sans 3', sans-serif;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: .3rem
+    }
 
-  ['kTotal','rTotal'].forEach(id => setEl(id, total));
-  ['kHoy','rHoy'].forEach(id => setEl(id, hoy));
-  ['kConsejeria','rConsejeria'].forEach(id => setEl(id, cons));
-  setEl('kTrabajan', trab);
-  setEl('rProgramas', progs);
-}
-function setEl(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+    .btn-dl:hover {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
 
-// ── COUNT HELPER ──────────────────────────────────────────────
-function countField(field) {
-  const map = {};
-  allData.forEach(r => {
-    const val = r[field];
-    if (!val) return;
-    // Puede ser multi-valor separado por ;
-    val.split(';').forEach(v => {
-      const k = v.trim();
-      if (k) map[k] = (map[k]||0) + 1;
-    });
-  });
-  return map;
-}
-function mapToChart(map, limit=10) {
-  const sorted = Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,limit);
-  return { labels: sorted.map(x=>x[0]), data: sorted.map(x=>x[1]) };
-}
+    /* ── TABLA ── */
+    .toolbar {
+      display: flex;
+      gap: .75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      align-items: center
+    }
 
-// ── SHORTEN LABEL ─────────────────────────────────────────────
-function short(str, n=28) { return str && str.length > n ? str.slice(0,n)+'…' : str; }
+    .btn {
+      padding: .55rem 1.2rem;
+      border-radius: 30px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: opacity .15s, transform .15s
+    }
 
-// ── BUILD ALL CHARTS ──────────────────────────────────────────
-function buildAllCharts() {
-  buildBar('chartPrograma', countField('programa'), 'Estudiantes', true);
-  buildPie('chartSexo',     countField('sexo'));
-  buildBar('chartCiclo',    countField('ciclo'), 'Estudiantes');
-  buildPie('chartTurno',    countField('turno'));
-  buildBar('chartIngreso',  countField('ingreso_familiar'), 'Estudiantes', true);
-  buildPie('chartSeguro',   countField('seguro_salud'));
-  buildBar('chartEmocional',countField('estado_emocional'), 'Estudiantes');
-  buildBar('chartNecesidades', countField('necesidades'), 'Menciones', true);
-  buildBar('chartMetaAcad', countField('meta_academica'), 'Estudiantes', true);
-  buildBar('chartMetaLab',  countField('meta_laboral'), 'Estudiantes', true);
-  buildPie('chartCapacitacion', countField('participaria_capacitacion'));
-  buildPie('chartPagaria',      countField('pagaria_certificacion'));
-}
+    .btn:hover {
+      opacity: .88;
+      transform: translateY(-1px)
+    }
 
-function buildBar(id, map, label='', horizontal=false) {
-  const { labels, data } = mapToChart(map);
-  if (charts[id]) charts[id].destroy();
-  const ctx = document.getElementById(id);
-  if (!ctx) return;
-  charts[id] = new Chart(ctx, {
-    type: horizontal ? 'bar' : 'bar',
-    data: {
-      labels: labels.map(l => short(l, horizontal ? 30 : 15)),
-      datasets: [{ label, data, backgroundColor: PAL_LIGHT, borderColor: PAL, borderWidth: 1.5, borderRadius: 4 }]
-    },
-    options: {
-      indexAxis: horizontal ? 'y' : 'x',
-      responsive: true, maintainAspectRatio: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { color: '#e8e6e0' }, ticks: { font: { size: 10 }, color: '#6b6358' } },
-        y: { grid: { color: '#e8e6e0' }, ticks: { font: { size: 10 }, color: '#6b6358' } }
+    .btn-green {
+      background: var(--green);
+      color: #fff
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: #fff
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy)
+    }
+
+    .search {
+      flex: 1;
+      min-width: 200px;
+      padding: .5rem .9rem;
+      border: 1.5px solid var(--g200);
+      border-radius: 30px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .85rem;
+      outline: none
+    }
+
+    .search:focus {
+      border-color: var(--gold)
+    }
+
+    .filter-row {
+      display: flex;
+      gap: .6rem;
+      margin-bottom: .8rem;
+      flex-wrap: wrap
+    }
+
+    .filter-select {
+      padding: .42rem .8rem;
+      border: 1.5px solid var(--g200);
+      border-radius: 20px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: .82rem;
+      outline: none;
+      background: #fff;
+      cursor: pointer
+    }
+
+    .filter-select:focus {
+      border-color: var(--gold)
+    }
+
+    .table-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 10px rgba(26, 39, 68, .08);
+      overflow-x: auto
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px
+    }
+
+    thead {
+      background: var(--navy-mid)
+    }
+
+    thead th {
+      color: #fff;
+      padding: .6rem .85rem;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      font-weight: 600;
+      text-align: left;
+      white-space: nowrap
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--g200);
+      transition: background .12s
+    }
+
+    tbody tr:hover {
+      background: var(--g100)
+    }
+
+    tbody td {
+      padding: .55rem .85rem;
+      font-size: .82rem;
+      color: var(--g800);
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .badge {
+      display: inline-block;
+      padding: .15rem .55rem;
+      border-radius: 20px;
+      font-size: .7rem;
+      font-weight: 600
+    }
+
+    .badge-ciclo {
+      background: #cce5ff;
+      color: #004085
+    }
+
+    .badge-si {
+      background: #d4edda;
+      color: #155724
+    }
+
+    .badge-no {
+      background: #f8d7da;
+      color: #721c24
+    }
+
+    .empty {
+      text-align: center;
+      padding: 3rem;
+      color: var(--g400);
+      font-style: italic
+    }
+
+    .pager {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      padding: 1rem;
+      flex-wrap: wrap
+    }
+
+    .pager button {
+      padding: .35rem .75rem;
+      border-radius: 20px;
+      border: 1.5px solid var(--g200);
+      background: #fff;
+      cursor: pointer;
+      font-size: .8rem;
+      transition: all .15s
+    }
+
+    .pager button.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
+
+    .pager button:hover:not(.active) {
+      border-color: var(--gold)
+    }
+
+    /* ── PDF REPORT BTN ── */
+    .report-bar {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 10px rgba(26, 39, 68, .08);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .75rem
+    }
+
+    .report-bar-text h3 {
+      font-family: 'Merriweather', serif;
+      font-size: .9rem;
+      color: var(--navy)
+    }
+
+    .report-bar-text p {
+      font-size: .75rem;
+      color: var(--g400);
+      margin-top: .15rem
+    }
+
+    /* Responsive */
+    @media(max-width:900px) {
+      .kpi-row {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr
+      }
+
+      .charts-grid.three {
+        grid-template-columns: 1fr
       }
     }
-  });
-}
 
-function buildPie(id, map) {
+    @media(max-width:500px) {
+      .kpi-row {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    if (sessionStorage.getItem('adminAuth') !== 'ok') window.location.href = '/login';
+  </script>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>🔐 Panel de Administración – Fichas Diagnósticas</h1>
+      <div class="sub">IESTP Cabana · Área de Bienestar Estudiantil</div>
+    </div>
+    <div class="header-right">
+      <div class="user-badge">👤 <span id="userLabel">Admin</span></div>
+      <a href="/" style="color:rgba(255,255,255,.6);font-size:.78rem;text-decoration:none">← Formulario</a>
+      <button class="btn-logout" onclick="logout()">🚪 Salir</button>
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('estadisticas')">📊 Estadísticas</div>
+    <div class="tab" onclick="switchTab('registros')">📋 Registros</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ TAB ESTADÍSTICAS ══ -->
+    <div class="tab-panel active" id="tab-estadisticas">
+
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi"><span class="kpi-ico">📋</span>
+          <div>
+            <div class="kpi-val" id="kTotal">…</div>
+            <div class="kpi-lbl">Total Fichas</div>
+          </div>
+        </div>
+        <div class="kpi green"><span class="kpi-ico">📅</span>
+          <div>
+            <div class="kpi-val" id="kHoy">…</div>
+            <div class="kpi-lbl">Registradas Hoy</div>
+          </div>
+        </div>
+        <div class="kpi red"><span class="kpi-ico">🧘</span>
+          <div>
+            <div class="kpi-val" id="kConsejeria">…</div>
+            <div class="kpi-lbl">Necesitan Consejería</div>
+          </div>
+        </div>
+        <div class="kpi blue"><span class="kpi-ico">💼</span>
+          <div>
+            <div class="kpi-val" id="kTrabajan">…</div>
+            <div class="kpi-lbl">Trabajan Actualmente</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón descarga reporte PDF completo -->
+      <div class="report-bar">
+        <div class="report-bar-text">
+          <h3>📄 Reporte Estadístico Completo</h3>
+          <p>Descarga todos los gráficos en un PDF listo para exposición</p>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button class="btn btn-gold" onclick="downloadAllChartsPDF()">📄 Descargar PDF con todos los gráficos</button>
+          <button class="btn btn-navy" onclick="loadData()">🔄 Actualizar datos</button>
+        </div>
+      </div>
+
+      <!-- FILA 1: Programa + Sexo -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">🏫 Programa de Estudios</div>
+              <div class="chart-subtitle">Distribución por carrera</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartPrograma','Programa_Estudios')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartPrograma"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">⚧ Distribución por Sexo</div>
+              <div class="chart-subtitle">Masculino / Femenino / Otro</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartSexo','Distribucion_Sexo')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartSexo"></canvas></div>
+        </div>
+      </div>
+
+      <!-- FILA 2: Ciclo + Turno -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">📚 Ciclo Académico</div>
+              <div class="chart-subtitle">Cantidad de estudiantes por ciclo</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartCiclo','Ciclo_Academico')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartCiclo"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">🕐 Turno</div>
+              <div class="chart-subtitle">Mañana / Tarde / Noche</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartTurno','Turno')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartTurno"></canvas></div>
+        </div>
+      </div>
+
+      <!-- FILA 3: Ingreso + Seguro -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">💰 Ingreso Familiar Mensual</div>
+              <div class="chart-subtitle">Rango de ingresos del hogar</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartIngreso','Ingreso_Familiar')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartIngreso"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">🏥 Seguro de Salud</div>
+              <div class="chart-subtitle">Tipo de cobertura médica</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartSeguro','Seguro_Salud')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartSeguro"></canvas></div>
+        </div>
+      </div>
+
+      <!-- FILA 4: Estado emocional + Necesidades -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">😊 Estado Emocional</div>
+              <div class="chart-subtitle">Escala 1 (Muy mal) a 5 (Muy bien)</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartEmocional','Estado_Emocional')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartEmocional"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">📌 Principales Necesidades</div>
+              <div class="chart-subtitle">Necesidades reportadas por estudiantes</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartNecesidades','Necesidades')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartNecesidades"></canvas></div>
+        </div>
+      </div>
+
+      <!-- FILA 5: Meta académica + Meta laboral -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">🎯 Meta Académica</div>
+              <div class="chart-subtitle">Objetivo principal de los estudiantes</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartMetaAcad','Meta_Academica')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartMetaAcad"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">💼 Meta Laboral</div>
+              <div class="chart-subtitle">Aspiración laboral de los estudiantes</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartMetaLab','Meta_Laboral')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartMetaLab"></canvas></div>
+        </div>
+      </div>
+
+      <!-- FILA 6: Capacitación -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">🏆 ¿Participaría en capacitación?</div>
+              <div class="chart-subtitle">Interés en capacitación certificada</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartCapacitacion','Capacitacion')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartCapacitacion"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">💳 ¿Pagaría por certificación?</div>
+              <div class="chart-subtitle">Disposición de pago por certificado</div>
+            </div>
+            <button class="btn-dl" onclick="downloadChart('chartPagaria','Pagaria_Certificacion')">⬇ PNG</button>
+          </div>
+          <div class="chart-body"><canvas id="chartPagaria"></canvas></div>
+        </div>
+      </div>
+
+    </div><!-- /tab estadisticas -->
+
+    <!-- ══ TAB REGISTROS ══ -->
+    <div class="tab-panel" id="tab-registros">
+
+      <div class="kpi-row">
+        <div class="kpi"><span class="kpi-ico">📋</span>
+          <div>
+            <div class="kpi-val" id="rTotal">…</div>
+            <div class="kpi-lbl">Total Fichas</div>
+          </div>
+        </div>
+        <div class="kpi green"><span class="kpi-ico">📅</span>
+          <div>
+            <div class="kpi-val" id="rHoy">…</div>
+            <div class="kpi-lbl">Registradas Hoy</div>
+          </div>
+        </div>
+        <div class="kpi red"><span class="kpi-ico">🧘</span>
+          <div>
+            <div class="kpi-val" id="rConsejeria">…</div>
+            <div class="kpi-lbl">Necesitan Consejería</div>
+          </div>
+        </div>
+        <div class="kpi blue"><span class="kpi-ico">🏫</span>
+          <div>
+            <div class="kpi-val" id="rProgramas">…</div>
+            <div class="kpi-lbl">Programas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <select class="filter-select" id="filtroPrograma" onchange="renderTable()">
+          <option value="">🏫 Todos los programas</option>
+          <option value="Arquitectura de Plataformas y Servicios de TI">Arquitectura TI</option>
+          <option value="Industrias de Alimentos y Bebidas">Alimentos y Bebidas</option>
+          <option value="Computación e Informática">Computación</option>
+          <option value="Industrias Alimentarias">Industrias Alimentarias</option>
+        </select>
+        <select class="filter-select" id="filtroCiclo" onchange="renderTable()">
+          <option value="">📚 Todos los ciclos</option>
+          <option value="I">I</option>
+          <option value="II">II</option>
+          <option value="III">III</option>
+          <option value="IV">IV</option>
+          <option value="V">V</option>
+          <option value="VI">VI</option>
+        </select>
+        <select class="filter-select" id="filtroTurno" onchange="renderTable()">
+          <option value="">🕐 Todos los turnos</option>
+          <option value="Mañana">Mañana</option>
+          <option value="Tarde">Tarde</option>
+          <option value="Noche">Noche</option>
+        </select>
+        <select class="filter-select" id="filtroConsejeria" onchange="renderTable()">
+          <option value="">🧘 Consejería: Todos</option>
+          <option value="Sí">Necesitan</option>
+          <option value="No">No necesitan</option>
+        </select>
+      </div>
+
+      <div class="toolbar">
+        <input class="search" type="text" id="searchInput" placeholder="🔍 Buscar por nombre, DNI, distrito…"
+          oninput="renderTable()">
+        <button class="btn btn-green" onclick="exportExcel()">📊 Exportar Excel</button>
+        <button class="btn btn-navy" onclick="loadData()">🔄 Actualizar</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Fecha</th>
+              <th>Nombres</th>
+              <th>DNI</th>
+              <th>Celular</th>
+              <th>Programa</th>
+              <th>Ciclo</th>
+              <th>Turno</th>
+              <th>Distrito</th>
+              <th>Ingreso</th>
+              <th>Trabaja</th>
+              <th>Seguro</th>
+              <th>Estado Em.</th>
+              <th>Consejería</th>
+              <th>Meta Acad.</th>
+              <th>Meta Lab.</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="16" class="empty">Cargando datos…</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pager" id="pager"></div>
+      </div>
+    </div><!-- /tab registros -->
+
+  </div><!-- /content -->
+
+  <script>
+    document.getElementById('userLabel').textContent = sessionStorage.getItem('adminUser') || 'Admin';
+
+    let allData = [], page = 1, charts = {};
+    const PER = 15;
+
+    // ── PALETAS ──────────────────────────────────────────────────
+    const PAL = ['#1a2744', '#c8922a', '#1e6e42', '#c0392b', '#1565c0', '#7b2d8b', '#e67e22', '#16a085', '#2980b9', '#8e44ad'];
+    const PAL_LIGHT = PAL.map(c => c + 'cc');
+
+    // ── TABS ─────────────────────────────────────────────────────
+    function switchTab(name) {
+      document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['estadisticas', 'registros'][i] === name));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+    }
+
+    function logout() {
+      if (confirm('¿Deseas cerrar sesión?')) {
+        sessionStorage.removeItem('adminAuth'); sessionStorage.removeItem('adminUser');
+        window.location.href = '/login';
+      }
+    }
+
+    // ── LOAD DATA ─────────────────────────────────────────────────
+    async function loadData() {
+      try {
+        const res = await fetch('/api/fichas');
+        const d = await res.json();
+        if (!d.ok) return;
+        allData = d.data;
+        updateKPIs();
+        buildAllCharts();
+        renderTable();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function updateKPIs() {
+      const total = allData.length;
+      const today = new Date().toISOString().slice(0, 10);
+      const hoy = allData.filter(r => (r.creado_en || '').slice(0, 10) === today).length;
+      const cons = allData.filter(r => r.consejeria === 'Sí').length;
+      const trab = allData.filter(r => r.trabaja === 'Sí').length;
+      const progs = new Set(allData.map(r => r.programa).filter(Boolean)).size;
+
+      ['kTotal', 'rTotal'].forEach(id => setEl(id, total));
+      ['kHoy', 'rHoy'].forEach(id => setEl(id, hoy));
+      ['kConsejeria', 'rConsejeria'].forEach(id => setEl(id, cons));
+      setEl('kTrabajan', trab);
+      setEl('rProgramas', progs);
+    }
+    function setEl(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+
+    // ── COUNT HELPER ──────────────────────────────────────────────
+    function countField(field) {
+      const map = {};
+
+      allData.forEach(r => {
+        let val = r[field];
+
+        if (val === null || val === undefined) return;
+
+        val = String(val); // 👈 clave
+
+        val.split(';').forEach(v => {
+          const k = v.trim();
+          if (k) map[k] = (map[k] || 0) + 1;
+        });
+      });
+
+      return map;
+    }
+    function mapToChart(map, limit = 10) {
+      const sorted = Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, limit);
+      return { labels: sorted.map(x => x[0]), data: sorted.map(x => x[1]) };
+    }
+
+    // ── SHORTEN LABEL ─────────────────────────────────────────────
+    function short(str, n = 28) { return str && str.length > n ? str.slice(0, n) + '…' : str; }
+
+    // ── BUILD ALL CHARTS ──────────────────────────────────────────
+    function buildAllCharts() {
+      buildBar('chartPrograma', countField('programa'), 'Estudiantes', true);
+      buildPie('chartSexo', countField('sexo'));
+      buildBar('chartCiclo', countField('ciclo'), 'Estudiantes');
+      buildPie('chartTurno', countField('turno'));
+      buildBar('chartIngreso', countField('ingreso_familiar'), 'Estudiantes', true);
+      buildPie('chartSeguro', countField('seguro_salud'));
+      buildBar('chartEmocional', countField('estado_emocional'), 'Estudiantes');
+      buildBar('chartNecesidades', countField('necesidades'), 'Menciones', true);
+      buildBar('chartMetaAcad', countField('meta_academica'), 'Estudiantes', true);
+      buildBar('chartMetaLab', countField('meta_laboral'), 'Estudiantes', true);
+      buildPie('chartCapacitacion', countField('participaria_capacitacion'));
+      buildPie('chartPagaria', countField('pagaria_certificacion'));
+    }
+
+    function buildBar(id, map, label = '', horizontal = false) {
+      const { labels, data } = mapToChart(map);
+
+      if (!labels.length) {
+        console.warn("Sin datos para:", id);
+        return;
+      }
+
+      if (charts[id]) charts[id].destroy();
+
+      const ctx = document.getElementById(id);
+      if (!ctx) return;
+
+      charts[id] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels.map(l => short(l, horizontal ? 30 : 15)),
+          datasets: [{
+            label,
+            data,
+            backgroundColor: PAL_LIGHT,
+            borderColor: PAL,
+            borderWidth: 1.5,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: horizontal ? 'y' : 'x',
+          responsive: true,
+          maintainAspectRatio: false, // 👈 IMPORTANTE
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: '#e8e6e0' } },
+            y: { grid: { color: '#e8e6e0' } }
+          }
+        }
+      });
+    }
+
+    function buildPie(id, map) {
   const { labels, data } = mapToChart(map);
+
+  if (!labels.length) {
+    console.warn("Sin datos para:", id);
+    return;
+  }
+
   if (charts[id]) charts[id].destroy();
+
   const ctx = document.getElementById(id);
   if (!ctx) return;
+
   charts[id] = new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels,
-      datasets: [{ data, backgroundColor: PAL_LIGHT, borderColor: PAL, borderWidth: 2 }]
+      datasets: [{
+        data,
+        backgroundColor: PAL_LIGHT,
+        borderColor: PAL,
+        borderWidth: 2
+      }]
     },
     options: {
-      responsive: true, maintainAspectRatio: true,
+      responsive: true,
+      maintainAspectRatio: false, // 👈 IMPORTANTE
       plugins: {
-        legend: { position: 'bottom', labels: { font: { size: 10 }, color: '#3a342c', padding: 10, boxWidth: 12 } }
+        legend: { position: 'bottom' }
       }
     }
   });
 }
 
-// ── DOWNLOAD SINGLE CHART PNG ─────────────────────────────────
-function downloadChart(canvasId, filename) {
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
+    // ── DOWNLOAD SINGLE CHART PNG ─────────────────────────────────
+    function downloadChart(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
 
-  // Create white background version
-  const exportCanvas = document.createElement('canvas');
-  exportCanvas.width  = canvas.width;
-  exportCanvas.height = canvas.height;
-  const ctx = exportCanvas.getContext('2d');
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
-  ctx.drawImage(canvas, 0, 0);
+      // Create white background version
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = canvas.width;
+      exportCanvas.height = canvas.height;
+      const ctx = exportCanvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+      ctx.drawImage(canvas, 0, 0);
 
-  const link = document.createElement('a');
-  link.download = `IESTP_Cabana_${filename}_${new Date().toISOString().slice(0,10)}.png`;
-  link.href = exportCanvas.toDataURL('image/png');
-  link.click();
-}
-
-// ── DOWNLOAD ALL CHARTS AS PDF ────────────────────────────────
-async function downloadAllChartsPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
-  const pageW=210, pageH=297, M=12;
-  const NAVY=[26,39,68], GOLD=[200,146,42], WHITE=[255,255,255];
-
-  function addHeader(pageNum) {
-    doc.setFillColor(...NAVY); doc.rect(0,0,pageW,22,'F');
-    doc.setFillColor(...GOLD); doc.rect(0,22,pageW,1.5,'F');
-
-    // Logo
-    try {
-      const logoEl = document.querySelector('img[alt="Logo IESTP"]') ||
-                     document.querySelector('.logo-circle img');
-      if (logoEl && logoEl.complete) {
-        const c = document.createElement('canvas');
-        c.width=200; c.height=200;
-        c.getContext('2d').drawImage(logoEl,0,0,200,200);
-        doc.addImage(c.toDataURL('image/png'),'PNG',M,2,18,18);
-      }
-    } catch(e){}
-
-    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...WHITE);
-    doc.text('Reporte Estadístico – Ficha Diagnóstica', M+22, 10);
-    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
-    doc.text('IESTP Cabana · Área de Bienestar Estudiantil', M+22, 16);
-    doc.setFontSize(7); doc.setTextColor(...GOLD);
-    doc.text(`Fecha: ${new Date().toLocaleDateString('es-PE')} · Pág. ${pageNum}`, pageW-M, 16, {align:'right'});
-  }
-
-  function addKPIPage() {
-    addHeader(1);
-    let y = 30;
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...NAVY);
-    doc.text('Resumen General', M, y); y += 8;
-
-    const kpis = [
-      { label:'Total de Fichas Registradas', val: allData.length, color:[26,39,68] },
-      { label:'Registradas Hoy', val: allData.filter(r=>(r.creado_en||'').slice(0,10)===new Date().toISOString().slice(0,10)).length, color:[30,110,66] },
-      { label:'Requieren Consejería Psicológica', val: allData.filter(r=>r.consejeria==='Sí').length, color:[192,57,43] },
-      { label:'Trabajan Actualmente', val: allData.filter(r=>r.trabaja==='Sí').length, color:[21,101,192] },
-    ];
-    kpis.forEach((k,i) => {
-      const x = M + (i%2)*(cW/2+5), row = Math.floor(i/2);
-      const bx=x, by=y+row*22, bw=(cW-5)/2, bh=18;
-      const cW2 = pageW - M*2;
-      const bww = (cW2-5)/2;
-      doc.setFillColor(245,244,240); doc.roundedRect(M+(i%2)*(bww+5),y+row*22,bww,18,2,2,'F');
-      doc.setFillColor(...k.color); doc.rect(M+(i%2)*(bww+5),y+row*22,3,18,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(...k.color);
-      doc.text(String(k.val), M+(i%2)*(bww+5)+10, y+row*22+12);
-      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(107,99,88);
-      doc.text(k.label, M+(i%2)*(bww+5)+10, y+row*22+17);
-    });
-    y += 50;
-    return y;
-  }
-
-  // Collect all chart canvases
-  const chartIds = [
-    {id:'chartPrograma', title:'Programa de Estudios'},
-    {id:'chartSexo',     title:'Distribución por Sexo'},
-    {id:'chartCiclo',    title:'Ciclo Académico'},
-    {id:'chartTurno',    title:'Turno'},
-    {id:'chartIngreso',  title:'Ingreso Familiar Mensual'},
-    {id:'chartSeguro',   title:'Seguro de Salud'},
-    {id:'chartEmocional',title:'Estado Emocional (1-5)'},
-    {id:'chartNecesidades',title:'Principales Necesidades'},
-    {id:'chartMetaAcad', title:'Meta Académica'},
-    {id:'chartMetaLab',  title:'Meta Laboral'},
-    {id:'chartCapacitacion',title:'¿Participaría en Capacitación?'},
-    {id:'chartPagaria',  title:'¿Pagaría por Certificación?'},
-  ];
-
-  // Page 1: KPIs
-  addKPIPage();
-
-  // Pages with charts (2 per page)
-  const cW = pageW - M*2;
-  let pageNum = 2;
-
-  for (let i=0; i<chartIds.length; i+=2) {
-    doc.addPage();
-    addHeader(pageNum++);
-    let y = 28;
-
-    for (let j=0; j<2; j++) {
-      if (i+j >= chartIds.length) break;
-      const { id, title } = chartIds[i+j];
-      const canvas = document.getElementById(id);
-      if (!canvas) continue;
-
-      // White bg export
-      const exp = document.createElement('canvas');
-      exp.width = canvas.width; exp.height = canvas.height;
-      const ctx = exp.getContext('2d');
-      ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,exp.width,exp.height);
-      ctx.drawImage(canvas,0,0);
-      const imgData = exp.toDataURL('image/png');
-
-      // Chart box
-      const boxH = 120;
-      doc.setFillColor(245,244,240); doc.roundedRect(M, y, cW, boxH, 2, 2, 'F');
-      doc.setFillColor(...NAVY); doc.roundedRect(M, y, cW, 8, 2, 2, 'F');
-      doc.rect(M, y+4, cW, 4, 'F'); // fix bottom rounded
-      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...WHITE);
-      doc.text(title, M+4, y+5.5);
-
-      try {
-        doc.addImage(imgData, 'PNG', M+2, y+10, cW-4, boxH-12);
-      } catch(e) {}
-
-      y += boxH + 6;
+      const link = document.createElement('a');
+      link.download = `IESTP_Cabana_${filename}_${new Date().toISOString().slice(0, 10)}.png`;
+      link.href = exportCanvas.toDataURL('image/png');
+      link.click();
     }
-  }
 
-  doc.save(`IESTP_Cabana_Reporte_Estadistico_${new Date().toISOString().slice(0,10)}.pdf`);
-}
+    // ── DOWNLOAD ALL CHARTS AS PDF ────────────────────────────────
+    async function downloadAllChartsPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const pageW = 210, pageH = 297, M = 12;
+      const NAVY = [26, 39, 68], GOLD = [200, 146, 42], WHITE = [255, 255, 255];
 
-// ── TABLA ─────────────────────────────────────────────────────
-function renderTable() {
-  const q  = document.getElementById('searchInput').value.toLowerCase();
-  const fP = document.getElementById('filtroPrograma').value;
-  const fC = document.getElementById('filtroCiclo').value;
-  const fT = document.getElementById('filtroTurno').value;
-  const fCo= document.getElementById('filtroConsejeria').value;
+      function addHeader(pageNum) {
+        doc.setFillColor(...NAVY); doc.rect(0, 0, pageW, 22, 'F');
+        doc.setFillColor(...GOLD); doc.rect(0, 22, pageW, 1.5, 'F');
 
-  const filtered = allData.filter(r =>
-    ((r.nombres||'').toLowerCase().includes(q)||(r.dni||'').includes(q)||(r.distrito||'').toLowerCase().includes(q)) &&
-    (!fP||r.programa===fP) && (!fC||r.ciclo===fC) &&
-    (!fT||r.turno===fT)    && (!fCo||r.consejeria===fCo)
-  );
+        // Logo
+        try {
+          const logoEl = document.querySelector('img[alt="Logo IESTP"]') ||
+            document.querySelector('.logo-circle img');
+          if (logoEl && logoEl.complete) {
+            const c = document.createElement('canvas');
+            c.width = 200; c.height = 200;
+            c.getContext('2d').drawImage(logoEl, 0, 0, 200, 200);
+            doc.addImage(c.toDataURL('image/png'), 'PNG', M, 2, 18, 18);
+          }
+        } catch (e) { }
 
-  const pages = Math.ceil(filtered.length/PER)||1;
-  if (page>pages) page=pages;
-  const slice = filtered.slice((page-1)*PER, page*PER);
-  const tbody = document.getElementById('tableBody');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(...WHITE);
+        doc.text('Reporte Estadístico – Ficha Diagnóstica', M + 22, 10);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
+        doc.text('IESTP Cabana · Área de Bienestar Estudiantil', M + 22, 16);
+        doc.setFontSize(7); doc.setTextColor(...GOLD);
+        doc.text(`Fecha: ${new Date().toLocaleDateString('es-PE')} · Pág. ${pageNum}`, pageW - M, 16, { align: 'right' });
+      }
 
-  if (!slice.length) {
-    tbody.innerHTML='<tr><td colspan="16" class="empty">Sin resultados.</td></tr>';
-    document.getElementById('pager').innerHTML=''; return;
-  }
+      function addKPIPage() {
+        addHeader(1);
+        let y = 30;
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(...NAVY);
+        doc.text('Resumen General', M, y); y += 8;
 
-  tbody.innerHTML = slice.map(r=>`
+        const kpis = [
+          { label: 'Total de Fichas Registradas', val: allData.length, color: [26, 39, 68] },
+          { label: 'Registradas Hoy', val: allData.filter(r => (r.creado_en || '').slice(0, 10) === new Date().toISOString().slice(0, 10)).length, color: [30, 110, 66] },
+          { label: 'Requieren Consejería Psicológica', val: allData.filter(r => r.consejeria === 'Sí').length, color: [192, 57, 43] },
+          { label: 'Trabajan Actualmente', val: allData.filter(r => r.trabaja === 'Sí').length, color: [21, 101, 192] },
+        ];
+        const cW = pageW - M * 2;
+        const bww = (cW - 5) / 2;
+
+        kpis.forEach((k, i) => {
+          const x = M + (i % 2) * (bww + 5);
+          const row = Math.floor(i / 2);
+          const yPos = y + row * 22;
+
+          doc.setFillColor(245, 244, 240);
+          doc.roundedRect(x, yPos, bww, 18, 2, 2, 'F');
+
+          doc.setFillColor(...k.color);
+          doc.rect(x, yPos, 3, 18, 'F');
+
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(16);
+          doc.setTextColor(...k.color);
+          doc.text(String(k.val), x + 10, yPos + 12);
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8);
+          doc.setTextColor(107, 99, 88);
+          doc.text(k.label, x + 10, yPos + 17);
+        });
+        y += 50;
+        return y;
+      }
+
+      // Collect all chart canvases
+      const chartIds = [
+        { id: 'chartPrograma', title: 'Programa de Estudios' },
+        { id: 'chartSexo', title: 'Distribución por Sexo' },
+        { id: 'chartCiclo', title: 'Ciclo Académico' },
+        { id: 'chartTurno', title: 'Turno' },
+        { id: 'chartIngreso', title: 'Ingreso Familiar Mensual' },
+        { id: 'chartSeguro', title: 'Seguro de Salud' },
+        { id: 'chartEmocional', title: 'Estado Emocional (1-5)' },
+        { id: 'chartNecesidades', title: 'Principales Necesidades' },
+        { id: 'chartMetaAcad', title: 'Meta Académica' },
+        { id: 'chartMetaLab', title: 'Meta Laboral' },
+        { id: 'chartCapacitacion', title: '¿Participaría en Capacitación?' },
+        { id: 'chartPagaria', title: '¿Pagaría por Certificación?' },
+      ];
+
+      // Page 1: KPIs
+      addKPIPage();
+
+      // Pages with charts (2 per page)
+      const cW = pageW - M * 2;
+      let pageNum = 2;
+
+      for (let i = 0; i < chartIds.length; i += 2) {
+        doc.addPage();
+        addHeader(pageNum++);
+        let y = 28;
+
+        for (let j = 0; j < 2; j++) {
+          if (i + j >= chartIds.length) break;
+          const { id, title } = chartIds[i + j];
+          const canvas = document.getElementById(id);
+          if (!canvas) continue;
+
+          // White bg export
+          const exp = document.createElement('canvas');
+          exp.width = canvas.width; exp.height = canvas.height;
+          const ctx = exp.getContext('2d');
+          ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, exp.width, exp.height);
+          ctx.drawImage(canvas, 0, 0);
+          const imgData = exp.toDataURL('image/png');
+
+          // Chart box
+          const boxH = 120;
+          doc.setFillColor(245, 244, 240); doc.roundedRect(M, y, cW, boxH, 2, 2, 'F');
+          doc.setFillColor(...NAVY); doc.roundedRect(M, y, cW, 8, 2, 2, 'F');
+          doc.rect(M, y + 4, cW, 4, 'F'); // fix bottom rounded
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...WHITE);
+          doc.text(title, M + 4, y + 5.5);
+
+          try {
+            doc.addImage(imgData, 'PNG', M + 2, y + 10, cW - 4, boxH - 12);
+          } catch (e) { }
+
+          y += boxH + 6;
+        }
+      }
+
+      doc.save(`IESTP_Cabana_Reporte_Estadistico_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
+
+    // ── TABLA ─────────────────────────────────────────────────────
+    function renderTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const fP = document.getElementById('filtroPrograma').value;
+      const fC = document.getElementById('filtroCiclo').value;
+      const fT = document.getElementById('filtroTurno').value;
+      const fCo = document.getElementById('filtroConsejeria').value;
+
+      const filtered = allData.filter(r =>
+        ((r.nombres || '').toLowerCase().includes(q) || (r.dni || '').includes(q) || (r.distrito || '').toLowerCase().includes(q)) &&
+        (!fP || r.programa === fP) && (!fC || r.ciclo === fC) &&
+        (!fT || r.turno === fT) && (!fCo || r.consejeria === fCo)
+      );
+
+      const pages = Math.ceil(filtered.length / PER) || 1;
+      if (page > pages) page = pages;
+      const slice = filtered.slice((page - 1) * PER, page * PER);
+      const tbody = document.getElementById('tableBody');
+
+      if (!slice.length) {
+        tbody.innerHTML = '<tr><td colspan="16" class="empty">Sin resultados.</td></tr>';
+        document.getElementById('pager').innerHTML = ''; return;
+      }
+
+      tbody.innerHTML = slice.map(r => `
     <tr>
       <td><strong>${r.id}</strong></td>
-      <td>${r.creado_en?new Date(r.creado_en).toLocaleDateString('es-PE'):'—'}</td>
-      <td title="${r.nombres||''}">${r.nombres||'—'}</td>
-      <td>${r.dni||'—'}</td>
-      <td>${r.celular||'—'}</td>
-      <td title="${r.programa||''}">${(r.programa||'—').split(' ').slice(0,3).join(' ')}…</td>
-      <td><span class="badge badge-ciclo">${r.ciclo||'—'}</span></td>
-      <td>${r.turno||'—'}</td>
-      <td>${r.distrito||'—'}</td>
-      <td>${r.ingreso_familiar||'—'}</td>
-      <td><span class="badge ${r.trabaja==='Sí'?'badge-si':'badge-no'}">${r.trabaja||'—'}</span></td>
-      <td>${r.seguro_salud||'—'}</td>
-      <td style="text-align:center;font-weight:600">${r.estado_emocional||'—'}/5</td>
-      <td><span class="badge ${r.consejeria==='Sí'?'badge-si':'badge-no'}">${r.consejeria||'—'}</span></td>
-      <td title="${r.meta_academica||''}">${(r.meta_academica||'—').slice(0,18)}${(r.meta_academica||'').length>18?'…':''}</td>
-      <td title="${r.meta_laboral||''}">${(r.meta_laboral||'—').slice(0,18)}${(r.meta_laboral||'').length>18?'…':''}</td>
+      <td>${r.creado_en ? new Date(r.creado_en).toLocaleDateString('es-PE') : '—'}</td>
+      <td title="${r.nombres || ''}">${r.nombres || '—'}</td>
+      <td>${r.dni || '—'}</td>
+      <td>${r.celular || '—'}</td>
+      <td title="${r.programa || ''}">${(r.programa || '—').split(' ').slice(0, 3).join(' ')}…</td>
+      <td><span class="badge badge-ciclo">${r.ciclo || '—'}</span></td>
+      <td>${r.turno || '—'}</td>
+      <td>${r.distrito || '—'}</td>
+      <td>${r.ingreso_familiar || '—'}</td>
+      <td><span class="badge ${r.trabaja === 'Sí' ? 'badge-si' : 'badge-no'}">${r.trabaja || '—'}</span></td>
+      <td>${r.seguro_salud || '—'}</td>
+      <td style="text-align:center;font-weight:600">${r.estado_emocional || '—'}/5</td>
+      <td><span class="badge ${r.consejeria === 'Sí' ? 'badge-si' : 'badge-no'}">${r.consejeria || '—'}</span></td>
+      <td title="${r.meta_academica || ''}">${(r.meta_academica || '—').slice(0, 18)}${(r.meta_academica || '').length > 18 ? '…' : ''}</td>
+      <td title="${r.meta_laboral || ''}">${(r.meta_laboral || '—').slice(0, 18)}${(r.meta_laboral || '').length > 18 ? '…' : ''}</td>
     </tr>`).join('');
 
-  const pager = document.getElementById('pager');
-  pager.innerHTML='';
-  for(let i=1;i<=pages;i++){
-    const btn=document.createElement('button');
-    btn.textContent=i; if(i===page)btn.classList.add('active');
-    btn.onclick=()=>{page=i;renderTable();}; pager.appendChild(btn);
-  }
-}
+      const pager = document.getElementById('pager');
+      pager.innerHTML = '';
+      for (let i = 1; i <= pages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i; if (i === page) btn.classList.add('active');
+        btn.onclick = () => { page = i; renderTable(); }; pager.appendChild(btn);
+      }
+    }
 
-function exportExcel(){ window.location.href='/api/export/excel'; }
+    function exportExcel() { window.location.href = '/api/export/excel'; }
 
-// ── INIT ──────────────────────────────────────────────────────
-loadData();
-setInterval(loadData, 30000); // actualiza cada 30 seg
-</script>
+    // ── INIT ──────────────────────────────────────────────────────
+    loadData();
+    setInterval(loadData, 30000); // actualiza cada 30 seg
+  </script>
 </body>
+
 </html>
