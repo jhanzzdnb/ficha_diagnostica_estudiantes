@@ -8,7 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
@@ -972,38 +972,38 @@
     }
 
     function buildPie(id, map) {
-  const { labels, data } = mapToChart(map);
+      const { labels, data } = mapToChart(map);
 
-  if (!labels.length) {
-    console.warn("Sin datos para:", id);
-    return;
-  }
-
-  if (charts[id]) charts[id].destroy();
-
-  const ctx = document.getElementById(id);
-  if (!ctx) return;
-
-  charts[id] = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels,
-      datasets: [{
-        data,
-        backgroundColor: PAL_LIGHT,
-        borderColor: PAL,
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false, // 👈 IMPORTANTE
-      plugins: {
-        legend: { position: 'bottom' }
+      if (!labels.length) {
+        console.warn("Sin datos para:", id);
+        return;
       }
+
+      if (charts[id]) charts[id].destroy();
+
+      const ctx = document.getElementById(id);
+      if (!ctx) return;
+
+      charts[id] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: PAL_LIGHT,
+            borderColor: PAL,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false, // 👈 IMPORTANTE
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
     }
-  });
-}
 
     // ── DOWNLOAD SINGLE CHART PNG ─────────────────────────────────
     function downloadChart(canvasId, filename) {
